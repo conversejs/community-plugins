@@ -1,0 +1,24 @@
+{
+  "name": "converse-community-plugins",
+  "version": "0.0.1",
+  "description": "Community plugins for Converse.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/conversejs/community-plugins.git"
+  },
+  "keywords": [
+    "Converse.js",
+    "XMPP",
+    "plugins"
+  ],
+  "author": "Converse.js Community",
+  "license": "SEE LICENCE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/conversejs/community-plugins/issues"
+  },
+  "homepage": "https://github.com/conversejs/community-plugins#readme"
+}

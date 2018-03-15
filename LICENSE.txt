@@ -1,0 +1,3 @@
+Each plugin is licensed independently, see LICENSE.txt in the plugin's directory.
+
+We recommend the Mozilla Public License version 2.
