@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/conversejs/community-plugins/issues"
   },
-  "homepage": "https://github.com/conversejs/community-plugins#readme"
+  "homepage": "https://github.com/conversejs/community-plugins#readme",
+  "dependencies": {
+    "npm": "^5.7.1"
+  }
 }
