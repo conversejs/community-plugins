@@ -21,10 +21,9 @@
                     var result = this.__super__.renderToolbar.apply(this, arguments);
                     var view = this;
                     var id = this.model.get("box_id");
-                    var html = '<li id="webmeet-screencast-' + id + '"><a class="fa fa-desktop" title="ScreenCast. Click to start and stop"></a></li>';
+                    var html = '<a class="fa fa-desktop" title="ScreenCast. Click to start and stop"></a>';
 
-                    $(this.el).find('.toggle-toolbar-menu .toggle-smiley dropup').after('<li id="place-holder"></li>');
-                    $(this.el).find('#place-holder').after(html);
+                    addToolbarItem(view, id, "webmeet-screencast-" + id, html);
 
                     setTimeout(function()
                     {
@@ -38,18 +37,13 @@
 
                                 if (videoRecorder == null)  // toggle - start otherwise stop
                                 {
-                                    chrome.desktopCapture.chooseDesktopMedia(['screen', 'window', 'tab'], null, function(streamId)
+                                    navigator.getDisplayMedia({ video: true }).then(stream =>
                                     {
-                                        navigator.mediaDevices.getUserMedia({
-                                            audio: false,
-                                            video: {
-                                                mandatory: {
-                                                    chromeMediaSource: 'desktop',
-                                                    chromeMediaSourceId: streamId
-                                                }
-                                            }
-                                        }).then((stream) => handleStream(stream, view)).catch((e) => handleError(e))
-                                    })
+                                        handleStream(stream, view);
+
+                                    }, error => {
+                                        handleError(error)
+                                    });
 
                                 } else {
                                     videoRecorder.stop();
@@ -92,14 +86,14 @@
             {
                 if (e.data.size > 0)
                 {
-                    console.log("screencast - ondataavailable", e.data);
+                    console.debug("screencast - ondataavailable", e.data);
                     videoChunks.push(e.data);
                 }
             }
 
             videoRecorder.onstop = function(e)
             {
-                console.info("screencast - onstop", e);
+                console.debug("screencast - onstop", e);
 
                 stream.getTracks().forEach(track => track.stop());
 
@@ -116,5 +110,27 @@
     var handleError = function handleError (e)
     {
         console.error("ScreenCast", e)
+    }
+
+    var newElement = function(el, id, html)
+    {
+        var ele = document.createElement(el);
+        if (id) ele.id = id;
+        if (html) ele.innerHTML = html;
+        document.body.appendChild(ele);
+        return ele;
+    }
+
+    var addToolbarItem = function(view, id, label, html)
+    {
+        var placeHolder = view.el.querySelector('#place-holder');
+
+        if (!placeHolder)
+        {
+            var smiley = view.el.querySelector('.toggle-smiley.dropup');
+            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'))
+            placeHolder = view.el.querySelector('#place-holder');
+        }
+        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
     }
 }));
