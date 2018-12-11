@@ -21,5 +21,5 @@ Where `pluginname` should be the name of your plugin.
 
 Simple raise a PR with your new plugin. Please make sure you do the following first
 
-- Create a subfolder for your plugin and copy all your files in there. Please include at least a screenshot of the plugin working in converse.
-- Edit demo.html and add your plugin to the demo page and make sure it works.
+- Create a subfolder for your plugin and copy all your files in there. Please include a screenshot of the plugin working in converse.
+- Edit demo.html, add your plugin to the demo page and make sure it works.
