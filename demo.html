@@ -17,6 +17,10 @@
     <script src="info/info.js"></script>
     <script src="screencast/screencast.js"></script>
     <script src="vmsg/vmsg.js"></script>
+
+    <script src="directory/directory.js"></script>
+    <link type="text/css" rel="stylesheet" media="screen" href="directory/directory.css" />
+
 </head>
 <body class="reset">
     <div class="converse-content" style="display:none">
@@ -64,7 +68,7 @@
         bosh_service_url: 'https://conversejs.org/http-bind/', // Please use this connection manager only for testing purposes
         message_archiving: 'always',
         view_mode: 'fullscreen',
-        whitelisted_plugins: ["canned", "info", "screencast", "vmsg"]
+        whitelisted_plugins: ["canned", "info", "screencast", "vmsg", "directory"]
     }).then(function () {
         setTimeout(function () {
             document.querySelector('.converse-content').style = '';
