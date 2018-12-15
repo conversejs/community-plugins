@@ -197,7 +197,7 @@
             var user = users[i];
             if (!user.email) user.email = "";
 
-            html = html + "<tr><td><a title='" + user.name + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td></tr>";
+            html = html + "<tr><td><a class='plugin-directory-jid' title='" + user.name + "' id='" + user.jid + "' href='#'>" + user.name + "</a></td><td>" + user.jid + "</td><td>" + user.email + "</td></tr>";
         }
         html = html + "</table></div>"
 
@@ -205,17 +205,24 @@
 
         directoryResults.innerHTML = "<p/><p/>" + html;
 
-        for (var i=0; i<users.length; i++)
+        setTimeout(function()
         {
-            document.getElementById(users[i].jid).addEventListener("click", function(e)
-            {
-                e.stopPropagation();
-                var user = e.target;
+            var jids = directoryResults.querySelectorAll(".plugin-directory-jid");
 
-                console.debug("findUsers - click", user.id, user.name, user.title);
-                _converse.api.chats.open(user.id)
-            });
-        }
+            for (var i=0; i<jids.length; i++)
+            {
+                console.debug('displayUsers - jids', jids[i]);
+
+                jids[i].addEventListener("click", function(e)
+                {
+                    e.stopPropagation();
+                    var user = e.target;
+
+                    console.debug("findUsers - click", user.id, user.name, user.title);
+                    _converse.api.chats.open(user.id)
+                });
+            }
+        }, 1000);
     }
 
 }));
