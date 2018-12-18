@@ -10,6 +10,7 @@
     var DirectoryDialog = null;
     var directoryDialog = null;
     var directoryAvailable = false;
+    var _converse = null;
 
     converse.plugins.add("directory", {
         'dependencies': [],
