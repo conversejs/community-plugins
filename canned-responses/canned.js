@@ -7,6 +7,7 @@
 }(this, function (converse) {
     var CannedDialog = null;
     var cannedDialog = null;
+    var _converse = null;
 
     converse.plugins.add("canned", {
         'dependencies': [],

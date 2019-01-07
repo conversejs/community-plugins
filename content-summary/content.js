@@ -6,6 +6,7 @@
     }
 }(this, function (converse) {
     var contentDialog = null;
+    var _converse = null;
 
     converse.plugins.add("content", {
         'dependencies': [],
