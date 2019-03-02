@@ -24,6 +24,9 @@
     <script src="directory/directory.js"></script>
     <link type="text/css" rel="stylesheet" media="screen" href="directory/directory.css" />
 
+    <script src="search/search.js"></script>
+    <link type="text/css" rel="stylesheet" media="screen" href="search/search.css" />
+
 </head>
 <body class="reset">
     <div class="converse-content" style="display:none">
@@ -71,7 +74,7 @@
         bosh_service_url: 'https://conversejs.org/http-bind/', // Please use this connection manager only for testing purposes
         message_archiving: 'always',
         view_mode: 'fullscreen',
-        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory"]
+        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search"]
     }).then(function () {
         setTimeout(function () {
             document.querySelector('.converse-content').style = '';
