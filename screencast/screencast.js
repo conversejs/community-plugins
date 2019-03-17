@@ -37,7 +37,7 @@
 
                                 if (videoRecorder == null)  // toggle - start otherwise stop
                                 {
-                                    navigator.getDisplayMedia({ video: true }).then(stream =>
+                                    getDisplayMedia({ video: true }).then(stream =>
                                     {
                                         handleStream(stream, view);
 
@@ -59,6 +59,17 @@
             }
         }
     });
+
+    var getDisplayMedia = function getDisplayMedia()
+    {
+        if (navigator.getDisplayMedia) {
+          return navigator.getDisplayMedia({video: true});
+        } else if (navigator.mediaDevices.getDisplayMedia) {
+          return navigator.mediaDevices.getDisplayMedia({video: true});
+        } else {
+          return navigator.mediaDevices.getUserMedia({video: {mediaSource: 'screen'}});
+        }
+    }
 
     var handleStream = function handleStream (stream, view)
     {

@@ -27,6 +27,8 @@
     <script src="search/search.js"></script>
     <link type="text/css" rel="stylesheet" media="screen" href="search/search.css" />
 
+    <script src="jitsimeet/jitsimeet.js"></script>
+
 </head>
 <body class="reset">
     <div class="converse-content" style="display:none">
@@ -73,8 +75,12 @@
         auto_reconnect: true,
         bosh_service_url: 'https://conversejs.org/http-bind/', // Please use this connection manager only for testing purposes
         message_archiving: 'always',
-        view_mode: 'fullscreen',
-        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search"]
+        jitsimeet_modal: false,
+        //view_mode: 'fullscreen',
+        jitsimeet_invitation: 'Please join meeting at',
+        jitsimeet_confirm: 'Meeting?',
+        jitsimeet_url: 'https://pade.yoru.ba',
+        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search", "jitsimeet"]
     }).then(function () {
         setTimeout(function () {
             document.querySelector('.converse-content').style = '';
