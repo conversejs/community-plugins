@@ -16,7 +16,7 @@
 
             _converse.api.settings.update({
                 jitsimeet_modal: false,
-                jitsimeet_url: 'https://pade.yoru.ba',
+                jitsimeet_url: 'https://meet.jit.si',
                 jitsimeet_confirm: "Meeting?",
                 jitsimeet_invitation: 'Please join meeting in room at'
             });
