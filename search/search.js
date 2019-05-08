@@ -64,8 +64,8 @@
 
                     var that = this;
                     var keyword = that.model.get("keyword");
-                    var searchRegExp = new RegExp('^(.*)(\s?' + keyword + ')', 'ig');
-                    var tagRegExp = new RegExp("(\\b" + keyword + "\\b)", "gim");
+                    var searchRegExp = new RegExp('^(.*)(\s?' + keyword + ')', 'i');
+                    var tagRegExp = new RegExp("(\\b" + keyword + "\\b)", "im");
 
                     console.debug("doSearch", keyword, jid);
 
