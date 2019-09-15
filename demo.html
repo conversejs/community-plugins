@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Converse</title>
     <link rel="shortcut icon" type="image/ico" href="https://conversejs.org/css/images/favicon.ico"/>
-    <link type="text/css" rel="stylesheet" media="screen" href="https://cdn.conversejs.org/4.2.0/css/converse.min.css" />
+    <link type="text/css" rel="stylesheet" media="screen" href="https://cdn.conversejs.org/5.0.3/dist/converse.min.css" />
     <script src="https://conversejs.org/3rdparty/libsignal-protocol.min.js"></script>
-    <script src="https://cdn.conversejs.org/4.2.0/dist/converse.min.js"></script>
+    <script src="https://cdn.conversejs.org/5.0.3/dist/converse.min.js"></script>
 
     <script src="canned-responses/canned.js"></script>
     <script src="info/info.js"></script>
@@ -26,6 +26,8 @@
 
     <script src="jitsimeet/jitsimeet.js"></script>
     <script src="audioconf/audioconf.js"></script>
+
+    <script src="http-auth/http-auth.js"></script>
 
 </head>
 <body class="reset">
@@ -78,7 +80,7 @@
         jitsimeet_invitation: 'Please join meeting at',
         jitsimeet_confirm: 'Meeting?',
         jitsimeet_url: 'https://meet.jit.si',
-        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search", "jitsimeet", "audioconf"]
+        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search", "jitsimeet", "audioconf", "http-auth"]
     }).then(function () {
         setTimeout(function () {
             document.querySelector('.converse-content').style = '';
