@@ -121,7 +121,9 @@
 
         console.debug("createInfoContent", jid, id);
 
-        _converse.api.archive.query({before: '', max: 9999999, 'groupchat': true, 'with': jid}, messages => {
+        _converse.api.archive.query({before: '', max: 99999, 'groupchat': true, 'with': jid}).then(function(result)
+        {
+            const messages = result.messages;
 
             for (var i=0; i<messages.length; i++)
             {
@@ -243,6 +245,12 @@
             {
                 previewDialog = new PreviewDialog({'model': new converse.env.Backbone.Model({url: evt.target.title, type: evt.target.name}) });
                 previewDialog.show();
+            }
+            else
+
+            if (evt.target.name == "link")
+            {
+                window.open(evt.target.title, "pade-media-link");
             }
             else {  // insert into textarea
                 replyInverseChat(evt.target.title);

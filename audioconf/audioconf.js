@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var _converse = null;
+    var Strophe = converse.env.Strophe, _converse = null, dayjs = converse.env.dayjs;
 
     converse.plugins.add("audioconf", {
         'dependencies': [],

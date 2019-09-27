@@ -5,13 +5,13 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var Strophe = converse.env.Strophe, _converse = null, moment = converse.env.moment;
+    var Strophe = converse.env.Strophe, _converse = null, dayjs = converse.env.dayjs;
     var MeetDialog = null, meetDialog = null;
 
     converse.plugins.add("jitsimeet", {
-        'dependencies': [],
+        dependencies: [],
 
-        'initialize': function () {
+        initialize: function () {
             _converse = this._converse;
 
             _converse.api.settings.update({
@@ -19,6 +19,51 @@
                 jitsimeet_url: 'https://meet.jit.si',
                 jitsimeet_confirm: "Meeting?",
                 jitsimeet_invitation: 'Please join meeting in room at'
+            });
+
+            _converse.on('message', function (data)
+            {
+                var chatbox = data.chatbox;
+                var bodyElement = data.stanza.querySelector('body');
+
+                if (bodyElement && _converse.shouldNotifyOfMessage(data.stanza))
+                {
+                    var body = bodyElement.innerHTML;
+                    var url = _converse.api.settings.get("jitsimeet_url");
+                    var pos = body.indexOf(url + "/");
+
+                    if (pos > -1)
+                    {
+                        var room = body.substring(pos + url.length + 1);
+                        var label = pos > 0 ? body.substring(0, pos) : _converse.api.settings.get("jitsimeet_invitation");
+                        var from = chatbox.getDisplayName().trim();
+                        var avatar = _converse.DEFAULT_IMAGE;
+
+                        if (data.chatbox.vcard.attributes.image) avatar = data.chatbox.vcard.attributes.image;
+
+                        var prompt = new Notification(from,
+                        {
+                            'body': label + " " + room,
+                            'lang': _converse.locale,
+                            'icon': avatar,
+                            'requireInteraction': true
+                        });
+
+                        prompt.onclick = function(event)
+                        {
+                            event.preventDefault();
+
+                            var box_jid = Strophe.getBareJidFromJid(chatbox.get("from") || chatbox.get("jid"));
+                            var view = _converse.chatboxviews.get(box_jid);
+
+                            if (view)
+                            {
+                                openChatbox(view);
+                                doLocalVideo(view, room, url + "/" + room, label);
+                            }
+                        }
+                    }
+                }
             });
 
             MeetDialog = _converse.BootstrapModal.extend({
@@ -52,57 +97,7 @@
             console.log("jitsimeet plugin is ready");
         },
 
-        'overrides': {
-            'onConnected': function () {
-
-                _converse.on('message', function (data)
-                {
-                    var chatbox = data.chatbox;
-                    var bodyElement = data.stanza.querySelector('body');
-
-                    if (bodyElement && _converse.shouldNotifyOfMessage(data.stanza))
-                    {
-                        var body = bodyElement.innerHTML;
-                        var url = _converse.api.settings.get("jitsimeet_url");
-                        var pos = body.indexOf(url + "/");
-
-                        if (pos > -1)
-                        {
-                            var room = body.substring(pos + url.length + 1);
-                            var label = pos > 0 ? body.substring(0, pos) : _converse.api.settings.get("jitsimeet_invitation");
-                            var from = chatbox.getDisplayName().trim();
-                            var avatar = _converse.DEFAULT_IMAGE;
-
-                            if (data.chatbox.vcard.attributes.image) avatar = data.chatbox.vcard.attributes.image;
-
-                            var prompt = new Notification(from,
-                            {
-                                'body': label + " " + room,
-                                'lang': _converse.locale,
-                                'icon': avatar,
-                                'requireInteraction': true
-                            });
-
-                            prompt.onclick = function(event)
-                            {
-                                event.preventDefault();
-
-                                var box_jid = Strophe.getBareJidFromJid(chatbox.get("from") || chatbox.get("jid"));
-                                var view = _converse.chatboxviews.get(box_jid);
-
-                                if (view)
-                                {
-                                    openChatbox(view);
-                                    doLocalVideo(view, room, url + "/" + room, label);
-                                }
-                            }
-                        }
-                    }
-                });
-
-                _converse.__super__.onConnected.apply(this, arguments);
-            },
-
+        overrides: {
             ChatBoxView: {
 
                 renderToolbar: function renderToolbar(toolbar, options) {
@@ -164,9 +159,9 @@
 
     var setupContentHandler = function(chat, avRoom, content, linkId, linkLabel)
     {
-        var moment_time = moment(chat.model.get('time'));
-        var pretty_time = moment_time.format(_converse.time_format);
-        var time = moment_time.format();
+        var dayjs_time = dayjs(chat.model.get('time'));
+        var pretty_time = dayjs_time.format(_converse.time_format);
+        var time = dayjs_time.format();
 
         var msg_content = document.createElement("div");
         msg_content.setAttribute("class", "message chat-msg groupchat");
@@ -203,7 +198,7 @@
         console.debug("doVideo", room, url, view);
 
         var label = _converse.api.settings.get("jitsimeet_invitation");
-        view.model.sendMessage(view.model.getOutgoingMessageAttributes(label + ' ' + url));
+        view.model.sendMessage(label + ' ' + url);
 
         doLocalVideo(view, room, url, label);
     }
@@ -254,6 +249,8 @@
 
         if (jid)
         {
+            view.close();
+
             if (type == "chatbox") _converse.api.chats.open(jid);
             else
             if (type == "chatroom") _converse.api.rooms.open(jid);

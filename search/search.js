@@ -7,7 +7,7 @@
 }(this, function (converse) {
     var SearchDialog = null;
     var searchDialog = null;
-    var moment = converse.env.moment;
+    var dayjs = converse.env.dayjs;
 
     converse.plugins.add("search", {
         'dependencies': [],
@@ -74,8 +74,9 @@
                         var searchResults = that.el.querySelector("#pade-search-results");
                         searchResults.innerHTML = "No Match";
 
-                        _converse.api.archive.query({before: '', max: 9999999, 'groupchat':  type === "chatroom", 'with': jid}, messages =>
+                        _converse.api.archive.query({before: '', max: 999, 'groupchat': true, 'with': jid}).then(function(result)
                         {
+                            const messages = result.messages;
                             var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Message</th><th>Participant</th></tr>";
 
                             for (var i=0; i<messages.length; i++)
@@ -85,8 +86,8 @@
                                     var body = messages[i].querySelector('body').innerHTML;
                                     var delay = messages[i].querySelector('forwarded').querySelector('delay');
                                     var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from');
-                                    var time = delay ? delay.getAttribute('stamp') : moment().format();
-                                    var pretty_time = moment(time).format('MMM DD<br/>HH:mm:ss');
+                                    var time = delay ? delay.getAttribute('stamp') : dayjs().format();
+                                    var pretty_time = dayjs(time).format('MMM DD<br/>HH:mm:ss');
                                     var pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];
 
                                     if (searchRegExp.test(body))
