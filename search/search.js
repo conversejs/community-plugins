@@ -7,13 +7,14 @@
 }(this, function (converse) {
     var SearchDialog = null;
     var searchDialog = null;
-    var dayjs = converse.env.dayjs;
+    var _converse, dayjs;
 
     converse.plugins.add("search", {
         'dependencies': [],
 
         'initialize': function () {
             _converse = this._converse;
+            dayjs = converse.env.dayjs;
 
             SearchDialog = _converse.BootstrapModal.extend({
                 initialize() {

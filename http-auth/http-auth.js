@@ -17,8 +17,7 @@
     'use strict';
     // Commonly used utilities and variables can be found under the "env"
     // namespace of the "converse" global.
-    var $iq = converse.env.$iq,
-        $msg = converse.env.$msg;
+    let $msg, $iq;
 
     // The following line registers your plugin.
     converse.plugins.add("http-auth", {
@@ -26,12 +25,16 @@
         // https://xmpp.org/extensions/xep-0070.html
         initialize: function () {
             const _converse = this._converse;
+
+            $iq = converse.env.$iq,
+            $msg = converse.env.$msg;
+
             const nsHttpAuth = "http://jabber.org/protocol/http-auth";
             var options = {
                 ns: nsHttpAuth,
             };
 
-			_converse.api.settings.update({
+            _converse.api.settings.update({
             'hidden': [],
             });
 
@@ -40,7 +43,7 @@
                 // hide the chaboxes of auth request. Any jid provided will work
                 _converse.hidden.forEach(function (item, index) {
                 _converse.chatboxviews.getAll()[item].hide();
-				});
+                });
                 _converse.api.listen.stanza('message', options, stanzaHandler);
                 _converse.api.listen.stanza('iq', options, stanzaHandler);
                 return true;
@@ -88,8 +91,8 @@
                     var self = this;
                     var response = self.httpAuthData['response'];
                     var iqType = 'get';
-                    response.c('confirm', {'xmlns': 'http://jabber.org/protocol/http-auth', 
-                            'id': self.httpAuthData['id'], 'method': self.httpAuthData['method'], 
+                    response.c('confirm', {'xmlns': 'http://jabber.org/protocol/http-auth',
+                            'id': self.httpAuthData['id'], 'method': self.httpAuthData['method'],
                             'url': self.httpAuthData['url']}).up();
                     if (responseType === 'refuse') {
                         response.c('error', {'code': '401', 'type': 'auth'});
@@ -136,7 +139,7 @@
                         if (stanza.localName === 'message') {
                           httpAuthMessage = $msg({
                             from: _converse.jid,
-                            to: stanza.getAttribute('from'), 
+                            to: stanza.getAttribute('from'),
                             });
                             var thread = stanza.getElementsByTagName('thread')[0].textContent;
                             httpAuthMessage.c('thread').t(thread).up();

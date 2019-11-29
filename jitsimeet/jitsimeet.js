@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var Strophe = converse.env.Strophe, _converse = null, dayjs = converse.env.dayjs;
+    var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,Backbone, dayjs, _converse;
     var MeetDialog = null, meetDialog = null;
 
     converse.plugins.add("jitsimeet", {
@@ -13,6 +13,16 @@
 
         initialize: function () {
             _converse = this._converse;
+
+            Strophe = converse.env.Strophe;
+            $iq = converse.env.$iq;
+            $msg = converse.env.$msg;
+            $pres = converse.env.$pres;
+            $build = converse.env.$build;
+            b64_sha1 = converse.env.b64_sha1;
+            _ = converse.env._;
+            Backbone = converse.env.Backbone;
+            dayjs = converse.env.dayjs;
 
             _converse.api.settings.update({
                 jitsimeet_modal: false,
