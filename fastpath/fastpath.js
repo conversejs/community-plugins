@@ -51,12 +51,12 @@
 
     function addToolbarItem (view, id, label, html)
     {
-        var placeHolder = view.el.querySelector('#place-holder');
+        let placeHolder = view.el.querySelector('#place-holder');
 
         if (!placeHolder)
         {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'));
+            const toolbar = view.el.querySelector('.chat-toolbar');
+            toolbar.appendChild(newElement('li', 'place-holder'));
             placeHolder = view.el.querySelector('#place-holder');
         }
         var newEle = newElement('li', label, html);

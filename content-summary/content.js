@@ -6,6 +6,7 @@
     }
 }(this, function (converse) {
     var contentDialog = null;
+    var panelHTML = {};
     var _converse = null;
 
     converse.plugins.add("content", {
@@ -49,71 +50,47 @@
                 }
             });
 
-            console.log("content plugin is ready");
-        },
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                var id = view.model.get("box_id");
+                var jid = view.model.get("jid");
+                var type = view.model.get("type");
 
-        'overrides': {
-            ChatBoxView: {
+                if (type === "chatroom")
+                {
+                    var contentButton = addToolbarItem(view, id, "pade-content-" + id, '<a class="fa fa-list" title="Content Summary"></a>');
 
-                renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    var view = this;
-                    var id = this.model.get("box_id");
-                    var jid = this.model.get("jid");
-                    var type = this.model.get("type");
-
-                    if (type === "chatroom")
+                    contentButton.addEventListener('click', function(evt)
                     {
-                        addToolbarItem(view, id, "pade-content-" + id, '<a class="fa fa-list" title="Content Summary"></a>');
-                    }
+                        evt.stopPropagation();
 
-                    setTimeout(function()
-                    {
-                        var occupants = view.el.querySelector('.occupants');
-                        var contentButton = document.getElementById("pade-content-" + id);
+                        toggleInfoBar(view, id, jid);
 
-                        if (occupants && contentButton)
-                        {
-                            var contentElement = occupants.insertAdjacentElement('afterEnd', newElement('div', null, null, 'plugin-contentbox'));
-                            contentElement.style.display = "none";
-
-                            contentButton.addEventListener('click', function(evt)
-                            {
-                                evt.stopPropagation();
-
-                                var chat_area = view.el.querySelector('.chat-area');
-
-                                if (contentElement.style.display == "none")
-                                {
-                                    contentElement.style.display = "";
-                                    removeClass('full', chat_area);
-                                    removeClass('col-12', chat_area);
-                                    addClass('col-md-9', chat_area);
-                                    addClass('col-8', chat_area);
-                                    addClass('hidden', view.el.querySelector('.occupants'));
-
-                                    contentElement.innerHTML = getHTML(id);
-                                    createInfoContent(contentElement, jid, id);
-
-                                } else {
-                                    contentElement.style.display = "none"
-                                    removeClass('col-md-9', chat_area);
-                                    removeClass('col-8', chat_area);
-                                    addClass('full', chat_area);
-                                    addClass('col-12', chat_area);
-                                    hideElement(view.el.querySelector('.occupants'));
-                                }
-
-                            }, false);
-                        }
-                    });
-
-                    return result;
+                    }, false);
                 }
-            }
+            });
+
+            console.log("content plugin is ready");
         }
     });
+
+    var toggleInfoBar = function(view, id, jid)
+    {
+        const chat_area = view.el.querySelector('.chat-area');
+        const occupants_area = view.el.querySelector('.occupants.col-md-3.col-4');
+
+        if (!panelHTML[id])
+        {
+            panelHTML[id] = occupants_area.innerHTML;
+            occupants_area.innerHTML = '<div class="plugin-infobox">' + getHTML(id, jid) + '</div>';
+            createInfoContent(occupants_area, jid, id);
+
+        } else {
+            occupants_area.innerHTML = panelHTML[id];
+            panelHTML[id] = null;
+        }
+        view.scrollDown();
+    }
 
     var createInfoContent = function(contentElement, jid, id)
     {
@@ -302,29 +279,6 @@
       return el;
     }
 
-    var newElement = function(el, id, html, className)
-    {
-        var ele = document.createElement(el);
-        if (id) ele.id = id;
-        if (html) ele.innerHTML = html;
-        if (className) ele.classList.add(className);
-        document.body.appendChild(ele);
-        return ele;
-    }
-
-    var addToolbarItem = function(view, id, label, html)
-    {
-        var placeHolder = view.el.querySelector('#place-holder');
-
-        if (!placeHolder)
-        {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'));
-            placeHolder = view.el.querySelector('#place-holder');
-        }
-        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
-    }
-
     var getSelectedChatBox = function()
     {
         var views = _converse.chatboxviews.model.models;
@@ -354,5 +308,29 @@
             var textArea = box.el.querySelector('.chat-textarea');
             if (textArea) textArea.value = ">" + text + "\n\n";
         }
+    }
+    function newElement (el, id, html, className)
+    {
+        var ele = document.createElement(el);
+        if (id) ele.id = id;
+        if (html) ele.innerHTML = html;
+        if (className) ele.classList.add(className);
+        document.body.appendChild(ele);
+        return ele;
+    }
+
+    function addToolbarItem (view, id, label, html)
+    {
+        let placeHolder = view.el.querySelector('#place-holder');
+
+        if (!placeHolder)
+        {
+            const toolbar = view.el.querySelector('.chat-toolbar');
+            toolbar.appendChild(newElement('li', 'place-holder'));
+            placeHolder = view.el.querySelector('#place-holder');
+        }
+        var newEle = newElement('li', label, html);
+        placeHolder.insertAdjacentElement('afterEnd', newEle);
+        return newEle;
     }
 }));

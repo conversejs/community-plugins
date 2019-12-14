@@ -104,41 +104,29 @@
                 }
             });
 
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                const id = view.model.get("box_id");
+                const jitsiMeet = addToolbarItem(view, id, "pade-jitsimeet-" + id, '<a class="fas fa-video" title="Jitsi Meet"></a>');
+
+                if (jitsiMeet) jitsiMeet.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+
+                    var jitsiConfirm = _converse.api.settings.get("jitsimeet_confirm");
+
+                    if (confirm(jitsiConfirm))
+                    {
+                        doVideo(view);
+                    }
+
+                }, false);
+            });
+
             console.log("jitsimeet plugin is ready");
         },
 
         overrides: {
-            ChatBoxView: {
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    var view = this;
-                    var id = this.model.get("box_id");
-
-                    addToolbarItem(view, id, "pade-jitsimeet-" + id, '<a class="fas fa-video" title="Jitsi Meet"></a>');
-
-                    setTimeout(function()
-                    {
-                        var jitsiMeet = document.getElementById("pade-jitsimeet-" + id);
-
-                        if (jitsiMeet) jitsiMeet.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            var jitsiConfirm = _converse.api.settings.get("jitsimeet_confirm");
-
-                            if (confirm(jitsiConfirm))
-                            {
-                                doVideo(view);
-                            }
-
-                        }, false);
-                    });
-
-                    return result;
-                }
-            },
 
             MessageView: {
 
@@ -267,25 +255,28 @@
         }
     }
 
-    var newElement = function newElement(el, id, html)
+    function newElement (el, id, html, className)
     {
         var ele = document.createElement(el);
         if (id) ele.id = id;
         if (html) ele.innerHTML = html;
+        if (className) ele.classList.add(className);
         document.body.appendChild(ele);
         return ele;
     }
 
-    var addToolbarItem = function addToolbarItem(view, id, label, html)
+    function addToolbarItem (view, id, label, html)
     {
-        var placeHolder = view.el.querySelector('#place-holder');
+        let placeHolder = view.el.querySelector('#place-holder');
 
         if (!placeHolder)
         {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'));
+            const toolbar = view.el.querySelector('.chat-toolbar');
+            toolbar.appendChild(newElement('li', 'place-holder'));
             placeHolder = view.el.querySelector('#place-holder');
         }
-        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+        var newEle = newElement('li', label, html);
+        placeHolder.insertAdjacentElement('afterEnd', newEle);
+        return newEle;
     }
 }));

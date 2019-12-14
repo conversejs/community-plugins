@@ -30,58 +30,46 @@
                 }
             });
 
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                const id = view.model.get("box_id");
+                const info = addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info-circle" title="Information"></a>');
+
+                info.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+
+                    new infoDialog().show();
+
+                }, false);
+            });
+
             console.log("info plugin is ready");
-        },
-
-        'overrides': {
-            ChatBoxView: {
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    var view = this;
-                    var id = this.model.get("box_id");
-
-                    addToolbarItem(view, id, "pade-info-" + id, '<a class="fas fa-info-circle" title="Information"></a>');
-
-                    setTimeout(function()
-                    {
-                        var info = document.getElementById("pade-info-" + id);
-
-                        info.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            new infoDialog().show();
-
-                        }, false);
-                    });
-
-                    return result;
-                }
-            }
         }
     });
 
-    function newElement(el, id, html)
+    function newElement (el, id, html, className)
     {
         var ele = document.createElement(el);
         if (id) ele.id = id;
         if (html) ele.innerHTML = html;
+        if (className) ele.classList.add(className);
         document.body.appendChild(ele);
         return ele;
     }
 
-    var addToolbarItem = function(view, id, label, html)
+    function addToolbarItem (view, id, label, html)
     {
-        var placeHolder = view.el.querySelector('#place-holder');
+        let placeHolder = view.el.querySelector('#place-holder');
 
         if (!placeHolder)
         {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'));
+            const toolbar = view.el.querySelector('.chat-toolbar');
+            toolbar.appendChild(newElement('li', 'place-holder'));
             placeHolder = view.el.querySelector('#place-holder');
         }
-        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+        var newEle = newElement('li', label, html);
+        placeHolder.insertAdjacentElement('afterEnd', newEle);
+        return newEle;
     }
 }));

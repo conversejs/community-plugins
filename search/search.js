@@ -106,36 +106,25 @@
                 }
             });
 
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                const id = view.model.get("box_id");
+                const search = addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
+
+                if (search) search.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+
+                    searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
+                    searchDialog.show();
+                }, false);
+            });
+
             console.log("search plugin is ready");
         },
 
         'overrides': {
             ChatBoxView: {
-
-                renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    var view = this;
-                    var id = view.model.get("box_id");
-
-                    addToolbarItem(view, id, "pade-search-" + id, '<a class="plugin-search fa fa-search" title="Search conversations for keywords"></a>');
-
-                    setTimeout(function()
-                    {
-                        var search = document.getElementById("pade-search-" + id);
-
-                        if (search) search.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            searchDialog = new SearchDialog({ 'model': new converse.env.Backbone.Model({view: view}) });
-                            searchDialog.show();
-                        }, false);
-                    });
-
-                    return result;
-                },
-
                 parseMessageForCommands: function(text) {
                     console.debug('search - parseMessageForCommands', text);
 
@@ -156,26 +145,29 @@
         }
     });
 
-    function newElement(el, id, html)
+    function newElement (el, id, html, className)
     {
         var ele = document.createElement(el);
         if (id) ele.id = id;
         if (html) ele.innerHTML = html;
+        if (className) ele.classList.add(className);
         document.body.appendChild(ele);
         return ele;
     }
 
-    var addToolbarItem = function(view, id, label, html)
+    function addToolbarItem (view, id, label, html)
     {
-        var placeHolder = view.el.querySelector('#place-holder');
+        let placeHolder = view.el.querySelector('#place-holder');
 
         if (!placeHolder)
         {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'));
+            const toolbar = view.el.querySelector('.chat-toolbar');
+            toolbar.appendChild(newElement('li', 'place-holder'));
             placeHolder = view.el.querySelector('#place-holder');
         }
-        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+        var newEle = newElement('li', label, html);
+        placeHolder.insertAdjacentElement('afterEnd', newEle);
+        return newEle;
     }
 
 }));

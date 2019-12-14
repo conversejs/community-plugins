@@ -80,64 +80,52 @@
                 }
             });
 
+            _converse.api.listen.on('renderToolbar', function(view)
+            {
+                const id = view.model.get("box_id");
+                const textArea = view.el.querySelector('.chat-textarea');
+                const canned = addToolbarItem(view, id, "pade-canned-" + id, '<a class="far fa-save" title="Canned Responses/Replies"></a>');
+
+                canned.addEventListener('click', function(evt)
+                {
+                    evt.stopPropagation();
+
+                    var responses = getAnswersListFromStorage()
+                    console.log("canned", responses);
+
+                    cannedDialog = new CannedDialog({ 'model': new converse.env.Backbone.Model({responses: responses, textArea: textArea}) });
+                    cannedDialog.show();
+
+                }, false);
+            });
+
             console.log("canned plugin is ready");
-        },
-
-        'overrides': {
-            ChatBoxView: {
-
-                renderToolbar: function renderToolbar(toolbar, canned) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-
-                    var view = this;
-                    var id = this.model.get("box_id");
-                    var textArea = this.el.querySelector('.chat-textarea');
-
-                    addToolbarItem(view, id, "pade-canned-" + id, '<a class="far fa-save" title="Canned Responses/Replies"></a>');
-
-                    setTimeout(function()
-                    {
-                        var canned = document.getElementById("pade-canned-" + id);
-
-                        if (canned) canned.addEventListener('click', function(evt)
-                        {
-                            evt.stopPropagation();
-
-                            var responses = getAnswersListFromStorage()
-                            console.log("canned", responses);
-
-                            cannedDialog = new CannedDialog({ 'model': new converse.env.Backbone.Model({responses: responses, textArea: textArea}) });
-                            cannedDialog.show();
-
-                        }, false);
-                    });
-
-                    return result;
-                }
-            }
         }
     });
 
-    function newElement(el, id, html)
+    function newElement (el, id, html, className)
     {
         var ele = document.createElement(el);
         if (id) ele.id = id;
         if (html) ele.innerHTML = html;
+        if (className) ele.classList.add(className);
         document.body.appendChild(ele);
         return ele;
     }
 
-    var addToolbarItem = function(view, id, label, html)
+    function addToolbarItem (view, id, label, html)
     {
-        var placeHolder = view.el.querySelector('#place-holder');
+        let placeHolder = view.el.querySelector('#place-holder');
 
         if (!placeHolder)
         {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'));
+            const toolbar = view.el.querySelector('.chat-toolbar');
+            toolbar.appendChild(newElement('li', 'place-holder'));
             placeHolder = view.el.querySelector('#place-holder');
         }
-        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+        var newEle = newElement('li', label, html);
+        placeHolder.insertAdjacentElement('afterEnd', newEle);
+        return newEle;
     }
 
     var getAnswersListFromStorage  = function()

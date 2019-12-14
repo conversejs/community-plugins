@@ -11,52 +11,38 @@
         'dependencies': [],
 
         'initialize': function () {
-            console.log("screencast plugin is ready");
-        },
 
-        'overrides': {
-            ChatBoxView: {
+            this._converse.api.listen.on('renderToolbar', function(view)
+            {
+                var id = view.model.get("box_id");
+                var html = '<a class="fa fa-desktop" title="ScreenCast. Click to start and stop"></a>';
+                var screencast = addToolbarItem(view, id, "webmeet-screencast-" + id, html);
 
-                renderToolbar: function renderToolbar(toolbar, options) {
-                    var result = this.__super__.renderToolbar.apply(this, arguments);
-                    var view = this;
-                    var id = this.model.get("box_id");
-                    var html = '<a class="fa fa-desktop" title="ScreenCast. Click to start and stop"></a>';
-
-                    addToolbarItem(view, id, "webmeet-screencast-" + id, html);
-
-                    setTimeout(function()
+                if (screencast)
+                {
+                    screencast.addEventListener('click', function(evt)
                     {
-                        var screencast = document.getElementById("webmeet-screencast-" + id);
+                        evt.stopPropagation();
 
-                        if (screencast)
+                        if (videoRecorder == null)  // toggle - start otherwise stop
                         {
-                            screencast.addEventListener('click', function(evt)
+                            getDisplayMedia({ video: true }).then(stream =>
                             {
-                                evt.stopPropagation();
+                                handleStream(stream, view);
 
-                                if (videoRecorder == null)  // toggle - start otherwise stop
-                                {
-                                    getDisplayMedia({ video: true }).then(stream =>
-                                    {
-                                        handleStream(stream, view);
+                            }, error => {
+                                handleError(error)
+                            });
 
-                                    }, error => {
-                                        handleError(error)
-                                    });
-
-                                } else {
-                                    videoRecorder.stop();
-                                }
-
-                            }, false);
+                        } else {
+                            videoRecorder.stop();
                         }
 
-                    });
-
-                    return result;
+                    }, false);
                 }
-            }
+            });
+
+            console.log("screencast plugin is ready");
         }
     });
 
@@ -123,25 +109,28 @@
         console.error("ScreenCast", e)
     }
 
-    var newElement = function(el, id, html)
+    function newElement (el, id, html, className)
     {
         var ele = document.createElement(el);
         if (id) ele.id = id;
         if (html) ele.innerHTML = html;
+        if (className) ele.classList.add(className);
         document.body.appendChild(ele);
         return ele;
     }
 
-    var addToolbarItem = function(view, id, label, html)
+    function addToolbarItem (view, id, label, html)
     {
-        var placeHolder = view.el.querySelector('#place-holder');
+        let placeHolder = view.el.querySelector('#place-holder');
 
         if (!placeHolder)
         {
-            var smiley = view.el.querySelector('.toggle-smiley.dropup');
-            smiley.insertAdjacentElement('afterEnd', newElement('li', 'place-holder'))
+            const toolbar = view.el.querySelector('.chat-toolbar');
+            toolbar.appendChild(newElement('li', 'place-holder'));
             placeHolder = view.el.querySelector('#place-holder');
         }
-        placeHolder.insertAdjacentElement('afterEnd', newElement('li', label, html));
+        var newEle = newElement('li', label, html);
+        placeHolder.insertAdjacentElement('afterEnd', newEle);
+        return newEle;
     }
 }));
