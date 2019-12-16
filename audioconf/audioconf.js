@@ -43,7 +43,7 @@
                 show_frame: "true",
                 text: "Ask",
                 use_default_button_css: "true",
-                protocol: "sip",    // 'sip' or 'xmpp'
+                protocol: "xmpp",    // 'sip' or 'xmpp'
                 sip: {domain: "192.168.1.251", server: "wss://desktop-545pc5b:7443/sip/proxy?url=ws://192.168.1.251:5066", register: false, caller_uri: "sip:1002@192.168.1.251", authorization_user: "1002", password: "1234"},
                 xmpp: {domain: "meet.jit.si", server: "https://meet.jit.si/http-bind"}
             }
