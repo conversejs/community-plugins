@@ -34,6 +34,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: inherit !important;  
+}
+
+.mediaItem:hover {
+    background-color: var(--text-color);
+    color: var(--occupants-background-color);
 }
 
 .plugin-contentbox li {
