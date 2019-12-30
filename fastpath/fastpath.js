@@ -158,7 +158,7 @@
         const workgroup = _fastpath.workgroups[_fastpath.workgroup].jid;
         console.debug("setupWorkgroup", _fastpath);
 
-        _converse.connection.send(converse.env.$pres({to: workgroup}).c("show").t("chat").up().c("priority").t("9").up().c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}));
+        _converse.connection.send(converse.env.$pres({to: workgroup}).c("show").t("chat").up().c("priority").t("9").up().c('agent-status', {'xmlns': "http://jabber.org/protocol/workgroup"}).c('count').t("7"));
         const stanza = converse.env.$iq({type: 'get', to: workgroup}).c('agent-status-request', {xmlns: "http://jabber.org/protocol/workgroup"})
 
         _converse.connection.sendIQ(stanza, function(iq)
@@ -288,8 +288,6 @@
                     if (free)
                     {
                         console.debug("agent-status delete", workGroup, agent, _fastpath.data[workGroup]);
-
-                        clearNotification(workGroup);
                         delete _fastpath.data[workGroup].conversations[agent];
                     }
                 });
@@ -491,5 +489,4 @@
             if (callback) callback(notifyId, 1);
         }
     }
-
 }));
