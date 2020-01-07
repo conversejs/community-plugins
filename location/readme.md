@@ -9,4 +9,4 @@ This plugin publishes and recieves the geographic location of the user to xmpp p
 see https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin
 
 ## How to use
-Click on the arrow icon to publish your deo location
+Click on the arrow icon to publish your geo location
