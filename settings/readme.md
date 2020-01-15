@@ -1,9 +1,9 @@
-# Location plugin for converse.js
+# Settings plugin for converse.js
 
 <img src="https://github.com/conversejs/community-plugins/blob/master/settings/settings.png?raw=true" />
 
 ## Overview
-This plugin enables Converse settings/options to be managed with a default set and a UI based on [chrome-options](https://github.com/fent/chrome-options) by [fent](https://github.com/sponsors/fent)
+This plugin enables Converse settings/options to be personalised with a UI based on [chrome-options](https://github.com/fent/chrome-options) by [fent](https://github.com/sponsors/fent)
 
 ## Install
 see https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin.
