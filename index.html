@@ -33,6 +33,7 @@
     <script src="browsertab/favico.js"></script>
     <script src="browsertab/browsertab.js"></script>
     <script src="location/location.js"></script>
+    <script src="settings/settings.js"></script>
 
 </head>
 <body class="reset">
@@ -44,7 +45,7 @@
             </div>
         </div>
     </div>
-    <div id="conversejs" class="theme-concord"></div>
+    <div id="conversejs"></div>
 <script>
     /*
     @licstart
@@ -75,7 +76,7 @@
     @licend
 
     */
-    converse.initialize({
+    let config = {
         authentication: 'login',
         auto_away: 300,
         auto_reconnect: true,
@@ -87,8 +88,22 @@
         jitsimeet_confirm: 'Meeting?',
         jitsimeet_url: 'https://meet.jit.si',
         theme: 'concord',
-        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search", "jitsimeet", "audioconf", "http-auth", "converse-download-dialog", "fastpath", "browsertab", "location"]
-    });
+        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search", "jitsimeet", "audioconf", "http-auth", "converse-download-dialog", "fastpath", "browsertab", "location", "settings"]
+    };
+
+    if (window.converse_settings)
+    {
+        var localConfig = window.converse_settings.getConfig();
+
+        const keys = Object.getOwnPropertyNames(localConfig);
+
+        for (var i=0; i<keys.length; i++)
+        {
+            config[keys[i]] = localConfig[keys[i]];
+            console.debug("Use local saved setting", keys[i], localConfig[keys[i]]);
+        }
+    }
+    converse.initialize(config);
 
     setTimeout(function()
     {
