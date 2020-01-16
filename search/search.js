@@ -22,7 +22,7 @@
                     this.model.on('change', this.render, this);
                 },
                 toHTML() {
-                  return '<div class="modal" id="myModal"> <div class="modal-dialog modal-lg"> <div class="modal-content">' +
+                  return '<div class="modal" id="myModal"> <div class="modal-dialog modal-xl"> <div class="modal-content">' +
                          '<div class="modal-header"><h1 class="modal-title">Search</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
                          '<div class="modal-body">' +
                          '<input id="pade-search-keywords" class="form-control" type="text" placeholder="Type a query and press [Enter] to search" ><p/><div id="pade-search-results"></div>' +
@@ -63,6 +63,7 @@
                     var jid = view.model.get("jid");
                     var type = view.model.get("type");
                     var groupchat = view.model.get("type") == "chatroom";
+                    var method = _converse.api.settings.get("search_method");
 
                     var that = this;
                     var keyword = that.model.get("keyword");
@@ -75,36 +76,56 @@
                     {
                         var searchResults = that.el.querySelector("#pade-search-results");
                         searchResults.innerHTML = "No Match";
+                        var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Person</th><th>Message</th></tr>";
 
-                        _converse.api.archive.query({before: '', max: 999, 'groupchat': groupchat, 'with': jid}).then(function(result)
+                        if (method == "mam")
                         {
-                            const messages = result.messages;
-                            var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Message</th><th>Participant</th></tr>";
+                            _converse.api.archive.query({before: '', max: 999, 'groupchat': groupchat, 'with': jid}).then(function(result)
+                            {
+                                const messages = result.messages;
+
+                                for (var i=0; i<messages.length; i++)
+                                {
+                                    if (messages[i].querySelector('body'))
+                                    {
+                                        var body = messages[i].querySelector('body').innerHTML;
+                                        var delay = messages[i].querySelector('forwarded').querySelector('delay');
+                                        var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from');
+                                        var time = delay ? delay.getAttribute('stamp') : dayjs().format();
+                                        var pretty_time = dayjs(time).format('MMM DD<br/>HH:mm:ss');
+                                        var pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];
+
+                                        html =  html + makeHtml(searchRegExp, tagRegExp, body, pretty_time, pretty_from);
+                                    }
+                                }
+
+                                html =  html + "</table>";
+                                searchResults.innerHTML = html;
+                            });
+                        }
+                        else {
+                            var messages = view.model.messages.models;
 
                             for (var i=0; i<messages.length; i++)
                             {
-                                if (messages[i].querySelector('body'))
-                                {
-                                    var body = messages[i].querySelector('body').innerHTML;
-                                    var delay = messages[i].querySelector('forwarded').querySelector('delay');
-                                    var from = messages[i].querySelector('forwarded').querySelector('message').getAttribute('from');
-                                    var time = delay ? delay.getAttribute('stamp') : dayjs().format();
-                                    var pretty_time = dayjs(time).format('MMM DD<br/>HH:mm:ss');
-                                    var pretty_from = type === "chatroom" ? from.split("/")[1] : from.split("@")[0];
+                                var body = messages[i].get('message');
+                                var from = messages[i].get('from');
+                                var pretty_time = dayjs(messages[i].get('time')).format('MMM DD<br/>HH:mm:ss');
+                                var pretty_from = from;
+                                if (from) pretty_from =  messages[i].get('type') === "groupchat" ? from.split("/")[1] : from.split("@")[0];
 
-                                    if (searchRegExp.test(body))
-                                    {
-                                        var tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;>$1</span>");
-                                        html = html + "<tr><td>" + pretty_time + "</td><td>" + tagged + "</td><td>" + pretty_from + "</td></tr>";
-                                    }
-                                }
+                                html =  html + makeHtml(searchRegExp, tagRegExp, body, pretty_time, pretty_from);
                             }
 
                             html =  html + "</table>";
                             searchResults.innerHTML = html;
-                        });
+                        }
                     }
                 }
+            });
+
+            _converse.api.settings.update({
+                search_method: 'mam'         // use values mam or local
             });
 
             _converse.api.listen.on('renderToolbar', function(view)
@@ -145,6 +166,18 @@
             }
         }
     });
+
+    function makeHtml(searchRegExp, tagRegExp, body, pretty_time, pretty_from)
+    {
+        let html = "";
+
+        if (searchRegExp.test(body))
+        {
+            var tagged = body.replace(tagRegExp, "<span style=background-color:#FF9;color:#555;>$1</span>");
+            html = html + "<tr><td>" + pretty_time + "</td><td>" + pretty_from + "</td><td>" + tagged + "</td></tr>";
+        }
+        return html;
+    }
 
     function newElement (el, id, html, className)
     {

@@ -9,4 +9,5 @@ This plugin uses [XMPP Message Archive Management](https://xmpp.org/extensions/x
 see https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin
 
 ## How to use
+This plugin has a setting called "search_method" to control where to search. Use "mam" for a server-side search or "local" for client-side search. Default is "mam".
 Click on the magnifying glass icon on the conversation toolbar to display the modal form
