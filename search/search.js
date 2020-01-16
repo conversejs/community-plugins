@@ -62,6 +62,7 @@
                     var view = this.model.get("view");
                     var jid = view.model.get("jid");
                     var type = view.model.get("type");
+                    var groupchat = view.model.get("type") == "chatroom";
 
                     var that = this;
                     var keyword = that.model.get("keyword");
@@ -75,7 +76,7 @@
                         var searchResults = that.el.querySelector("#pade-search-results");
                         searchResults.innerHTML = "No Match";
 
-                        _converse.api.archive.query({before: '', max: 999, 'groupchat': true, 'with': jid}).then(function(result)
+                        _converse.api.archive.query({before: '', max: 999, 'groupchat': groupchat, 'with': jid}).then(function(result)
                         {
                             const messages = result.messages;
                             var html = "<table style='margin-left: 15px'><tr><th>Date</th><th>Message</th><th>Participant</th></tr>";
