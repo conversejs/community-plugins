@@ -102,6 +102,11 @@
             config[keys[i]] = localConfig[keys[i]];
             console.debug("Use local saved setting", keys[i], localConfig[keys[i]]);
         }
+
+        if (config.theme)
+        {
+            document.getElementById("conversejs").classList.add("theme-" + config.theme);
+        }
     }
     converse.initialize(config);
 
