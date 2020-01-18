@@ -1,6 +1,8 @@
 # Converse.js Community Plugins
 
-This repo contains community contributed plugins, not included in the core of Converse.js.
+This repo contains community contributed plugins, not included in the core of Converse.js. 
+
+To see a demo of all the plugins working, click [here](https://conversejs.github.io/community-plugins/)
 
 ## Creating a plugin
 
@@ -22,4 +24,4 @@ Where `pluginname` should be the name of your plugin.
 Simple raise a PR with your new plugin. Please make sure you do the following first
 
 - Create a subfolder for your plugin and copy all your files in there. Please include a screenshot of the plugin working in converse.
-- Edit index.html, add your plugin to the index page and make sure it works.
+- Edit index.html, add your plugin to the index page. Comit your changes and make sure it works from the demo web site at https://conversejs.github.io/community-plugins/.
