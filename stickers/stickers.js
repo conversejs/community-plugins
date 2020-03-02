@@ -17,9 +17,9 @@
             {
                 _converse.emojis.json.custom =  {
                     /*
-                        author      =
-                        license     =
-                        url
+                        author      = Minseung Song
+                        license     = CreativeCommon
+                        url         = https://dribbble.com/shots/5690379-Cuppy-A-WhatsApp-Sticker
                     */
                     ":cuppy:": {
                         "sn": ":cuppy:",
@@ -577,9 +577,9 @@
                         "c": "custom"
                     },
                     /*
-                        author      =
-                        license     =
-                        url
+                        author      = Telegram
+                        license     = IANAL
+                        url         = https://tlgrm.eu/stickers/animals
                     */
                     ":animals:": {
                         "sn": ":animals:",
