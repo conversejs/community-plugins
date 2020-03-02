@@ -36,6 +36,7 @@
     <script src="browsertab/browsertab.js"></script>
     <script src="location/location.js"></script>
     <script src="settings/settings.js"></script>
+    <script src="stickers/stickers.js"></script>
 
 </head>
 <body class="reset">
@@ -90,7 +91,31 @@
         jitsimeet_confirm: 'Meeting?',
         jitsimeet_url: 'https://meet.jit.si',
         theme: 'concord',
-        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search", "jitsimeet", "audioconf", "http-auth", "converse-download-dialog", "fastpath", "browsertab", "location", "settings"]
+        emoji_categories: {
+          "smileys": ":grinning:",
+          "people": ":thumbsup:",
+          "activity": ":soccer:",
+          "travel": ":motorcycle:",
+          "objects": ":bomb:",
+          "nature": ":rainbow:",
+          "food": ":hotdog:",
+          "symbols": ":musical_note:",
+          "flags": ":flag_ac:",
+          "custom": ":cuppy:"
+        },
+        emoji_categories_label: {
+          "smileys": "Smileys and emotions",
+          "people": "People",
+          "activity": "Activities",
+          "travel": "Travel",
+          "objects": "Objects",
+          "nature": "Animals and nature",
+          "food": "Food and drink",
+          "symbols": "Symbols",
+          "flags": "Flags",
+          "custom": "Stickers"
+        },
+        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search", "jitsimeet", "audioconf", "http-auth", "converse-download-dialog", "fastpath", "browsertab", "location", "settings", "stickers"]
     };
 
     if (window.converse_settings)
