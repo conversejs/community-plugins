@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/conversejs/community-plugins#readme",
   "dependencies": {
-    "npm": "^6.14.2"
+    "npm": "^6.14.3"
   }
 }
