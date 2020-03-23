@@ -27,7 +27,10 @@
                          '<div class="modal-body">' +
                          '<input id="pade-search-keywords" class="form-control" type="text" placeholder="Type a query and press [Enter] to search" ><p/><div id="pade-search-results"></div>' +
                          '</div>' +
-                         '<div class="modal-footer"> <button type="button" class="btn btn-success btn-pdf">PDF</button><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
+                         '<div class="modal-footer">' +
+                         (_converse.api.settings.get('search_pdf') ? '<button type="button" class="btn btn-success btn-pdf">PDF</button>' : '') +
+                         '<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
+                         '</div>' +
                          '</div> </div> </div>';
                 },
                 afterRender() {
@@ -155,6 +158,7 @@
             });
 
             _converse.api.settings.update({
+                search_pdf: false,
                 search_method: 'mam'         // use values mam or local
             });
 
