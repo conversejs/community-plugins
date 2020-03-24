@@ -7,6 +7,7 @@ This plugin uses the custom emojis place holder in Converse to provide stickers.
 
 ## Install
 See https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin
+
 See index.html for example usage
 
 ## How to use
