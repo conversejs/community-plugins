@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    //var _converse = null;
+    var _converse = null;
 
     converse.plugins.add("stickers", {
         'dependencies': [],
