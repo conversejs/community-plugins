@@ -14,7 +14,8 @@
             _converse = this._converse;
 
             _converse.api.settings.update({
-                rai_muc_service: "conference." + _converse.connection.domain,
+                rai_muc_service: "conference." + _converse.domain,
+                rai_notification: true,
                 rai_notification_label: "Room Activity Indicator"
             });
 
@@ -34,10 +35,12 @@
     function setupRoomActivityIndicators(callback)
     {
         try {
+            const id = Math.random().toString(36).substr(2,9);
             _converse.connection.send(converse.env.$pres({to: _converse.api.settings.get("rai_muc_service"), id: id}).c('rai', {'xmlns': "xmpp:prosody.im/protocol/rai"}));
 
             if (callback) callback(true);
         } catch (e) {
+            console.error("setupRoomActivityIndicators", e);
             if (callback) callback(false);
         }
     }
@@ -48,19 +51,22 @@
 
         _converse.connection.addHandler(function(message)
         {
+            console.debug("listenForRoomActivityIndicators - addHandler", message);
+
             message.querySelectorAll('activity').forEach(function(activity)
             {
-                const jid = activity.innerHTML;
-                const view = _converse.chatboxviews.get(jid);
+                if (activity) {
+                    const jid = activity.innerHTML;
+                    _converse.api.trigger('chatRoomActivityIndicators', jid);
 
-                if (view) {
-                    _converse.api.trigger('chatRoomActivityIndicators', view);
-
-                    notifyText(_converse.api.settings.get("rai_notification_label"), null, function(notificationId, buttonIndex)
+                    if (_converse.api.settings.get("rai_notification"))
                     {
-                        console.debug("listenForRoomActivityIndicators callback", notificationId, buttonIndex);
-                        _converse.api.rooms.open(jid);
-                    });
+                        notifyText(_converse.api.settings.get("rai_notification_label"), jid, null, function(notificationId, buttonIndex)
+                        {
+                            console.debug("listenForRoomActivityIndicators callback", notificationId, buttonIndex);
+                            _converse.api.rooms.open(jid);
+                        });
+                    }
                 }
             });
 
