@@ -37,7 +37,6 @@
     <script src="location/location.js"></script>
     <script src="settings/settings.js"></script>
     <script src="stickers/stickers.js"></script>
-    <script src="room-activity-indicators/rai.js"></script>
 
 </head>
 <body class="reset">
@@ -84,7 +83,7 @@
         authentication: 'login',
         auto_away: 300,
         auto_reconnect: true,
-        bosh_service_url: 'https://localhost:7443/http-bind/', // Please use this connection manager only for testing purposes
+        bosh_service_url: 'https://conversejs.org/http-bind/', // Please use this connection manager only for testing purposes
         message_archiving: 'always',
         view_mode: 'fullscreen',
         jitsimeet_modal: false,
@@ -92,8 +91,7 @@
         jitsimeet_confirm: 'Meeting?',
         jitsimeet_url: 'https://meet.jit.si',
         theme: 'concord',
-        loglevel: 'debug',
-        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search", "jitsimeet", "audioconf", "http-auth", "converse-download-dialog", "fastpath", "browsertab", "location", "settings", "stickers", "rai"]
+        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "search", "jitsimeet", "audioconf", "http-auth", "converse-download-dialog", "fastpath", "browsertab", "location", "settings", "stickers"]
     };
 
     if (window.converse_settings)
