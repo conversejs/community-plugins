@@ -8,7 +8,7 @@
     var Strophe, $iq;
     var MUCDirectoryDialog = null;
     var mucDirectoryDialog = null;
-    var mucJids = {}, nextItem = 0, roomJids = [];
+    var mucJids = {}, nextItem = 0, nickColors = {}, roomJids = [];
 
     converse.plugins.add("muc-directory", {
         'dependencies': [],
@@ -124,7 +124,7 @@
 
                 if (section)
                 {
-                    const mucButton = __newElement('a', null, '<a class="controlbox-heading__btn fa fa-list-alt align-self-center" title="Find Group Chat"></a>');
+                    const mucButton = newElement('a', null, '<a class="controlbox-heading__btn fa fa-list-alt align-self-center" title="Find Group Chat"></a>');
                     section.appendChild(mucButton);
 
                     mucButton.addEventListener('click', function(evt)
@@ -277,7 +277,7 @@
         console.debug("createPanel", room, chatgrid);
 
         const html = '<div data-room-jid="' + room.jid + '" data-room-name="' + room.label + '" data-room-desc="' + room.description + '" title="' + room.jid + '" class="pade-col-content"><span data-room-jid="' + room.jid + '" class="pade-col-badge" data-badge="' + room.occupants + '"><img style="width: 32px" data-room-jid="' + room.jid + '" class="avatar" src="' + room.avatar + '"/></span><h3 data-room-jid="' + room.jid + '">' + room.label + '</h3><p class="pade-col-desc" title="' + room.description + '">' + room.description + '</p></div>';
-        const panel = __newElement('div', room.jid, html, 'pade-col');
+        const panel = newElement('div', room.jid, html, 'pade-col');
 
         panel.addEventListener('click', function(evt)
         {
@@ -302,4 +302,86 @@
         return value && value.innerHTML != "" ? value.innerHTML : '&nbsp;';
     }
 
+    function newElement (el, id, html, className)
+    {
+        var ele = document.createElement(el);
+        if (id) ele.id = id;
+        if (html) ele.innerHTML = html;
+        if (className) ele.classList.add(className);
+        document.body.appendChild(ele);
+        return ele;
+    }
+
+    function getRandomColor(nickname)
+    {
+        if (nickColors[nickname])
+        {
+            return nickColors[nickname];
+        }
+        else {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            nickColors[nickname] = color;
+            return color;
+        }
+    }
+
+    function createAvatar(nickname, width, height, font)
+    {
+        if (_converse.vcards)
+        {
+            let vcard = _converse.vcards.findWhere({'jid': nickname});
+            if (!vcard) vcard = _converse.vcards.findWhere({'nickname': nickname});
+
+            if (vcard && vcard.get('image') && _converse.DEFAULT_IMAGE != vcard.get('image')) return "data:" + vcard.get('image_type') + ";base64," + vcard.get('image');
+        }
+
+        if (!nickname) nickname = "Anonymous";
+        nickname = nickname.toLowerCase();
+
+        if (!width) width = 32;
+        if (!height) height = 32;
+        if (!font) font = "16px Arial";
+
+        var canvas = document.createElement('canvas');
+        canvas.style.display = 'none';
+        canvas.width = width;
+        canvas.height = height;
+        document.body.appendChild(canvas);
+        var context = canvas.getContext('2d');
+        context.fillStyle = getRandomColor(nickname);
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.font = font;
+        context.fillStyle = "#fff";
+
+        var first, last, pos = nickname.indexOf("@");
+        if (pos > 0) nickname = nickname.substring(0, pos);
+
+        var name = nickname.split(" ");
+        if (name.length == 1) name = nickname.split(".");
+        if (name.length == 1) name = nickname.split("-");
+        var l = name.length - 1;
+
+        if (name && name[0] && name.first != '')
+        {
+            first = name[0][0];
+            last = name[l] && name[l] != '' && l > 0 ? name[l][0] : null;
+
+            if (last) {
+                var initials = first + last;
+                context.fillText(initials.toUpperCase(), 3, 23);
+            } else {
+                var initials = first;
+                context.fillText(initials.toUpperCase(), 10, 23);
+            }
+            var data = canvas.toDataURL();
+            document.body.removeChild(canvas);
+        }
+
+        return canvas.toDataURL();
+    }
 }));
