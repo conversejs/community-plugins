@@ -48,6 +48,13 @@
                             bodyDiv.innerHTML = '<div class="mermaid">' + html.replace(/<br>/g, '\n') + '</div>';
                             window.mermaid.init(bodyDiv.querySelector(".mermaid"));
                         }
+                        else
+
+                        if (html.startsWith("X:1"))
+                        {
+                            bodyDiv.innerHTML = '<div id="abc-' + msgId + '"></div>';
+                            ABCJS.renderAbc("abc-" + msgId, html.replace(/<br>/g, '\n'));
+                        }
                     }
                 }
             }
