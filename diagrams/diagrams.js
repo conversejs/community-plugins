@@ -7,7 +7,7 @@
 }(this, function (converse) {
     var _converse = null;
 
-    converse.plugins.add("mermaid", {
+    converse.plugins.add("diagrams", {
         'dependencies': [],
 
         'initialize': function () {
@@ -15,7 +15,7 @@
 
             mermaid.initialize({});
 
-            console.log("mermaid plugin is ready");
+            console.log("diagrams plugin is ready");
         },
 
         overrides: {
