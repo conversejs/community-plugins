@@ -49,11 +49,11 @@
     {
         console.debug("listenForRoomActivityIndicators");
 
-        _converse.connection.addHandler(function(presence)
+        _converse.connection.addHandler(function(message)
         {
-            console.debug("listenForRoomActivityIndicators - addHandler", presence);
+            console.debug("listenForRoomActivityIndicators - addHandler", message);
 
-            presence.querySelectorAll('activity').forEach(function(activity)
+            message.querySelectorAll('activity').forEach(function(activity)
             {
                 if (activity) {
                     const jid = activity.innerHTML;
@@ -72,7 +72,7 @@
 
             return true;
 
-        }, "xmpp:prosody.im/protocol/rai", 'presence');
+        }, "xmpp:prosody.im/protocol/rai", 'message');
     }
 
     function notifyText(message, title, notifyId, callback)
