@@ -14,7 +14,6 @@
             _converse = this._converse;
 
             _converse.api.settings.update({
-                rai_muc_service: "conference." + _converse.domain,
                 rai_notification: true,
                 rai_notification_label: "Room Activity Indicator"
             });
@@ -36,7 +35,8 @@
     {
         try {
             const id = Math.random().toString(36).substr(2,9);
-            _converse.connection.send(converse.env.$pres({to: _converse.api.settings.get("rai_muc_service"), id: id}).c('rai', {'xmlns': "xmpp:prosody.im/protocol/rai"}));
+            const to =  "conference." + _converse.domain;
+            _converse.connection.send(converse.env.$pres({to: to, id: id}).c('rai', {'xmlns': "xmpp:prosody.im/protocol/rai"}));
 
             if (callback) callback(true);
         } catch (e) {
@@ -49,11 +49,11 @@
     {
         console.debug("listenForRoomActivityIndicators");
 
-        _converse.connection.addHandler(function(message)
+        _converse.connection.addHandler(function(presence)
         {
-            console.debug("listenForRoomActivityIndicators - addHandler", message);
+            console.debug("listenForRoomActivityIndicators - addHandler", presence);
 
-            message.querySelectorAll('activity').forEach(function(activity)
+            presence.querySelectorAll('activity').forEach(function(activity)
             {
                 if (activity) {
                     const jid = activity.innerHTML;
@@ -72,7 +72,7 @@
 
             return true;
 
-        }, "xmpp:prosody.im/protocol/rai", 'message');
+        }, "xmpp:prosody.im/protocol/rai", 'presence');
     }
 
     function notifyText(message, title, notifyId, callback)
