@@ -1,10 +1,10 @@
-# Mermaid Diagrams plugin for converse.js
+# Diagrams plugin for converse.js
 
 <img src="https://github.com/conversejs/community-plugins/blob/master/diagrams/diagrams.png" />
 
 ## Overview
-This plugin uses [mermaid.js](https://js.github.io/mermaid/#/) and [abcjs](https://github.com/paulrosen/abcjs) to generation of diagrams, flowcharts and music notation from text in a similar manner as markdown
-The purpose of this plugin with converse is to create a tool that aims to make it easier to create diagrams, flowcharts, music and other visuals for communication.
+This plugin uses [mermaid.js](https://js.github.io/mermaid/#/) and [abcjs](https://github.com/paulrosen/abcjs) to generate diagrams, flowcharts and music notation from text in a similar manner as markdown
+The purpose of this plugin with converse is to create a tool that makes it easier to create diagrams, flowcharts, music and other visuals in chat communication.
 
 ## Install
 See https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin
