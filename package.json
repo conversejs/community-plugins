@@ -4,7 +4,7 @@
   "description": "Community plugins for Converse.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lerna": "lerna bootstrap --hoist --ignore-scripts"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,9 @@
   "homepage": "https://github.com/conversejs/community-plugins#readme",
   "dependencies": {
     "npm": "^6.14.4"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.3",
+    "lerna": "^3.20.2"
   }
 }
