@@ -34,7 +34,13 @@
     function setupRoomActivityIndicators(callback)
     {
         try {
-            const id = Math.random().toString(36).substr(2,9);
+            let id = sessionStorage.getItem("converse.room.activity.indicator.id");
+
+            if (!id)
+            {
+                id = Math.random().toString(36).substr(2,9);
+                sessionStorage.setItem("converse.room.activity.indicator.id", id);
+            }
             const to =  "conference." + _converse.domain;
             _converse.connection.send(converse.env.$pres({to: to, id: id}).c('rai', {'xmlns': "xmpp:prosody.im/protocol/rai"}));
 
