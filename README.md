@@ -15,9 +15,9 @@ Install Yeoman and the generator:
 
 Then, to create a new plugin, run the following:
 
-    $ yo conversejs converse-pluginname
+    $ yo conversejs my-sexy-plugin
 
-Where `pluginname` should be the name of your plugin.
+Where `my-sexy-plugin` should be replaced with the name of your plugin.
 
 ## Adding a plugin to the repo here for general use
 
@@ -25,3 +25,12 @@ Simple raise a PR with your new plugin. Please make sure you do the following fi
 
 - Create a subfolder for your plugin and copy all your files in there. Please include a screenshot of the plugin working in converse.
 - Edit index.html, add your plugin to the index page. Comit your changes and make sure it works from the demo web site at https://conversejs.github.io/community-plugins/.
+
+
+## Enabling a plugin in Converse
+
+Before a plugin can be used, it needs to be whitelisted when you call `converse.initialize`.
+
+    converse.initialize({
+        whitelisted_plugins: ['my-sexy-plugin'],
+    });

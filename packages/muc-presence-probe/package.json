@@ -1,0 +1,16 @@
+{
+  "name": "@converse-plugins/muc-presence-probe",
+  "version": "0.0.1",
+  "keywords": [
+    "converse.js",
+    "plugin"
+  ],
+  "scripts": {
+    "start": "./node_modules/.bin/http-server -c-1"
+  },
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "http-server": "latest"
+  }
+}
+
