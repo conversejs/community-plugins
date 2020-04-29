@@ -1,6 +1,6 @@
 {
   "name": "@converse-plugins/muc-presence-probe",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "keywords": [
     "converse.js",
     "plugin"
