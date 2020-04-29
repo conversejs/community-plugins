@@ -5,6 +5,9 @@
     "converse.js",
     "plugin"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "./node_modules/.bin/http-server -c-1"
   },
