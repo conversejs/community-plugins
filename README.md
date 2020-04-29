@@ -34,3 +34,13 @@ Before a plugin can be used, it needs to be whitelisted when you call `converse.
     converse.initialize({
         whitelisted_plugins: ['my-sexy-plugin'],
     });
+
+
+## TODO: Moving plugins to Lerna
+
+We've started using [Lerna](https://lernajs.org) to manage the plugin packages.
+
+For older plugins, the following needs to be done:
+
+* Move it to the `./packages/` directory
+* Add a package.json and give it a name in the form `@converse-plugins/name`
