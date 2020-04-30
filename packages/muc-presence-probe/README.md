@@ -15,3 +15,14 @@ MUC presence probes are described in [XEP-0045 section 17.3](https://xmpp.org/ex
 
 Generally, this plugin will only make sense when you've disabled presences in a
 MUC, but stil want to fetch presence-related metadata for message authors.
+
+
+# Changelog
+
+## 0.0.3 (2020-04-30)
+
+- Don't assume that window.converse is defined
+
+## 0.0.2 (2020-04-29)
+
+- First release

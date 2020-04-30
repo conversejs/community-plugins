@@ -14,5 +14,6 @@
   "license": "BSD-3-Clause",
   "devDependencies": {
     "http-server": "latest"
-  }
+  },
+  "gitHead": "e222b8053e9caecd18ce04b0680f52f2d0a6ab2a"
 }
