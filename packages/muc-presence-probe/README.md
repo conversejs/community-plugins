@@ -19,6 +19,11 @@ MUC, but stil want to fetch presence-related metadata for message authors.
 
 # Changelog
 
+## 0.0.4 (Unreleased)
+
+- Don't send out an empty IQ probe.
+- Fix destructuring bug.
+
 ## 0.0.3 (2020-04-30)
 
 - Don't assume that window.converse is defined

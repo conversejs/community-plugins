@@ -42,15 +42,17 @@ const plugin = {
         api.listen.on('MAMResult', async data => {
             // Whenever we receive a batch of MAM messages, we check for
             // unknown authors and send an IQ stanza to probe for their hats in bulk.
-            const { chatbox, result } = data;
+            const { chatbox, messages } = data;
             const known_nicknames = chatbox.occupants.pluck('nick');
             const muc_jid = chatbox.get('jid');
-            const jids_to_probe = [...new Set(result.messages
+            const jids_to_probe = [...new Set(messages
                 .filter(m => !known_nicknames.includes(m.nick))
                 .map(m => `${muc_jid}/${m.nick}`)
                 .filter(jid => !probed_jids.includes(jid))
             )];
-
+            if (jids_to_probe.length === 0) {
+                return;
+            }
             const iq = $iq({'type': 'get'}).c('query', {'xmlns': Strophe.NS.MUC_USER});
             jids_to_probe.forEach(jid => iq.c('item', { jid }));
             const old_probed_jids = probed_jids;
