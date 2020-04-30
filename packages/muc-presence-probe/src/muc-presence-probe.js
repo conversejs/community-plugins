@@ -69,10 +69,15 @@ const plugin = {
     }
 }
 
+let converse = window.converse;
+
 if (typeof converse === "undefined") {
     window.addEventListener(
         'converse-loaded',
-        () => converse.plugins.add("muc-presence-probe", plugin)
+        (ev) => {
+            converse = ev.converse;
+            converse.plugins.add("muc-presence-probe", plugin)
+        }
     );
 } else {
     converse.plugins.add("muc-presence-probe", plugin);
