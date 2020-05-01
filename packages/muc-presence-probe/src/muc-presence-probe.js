@@ -66,6 +66,7 @@ const plugin = {
             } else if (u.isErrorStanza(iq_result)) {
                 log.error("Error stanza while doing a batched presence probe.");
                 log.error(iq_result);
+                probed_jids = old_probed_jids
             }
         });
     }
