@@ -21,7 +21,7 @@ MUC, but stil want to fetch presence-related metadata for message authors.
 
 ## 0.0.4 (Unreleased)
 
-- Don't send out an empty IQ probe.
+- Add `to` attr to IQ probe and don't send out an empty IQ probe.
 - Fix destructuring bug.
 
 ## 0.0.3 (2020-04-30)

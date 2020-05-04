@@ -53,7 +53,9 @@ const plugin = {
             if (jids_to_probe.length === 0) {
                 return;
             }
-            const iq = $iq({'type': 'get'}).c('query', {'xmlns': Strophe.NS.MUC_USER});
+            const iq = $iq({'type': 'get', 'to': chatbox.get('jid')})
+                .c('query', {'xmlns': Strophe.NS.MUC_USER});
+
             jids_to_probe.forEach(jid => iq.c('item', { jid }));
             const old_probed_jids = probed_jids;
             probed_jids = [...probed_jids, ...jids_to_probe];
