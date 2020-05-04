@@ -21,6 +21,7 @@ MUC, but stil want to fetch presence-related metadata for message authors.
 
 ## 0.0.4 (Unreleased)
 
+- Use occupants to keep track of probed JIDs
 - Add `to` attr to IQ probe and don't send out an empty IQ probe.
 - Fix destructuring bug.
 

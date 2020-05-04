@@ -2,11 +2,6 @@
 //
 // Note, this plugin assumes that the "converse" object is globally defined.
 
-
-// Commonly used utilities and variables can be found under the "env"
-// namespace of the "converse" global.
-let probed_jids = [];
-
 const plugin = {
     // Dependencies are other plugins which might be
     // overridden or relied upon, and therefore need to be loaded before
@@ -27,14 +22,18 @@ const plugin = {
         const { api, log } = _converse;
         log.info("The muc-presence-probe plugin is being initialized");
 
-        api.listen.on('messageAdded', data => {
+
+        api.listen.on('chatRoomMessageInitialized', message => {
             // Whenever we receive a message from an unknown author, we send a
             // presence probe in order to get their hats information
-            const { message, chatbox } = data;
-            const jid = `${chatbox.get('jid')}/${message.get('nick')}`;
-            if (message.get('sender') === 'them' && !message.occupant && !probed_jids.includes(jid)) {
+            const chatbox = message?.collection?.chatbox;
+            if (!chatbox) {
+                return log.error(`Presence probe: Could not get chatbox for message: ${message.get('body')}`);
+            }
+            const muc_jid = chatbox.get('jid');
+            const jid = `${muc_jid}/${message.get('nick')}`;
+            if (message.get('sender') === 'them' && !message.occupant) {
                 api.user.presence.send('probe', jid);
-                probed_jids.push(jid);
             }
         });
 
@@ -48,7 +47,6 @@ const plugin = {
             const jids_to_probe = [...new Set(messages
                 .filter(m => !known_nicknames.includes(m.nick))
                 .map(m => `${muc_jid}/${m.nick}`)
-                .filter(jid => !probed_jids.includes(jid))
             )];
             if (jids_to_probe.length === 0) {
                 return;
@@ -57,18 +55,14 @@ const plugin = {
                 .c('query', {'xmlns': Strophe.NS.MUC_USER});
 
             jids_to_probe.forEach(jid => iq.c('item', { jid }));
-            const old_probed_jids = probed_jids;
-            probed_jids = [...probed_jids, ...jids_to_probe];
 
             const iq_result = await api.sendIQ(iq, 2000, false);
             if (iq_result === null) {
                 const err_msg = "Timeout while doing a batched presence probe.";
                 log.error(err_msg);
-                probed_jids = old_probed_jids
             } else if (u.isErrorStanza(iq_result)) {
                 log.error("Error stanza while doing a batched presence probe.");
                 log.error(iq_result);
-                probed_jids = old_probed_jids
             }
         });
     }
