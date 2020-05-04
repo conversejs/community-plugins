@@ -58,7 +58,7 @@ const plugin = {
             const old_probed_jids = probed_jids;
             probed_jids = [...probed_jids, ...jids_to_probe];
 
-            const iq_result = await api.sendIQ(iq, null, false);
+            const iq_result = await api.sendIQ(iq, 2000, false);
             if (iq_result === null) {
                 const err_msg = "Timeout while doing a batched presence probe.";
                 log.error(err_msg);
