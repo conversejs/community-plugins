@@ -19,7 +19,7 @@ This plugin requires [mod_muc_batched_probe](https://modules.prosody.im/mod_muc_
 
 # Changelog
 
-## 0.0.4 (Unreleased)
+## 0.0.4 (2020-05-07)
 
 - Add support for IQ request to probe multiple presences
 
