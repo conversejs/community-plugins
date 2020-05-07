@@ -23,25 +23,13 @@ const plugin = {
         log.info("The muc-presence-probe plugin is being initialized");
 
 
-        api.listen.on('chatRoomMessageInitialized', message => {
-            // Whenever we receive a message from an unknown author, we send a
-            // presence probe in order to get their hats information
-            const chatbox = message?.collection?.chatbox;
-            if (!chatbox) {
-                return log.error(`Presence probe: Could not get chatbox for message: ${message.get('body')}`);
-            }
-            const muc_jid = chatbox.get('jid');
-            const jid = `${muc_jid}/${message.get('nick')}`;
-            if (message.get('sender') === 'them' && !message.occupant) {
-                api.user.presence.send('probe', jid);
-            }
-        });
-
-
         api.listen.on('MAMResult', async data => {
             // Whenever we receive a batch of MAM messages, we check for
             // unknown authors and send an IQ stanza to probe for their hats in bulk.
             const { chatbox, messages } = data;
+            if (chatbox.get('type') !== _converse.CHATROOMS_TYPE) {
+                return;
+            }
             const known_nicknames = chatbox.occupants.pluck('nick');
             const muc_jid = chatbox.get('jid');
             const jids_to_probe = [...new Set(messages
