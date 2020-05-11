@@ -48,7 +48,7 @@
                          '  <h4 class="modal-title">Converse Settings</h4>' +
                          '  <button type="button" class="close" data-dismiss="modal">&times;</button>' +
                          '</div>' +
-                         '<div class="modal-body"><iframe frameborder="0" style="border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;" src="settings/index.html"></iframe></div>' +
+                         '<div class="modal-body"><iframe frameborder="0" style="border:0px; border-width:0px; margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; width:100%;height:600px;" src="packages/settings/index.html"></iframe></div>' +
                          '<div class="modal-footer"> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
                 }

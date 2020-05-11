@@ -36,7 +36,7 @@
                     placement: "bottom-right",
                     rating: "false",
                     ringback: "true",
-                    server_url: "./audioconf",
+                    server_url: "./packages/audioconf",
                     show_branding: "false",
                     show_frame: "true",
                     text: "Ask",

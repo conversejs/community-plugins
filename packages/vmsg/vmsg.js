@@ -28,7 +28,7 @@
                          '  <h1 class="modal-title">Voice Message</h1>' +
                          '  <button type="button" class="close" data-dismiss="modal">&times;</button>' +
                          '</div>' +
-                         '<div class="modal-body"><iframe id="iframe-vmsg-' + id + '" src="vmsg/index.html" style="width:100%; height:300px; border:none; margin:0; padding:0; overflow:hidden;"></iframe></div>' +
+                         '<div class="modal-body"><iframe id="iframe-vmsg-' + id + '" src="packages/vmsg/index.html" style="width:100%; height:300px; border:none; margin:0; padding:0; overflow:hidden;"></iframe></div>' +
                          '<div class="modal-footer"> <button type="button" class="btn btn-success btn-upload-vmsg" data-dismiss="modal">Send</button> <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> </div>' +
                          '</div> </div> </div>';
                 },
