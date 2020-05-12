@@ -36,7 +36,7 @@
         "filesize": "^4.1.2",
         "http-server": "latest",
         "jed": "1.1.1",
-        "jszip": "3.1.5",
+        "jszip": "3.4.0",
         "jszip-utils": "0.0.2",
         "lodash": "^4.17.15",
         "lodash-template-webpack-loader": "jcbrand/lodash-template-webpack-loader",
