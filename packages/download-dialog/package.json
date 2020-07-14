@@ -1,6 +1,6 @@
 {
     "name": "converse-download-dialog",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Allows the user to download all mutlimedia-files from the chat-history",
     "private": true,
     "scripts": {
@@ -54,6 +54,5 @@
         "twemoji": "^12.1.2",
         "webpack": "^4.20.2",
         "webpack-cli": "^3.1.2"
-    },
-    "dependencies": {}
+    }
 }
