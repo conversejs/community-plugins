@@ -1,5 +1,7 @@
 {
   "name": "@converse-plugins/muc-presence-probe",
+  "author": "JC Brand",
+  "license": "Mozilla Public License version 2",
   "version": "0.0.5",
   "keywords": [
     "converse.js",
