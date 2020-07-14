@@ -19,6 +19,9 @@ This plugin requires [mod_muc_batched_probe](https://modules.prosody.im/mod_muc_
 
 # Changelog
 
+## 0.0.6 (2020-07-15)
+
+- Handle promises being received from the `MAMResult` event
 
 ## 0.0.5 (2020-07-15)
 
