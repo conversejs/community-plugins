@@ -1,6 +1,6 @@
 {
     "name": "@converse-plugins/converse-download-dialog",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Allows the user to download all mutlimedia-files from the chat-history",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,6 +11,5 @@
         "plugin"
     ],
     "author": "worlword",
-    "license": "Mozilla Public License version 2",
-    "devDependencies": {}
+    "license": "Mozilla Public License version 2"
 }
