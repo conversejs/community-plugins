@@ -42,7 +42,7 @@ const plugin = {
             const iq = $iq({'type': 'get', 'to': chatbox.get('jid')})
                 .c('query', {'xmlns': Strophe.NS.MUC_USER});
 
-            jids_to_probe.forEach(jid => iq.c('item', { jid }));
+            jids_to_probe.forEach(jid => iq.c('item', { jid }).up());
 
             const iq_result = await api.sendIQ(iq, 2000, false);
             if (iq_result === null) {
