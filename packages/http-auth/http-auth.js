@@ -15,22 +15,14 @@
     }
 }(this, function (converse) {
     'use strict';
-    // Commonly used utilities and variables can be found under the "env"
-    // namespace of the "converse" global.
-    let $msg, $iq;
-
     // The following line registers your plugin.
     converse.plugins.add("http-auth", {
         dependencies: [],
         // https://xmpp.org/extensions/xep-0070.html
         initialize: function () {
             const _converse = this._converse;
-
-            $iq = converse.env.$iq,
-            $msg = converse.env.$msg;
-
             const nsHttpAuth = "http://jabber.org/protocol/http-auth";
-            var options = {
+            const options = {
                 ns: nsHttpAuth,
             };
 
@@ -40,16 +32,18 @@
 
             _converse.api.listen.on('connected', startListeners);
             function startListeners() {
-                // hide the chaboxes of auth request. Any jid provided will work
-                _converse.hidden.forEach(function (item, index) {
-                _converse.chatboxviews.getAll()[item].hide();
-                });
                 _converse.api.listen.stanza('message', options, stanzaHandler);
                 _converse.api.listen.stanza('iq', options, stanzaHandler);
                 return true;
             }
-
-            var httpAuthDialog = _converse.BootstrapModal.extend({
+            _converse.api.listen.on('chatBoxInsertedIntoDOM', model => {
+                // Prevent the forbidden chatbox to be displayed
+                if (_converse.hidden.includes(model.model.id)) {
+                    console.info("Hiding ", model.model.id, " chatBox");
+                    model._removeElement()
+                }
+            });
+            const httpAuthDialog = _converse.BootstrapModal.extend({
 
                 events: {
                   'click .btn-acceptAuth': 'acceptAuth',
@@ -57,19 +51,19 @@
                 },
 
                 initialize(httpAuthData) {
-                    var self = this;
+                    const self = this;
                     self.httpAuthData = httpAuthData;
                     _converse.BootstrapModal.prototype.initialize.apply(this, arguments);
                 },
                 toHTML() {
-                    var self = this;
+                    const self = this;
                     const __ = _converse.__;
-                    var title = __('Confirmation of Authentication');
-                    var question = __('The following platform needs to validate your identity, do you agree ?');
-                    var vc = __('Validation Code : ');
-                    var accept = __('Accept');
-                    var refuse = __('Refuse');
-                    var dialog = '<div class="modal" id="httpAuth"> <div class="modal-dialog"> <div class="modal-content">' +
+                    const title = __('Confirmation of Authentication');
+                    const question = __('The following platform needs to validate your identity, do you agree ?');
+                    const vc = __('Validation Code : ');
+                    const accept = __('Accept');
+                    const refuse = __('Refuse');
+                    let dialog = '<div class="modal" id="httpAuth"> <div class="modal-dialog"> <div class="modal-content">' +
                                 '<div class="modal-header">' +
                                 '<h2 class="modal-title">{title}</h2>' +
                                 '<button type="button" class="close" data-dismiss="modal">&times;</button></div>' +
@@ -88,9 +82,9 @@
                 },
 
                 buildResponse(responseType) {
-                    var self = this;
-                    var response = self.httpAuthData['response'];
-                    var iqType = 'get';
+                    const self = this;
+                    const response = self.httpAuthData['response'];
+                    let iqType = 'get';
                     response.c('confirm', {'xmlns': 'http://jabber.org/protocol/http-auth',
                             'id': self.httpAuthData['id'], 'method': self.httpAuthData['method'],
                             'url': self.httpAuthData['url']}).up();
@@ -114,10 +108,10 @@
 
             function stanzaHandler(stanza) {
                 if (stanza.localName === 'message' || stanza.localName === 'iq') {
-                    var confirm = stanza.getElementsByTagName('confirm');
+                    let confirm = stanza.getElementsByTagName('confirm');
                     if (confirm.length > 0) {
                         confirm = confirm[0];
-                        var httpAuthData = {
+                        const httpAuthData = {
                             xmlns: confirm.getAttribute('xmlns'),
                             method: confirm.getAttribute('method'),
                             id: confirm.getAttribute('id'),
@@ -128,28 +122,21 @@
                             message: stanza,
                             stanzaType: stanza.localName
                         };
-                        // hide the chaboxes of auth request
-                        try {
-                        _converse.chatboxviews.getAll()[stanza.getAttribute('from')].hide();
-                        }
-                        catch (error) {
-                            //pass
-                        }
-                        var httpAuthMessage;
+                        let httpAuthMessage;
                         if (stanza.localName === 'message') {
-                          httpAuthMessage = $msg({
-                            from: _converse.jid,
-                            to: stanza.getAttribute('from'),
+                            httpAuthMessage = converse.env.$msg({
+                                from: _converse.jid,
+                                to: stanza.getAttribute('from'),
                             });
-                            var thread = stanza.getElementsByTagName('thread')[0].textContent;
+                            const thread = stanza.getElementsByTagName('thread')[0].textContent;
                             httpAuthMessage.c('thread').t(thread).up();
                             httpAuthData['response'] = httpAuthMessage;
                         } else {
-                          httpAuthMessage = $iq({
-                            from: _converse.jid,
-                            to: stanza.getAttribute('from'),
-                            id: stanza.getAttribute('id'),
-                            type: 'error',
+                            httpAuthMessage = converse.env.$iq({
+                                from: _converse.jid,
+                                to: stanza.getAttribute('from'),
+                                id: stanza.getAttribute('id'),
+                                type: 'error',
                             });
                             httpAuthData.response = httpAuthMessage;
                         }
@@ -158,8 +145,7 @@
                 }
                 return true;
             }
-            console.log("http-auth plugin is ready");
+            console.info("http-auth plugin is ready");
         },
-
     });
 }));
