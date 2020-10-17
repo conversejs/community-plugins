@@ -1,6 +1,6 @@
 # Content Summary plugin for converse.js
 
-<img src="https://github.com/conversejs/community-plugins/blob/master/content-summary/content-summary.png" />
+<img src="https://github.com/conversejs/community-plugins/blob/master/packages/content-summary/content-summary.png" />
 
 ## Overview
 This plugin provides a content summary of media and shared links from chat history

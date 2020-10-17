@@ -26,10 +26,12 @@ const plugin = {
         api.listen.on('MAMResult', async data => {
             // Whenever we receive a batch of MAM messages, we check for
             // unknown authors and send an IQ stanza to probe for their hats in bulk.
-            const { chatbox, messages } = data;
+            const { chatbox } = data;
+            let messages = data.messages;
             if (chatbox.get('type') !== _converse.CHATROOMS_TYPE) {
                 return;
             }
+            messages = await Promise.all(messages);
             const known_nicknames = chatbox.occupants.pluck('nick');
             const muc_jid = chatbox.get('jid');
             const jids_to_probe = [...new Set(messages
@@ -42,7 +44,7 @@ const plugin = {
             const iq = $iq({'type': 'get', 'to': chatbox.get('jid')})
                 .c('query', {'xmlns': Strophe.NS.MUC_USER});
 
-            jids_to_probe.forEach(jid => iq.c('item', { jid }));
+            jids_to_probe.forEach(jid => iq.c('item', { jid }).up());
 
             const iq_result = await api.sendIQ(iq, 2000, false);
             if (iq_result === null) {
