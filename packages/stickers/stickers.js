@@ -14,19 +14,12 @@
             _converse = this._converse;
 
             _converse.api.settings.update({
-                emoji_categories: {
-                  "smileys": ":grinning:",
-                  "people": ":thumbsup:",
-                  "activity": ":soccer:",
-                  "travel": ":motorcycle:",
-                  "objects": ":bomb:",
-                  "nature": ":rainbow:",
-                  "food": ":hotdog:",
-                  "symbols": ":musical_note:",
-                  "flags": ":flag_ac:",
-                  "custom": ":cuppy:"
-                }
+                stickers_recent: "Recent",
             });
+
+           const emoji_categories = _converse.api.settings.get("emoji_categories");
+           emoji_categories.custom = ":cuppy:";
+           _converse.api.settings.set("emoji_categories", emoji_categories);
 
             _converse.api.listen.on('emojisInitialized', function()
             {
