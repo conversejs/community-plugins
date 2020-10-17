@@ -10,40 +10,8 @@
     <script src="https://conversejs.org/3rdparty/libsignal-protocol.min.js"></script>
     <script src="https://cdn.conversejs.org/6.0.1/dist/converse.min.js"></script>
 
-    <script src="packages/canned-responses/canned.js"></script>
-    <script src="packages/info/info.js"></script>
-    <script src="packages/screencast/screencast.js"></script>
-    <script src="packages/vmsg/vmsg.js"></script>
-
     <script src="packages/download-dialog/dist/converse-download-dialog.js"></script>
-
-    <script src="packages/content-summary/content.js"></script>
-    <link type="text/css" rel="stylesheet" media="screen" href="packages/content-summary/content.css" />
-
-    <script src="packages/directory/directory.js"></script>
-    <link type="text/css" rel="stylesheet" media="screen" href="packages/directory/directory.css" />
-
-    <script src="packages/muc-directory/muc-directory.js"></script>
-    <link type="text/css" rel="stylesheet" media="screen" href="packages/muc-directory/muc-directory.css" />
-
-    <script src="packages/search/jspdf.debug.js"></script>
-    <script src="packages/search/jspdf.plugin.autotable.js"></script>
-    <script src="packages/search/search.js"></script>
-    <link type="text/css" rel="stylesheet" media="screen" href="packages/search/search.css" />
-
-    <script src="packages/jitsimeet/jitsimeet.js"></script>
-    <script src="packages/audioconf/audioconf.js"></script>
     <script src="packages/http-auth/http-auth.js"></script>
-    <script src="packages/fastpath/fastpath.js"></script>
-    <script src="packages/browsertab/favico.js"></script>
-    <script src="packages/browsertab/browsertab.js"></script>
-    <script src="packages/location/location.js"></script>
-    <script src="packages/settings/settings.js"></script>
-    <script src="packages/stickers/stickers.js"></script>
-    <script src="packages/diagrams/mermaid.min.js"></script>
-    <script src="packages/diagrams/diagrams.js"></script>
-    <script src="packages/diagrams/abcjs.js"></script>
-    <script src="packages/room-activity-indicators/rai.js"></script>
 
 </head>
 <body class="reset">
@@ -93,31 +61,10 @@
         bosh_service_url: 'https://conversejs.org/http-bind/', // Please use this connection manager only for testing purposes
         message_archiving: 'always',
         view_mode: 'fullscreen',
-        jitsimeet_modal: false,
-        jitsimeet_invitation: 'Please join meeting at',
-        jitsimeet_confirm: 'Meeting?',
-        jitsimeet_url: 'https://meet.jit.si',
         theme: 'concord',
-        whitelisted_plugins: ["content", "canned", "info", "screencast", "vmsg", "directory", "muc-directory", "search", "jitsimeet", "audioconf", "http-auth", "converse-download-dialog", "fastpath", "browsertab", "location", "settings", "stickers", "diagrams", "rai"]
+        whitelisted_plugins: ["http-auth", "converse-download-dialog"]
     };
 
-    if (window.converse_settings)
-    {
-        var localConfig = window.converse_settings.getConfig();
-
-        const keys = Object.getOwnPropertyNames(localConfig);
-
-        for (var i=0; i<keys.length; i++)
-        {
-            config[keys[i]] = localConfig[keys[i]];
-            console.debug("Use local saved setting", keys[i], localConfig[keys[i]]);
-        }
-
-        if (config.theme)
-        {
-            document.getElementById("conversejs").classList.add("theme-" + config.theme);
-        }
-    }
     converse.initialize(config);
 
     setTimeout(function()
