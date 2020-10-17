@@ -1,4 +1,4 @@
-# Converse.js Community Plugins
+# Converse.js Community Plugins for Converse 6.x
 
 This repo contains community contributed plugins, not included in the core of Converse.js. 
 
