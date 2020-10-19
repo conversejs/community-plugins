@@ -35,7 +35,7 @@
         margin: 5% auto; /* 15% from the top and centered */
         padding: 20px;
         border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */ 
+        width: 80%; /* Could be more or less, depending on screen size */
         height: 83%;
         text-align: center;
     }
@@ -49,26 +49,26 @@
         max-width: 30px;
         word-wrap: break-word;
     }
-    
+
     .download-author-column {
         max-width: 60px;
         word-wrap: break-word;
     }
-    
+
     .download-link-column {
         max-width: 125px;
         word-wrap: break-word;
     }
 
     .chat-image {
-        max-width: 90%; 
+        max-width: 90%;
         max-height: 90%;
     }
-    
+
     .download-filename-column {
         max-width: 80px;
     }
-    
+
     .download-table-head th {
         padding-top: 12px;
         padding-bottom: 12px;
@@ -78,23 +78,23 @@
         max-width: 150px;
         text-align: center;
     }
-    
+
     .download-table-body {
         font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
         border-collapse: collapse;
         width: 100%;
     }
-    
-    .download-table-body td, 
+
+    .download-table-body td,
     .download-table-body th {
         border: 1px solid #ddd;
         padding: 8px;
     }
-    
+
     .download-table-body tr:nth-child(even){background-color: #f2f2f2;}
-    
+
     .download-table-body tr:hover {background-color: #ddd;}
-    
+
     .download-files-button {
         padding-top: 6px;
         padding-bottom: 12px;
@@ -106,18 +106,18 @@
         height: 30px;
         margin-top: 10px;
     }
-    
+
     .download-attachements-header {
         font-size: 130%;
         margin-top: 10px;
         margin-bottom: 10px;
     }
-    
+
     .download-file-input {
         width: 80%;
         float: left;
     }
-    
+
     .zipfile-name-input {
         margin-top: 10px;
         width: 96%;
@@ -127,7 +127,7 @@
     .scrollbar-div {
         height: 84%;
     }
-    
+
     .attachements-content {
         margin-top: 5px;
         border-top: thin solid black;
@@ -137,7 +137,7 @@
         height: 83%;
         overflow-x: hidden;
     }
-    
+
     .attachement-download-error-msg {
         color: red;
         text-align: center;
@@ -145,7 +145,7 @@
         padding: 5px;
         margin-top: 5px;
     }
-    
+
     .attachement-header {
         height: 12%;
     }

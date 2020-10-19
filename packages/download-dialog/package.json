@@ -1,15 +1,31 @@
 {
-    "name": "@converse-plugins/converse-download-dialog",
-    "version": "1.0.1",
-    "description": "Allows the user to download all mutlimedia-files from the chat-history",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "./node_modules/.bin/http-server -c-1"
-    },
-    "keywords": [
-        "converse.js",
-        "plugin"
-    ],
-    "author": "worlword",
-    "license": "Mozilla Public License version 2"
+  "name": "@converse-plugins/download-dialog",
+  "version": "1.0.1",
+  "description": "Allows the user to download all mutlimedia-files from the chat-history",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/.bin/http-server -c-1"
+  },
+  "keywords": [
+    "converse.js",
+    "plugin"
+  ],
+  "author": "worlword",
+  "license": "Mozilla Public License version 2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "file-saver": "^2.0.2",
+    "jszip": "^3.5.0",
+    "jszip-utils": "^0.1.0"
+  },
+  "devDependencies": {
+    "css-loader": "^4.3.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^10.0.2",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  }
 }
