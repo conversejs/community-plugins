@@ -59,25 +59,13 @@
         authentication: 'login',
         auto_away: 300,
         auto_reconnect: true,
-        bosh_service_url: 'https://conversejs.org/http-bind/', // Please use this connection manager only for testing purposes
-        message_archiving: 'always',
+        discover_connection_methods: false,
+        bosh_service_url: 'https://conversejs.org/http-bind/',
         view_mode: 'fullscreen',
-        theme: 'concord',
         whitelisted_plugins: ["converse-download-dialog"]
     };
 
     converse.initialize(config);
-
-    setTimeout(function()
-    {
-        const github = document.createElement("span");
-        const tag = document.querySelector(".container.brand-heading-container");
-
-        if (tag) {
-            github.innerHTML = '<a href="https://github.com/conversejs/community-plugins" onclick="_gaq.push([&quot;_trackEvent&quot;, &quot;GitHub&quot;, &quot;Ribbon&quot;]);"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>';
-            tag.appendChild(github);
-        }
-    }, 2000);
 
 </script>
 </body>
