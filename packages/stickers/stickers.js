@@ -777,5 +777,7 @@
         converse.emojis.list = Object.values(converse.emojis.by_sn);
         converse.emojis.list.sort((a, b) => a.sn < b.sn ? -1 : a.sn > b.sn ? 1 : 0);
         converse.emojis.shortnames = converse.emojis.list.map(m => m.sn);
+        const getShortNames = () => converse.emojis.shortnames.map(s => s.replace(/[+]/g, "\\$&")).join('|');
+        converse.emojis.shortnames_regex = new RegExp(getShortNames(), "gi");
     }
 }));
