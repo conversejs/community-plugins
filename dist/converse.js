@@ -75773,7 +75773,6 @@ const ASCII_LIST = {
   '=)': '1f642',
   ':]': '1f642'
 };
-let shortnames_regex;
 
 function toCodePoint(unicode_surrogates) {
   const r = [];
@@ -75882,11 +75881,19 @@ function getEmojiMarkup(data, options = {
     return lit_html_html(_templateObject3(), shortname, shortname, converse.emojis.by_sn[shortname].url);
   }
 }
+
+function getShortnameRegex()    // BAO - #2304
+{
+  const getShortNames = () => converse.emojis.shortnames.map(s => s.replace(/[+]/g, "\\$&")).join('|');
+  return new RegExp(getShortNames(), "gi");
+}
+
 function getShortnameReferences(text) {
   if (!converse.emojis.initialized) {
     throw new Error('getShortnameReferences called before emojis are initialized. ' + 'To avoid this problem, first await the converse.emojis.initilaized_promise.');
   }
 
+  const shortnames_regex = getShortnameRegex(); // BAO - #2304
   const references = [...text.matchAll(shortnames_regex)].filter(ref => ref[0].length > 0);
   return references.map(ref => {
     const cp = converse.emojis.by_sn[ref[0]].cp;
@@ -76116,11 +76123,7 @@ converse.plugins.add('converse-emoji', {
             converse.emojis.by_sn = Object.keys(json).reduce((result, cat) => Object.assign(result, json[cat]), {});
             converse.emojis.list = Object.values(converse.emojis.by_sn);
             converse.emojis.list.sort((a, b) => a.sn < b.sn ? -1 : a.sn > b.sn ? 1 : 0);
-            converse.emojis.shortnames = converse.emojis.list.map(m => m.sn);
-
-            const getShortNames = () => converse.emojis.shortnames.map(s => s.replace(/[+]/g, "\\$&")).join('|');
-
-            shortnames_regex = new RegExp(getShortNames(), "gi");
+            converse.emojis.shortnames = converse.emojis.list.map(m => m.sn);    // BAO - #2304
             converse.emojis.toned = getTonedEmojis();
             converse.emojis.initialized_promise.resolve();
           }
