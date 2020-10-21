@@ -8,7 +8,7 @@ This Plugin adds a feature to download all files in the chat-history. The user c
 <img src="download_dialog.png" />
 
 ## Configuration
-What files can be downloaded will be determined by the _allowed_download_servers_-parameter. The _allowed_download_servers_-parameter takes a list of allowed download-addresses. So if "www.wikipedia.org" is defined, only files from wikipedia will be considered for the download-dialog. If no parameter is set, only files from the xmpp-domain will be considered.
+Which files can be downloaded will be determined by the _show_images_inline_-parameter.
 
 ## Install
 See https://conversejs.org/docs/html/plugin_development.html on how to install this plugin.
