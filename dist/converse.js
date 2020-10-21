@@ -85796,6 +85796,8 @@ const BootstrapModal = view_View.extend({
   }
 
 });
+converse.env.BootstrapModal = BootstrapModal; // expose to plugins
+
 const Confirm = BootstrapModal.extend({
   events: {
     'submit .confirm': 'onConfimation'
