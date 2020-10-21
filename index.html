@@ -27,6 +27,10 @@
     <script src="packages/browsertab/favico.js"></script>
     <script src="packages/browsertab/browsertab.js"></script>
 
+    <script src="packages/diagrams/mermaid.min.js"></script>
+    <script src="packages/diagrams/diagrams.js"></script>
+    <script src="packages/diagrams/abcjs.js"></script>
+
 </head>
 <body class="reset">
     <div class="converse-content" style="display:none">
@@ -76,7 +80,7 @@
         discover_connection_methods: false,
         bosh_service_url: 'https://conversejs.org/http-bind/',
         view_mode: 'fullscreen',
-        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "browsertab", "search", "directory"]
+        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "browsertab", "search", "directory", "diagrams"]
     };
 
     converse.initialize(config);
