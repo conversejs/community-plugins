@@ -5,23 +5,14 @@
         factory(converse);
     }
 }(this, function (converse) {
-    let Strophe, $iq, $msg, $pres, $build, b64_sha1, _ , __, dayjs, html, _converse;
+    let __, html, _converse;
 
     converse.plugins.add("toolbar-utilities", {
         'dependencies': [],
 
         'initialize': function () {
             _converse = this._converse;
-
-            Strophe = converse.env.Strophe;
-            $iq = converse.env.$iq;
-            $msg = converse.env.$msg;
-            $pres = converse.env.$pres;
-            $build = converse.env.$build;
-            b64_sha1 = converse.env.b64_sha1;
-            _ = converse.env._;
             __ = _converse.__;
-            dayjs = converse.env.dayjs;
             html = converse.env.html;
 
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)

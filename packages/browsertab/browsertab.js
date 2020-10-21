@@ -5,8 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    let Strophe, $iq, $msg, $pres, $build, b64_sha1, _ , __, dayjs, html, _converse;
-    let tabTitle = document.title, favicon;
+    let _converse, tabTitle = document.title, favicon;
 
     converse.plugins.add("browsertab", {
 
@@ -14,15 +13,6 @@
 
         initialize: function () {
             _converse = this._converse;
-
-            Strophe = converse.env.Strophe;
-            $iq = converse.env.$iq;
-            $msg = converse.env.$msg;
-            $pres = converse.env.$pres;
-            $build = converse.env.$build;
-            b64_sha1 = converse.env.b64_sha1;
-            _ = converse.env._;
-            dayjs = converse.env.dayjs;
 
             _converse.api.settings.extend({
                 browsertab_use_title: true,
@@ -34,10 +24,10 @@
             {
                 console.debug('message', data);
 
-                var chatbox = data.chatbox;
-                var message = data.stanza;
-                var history = message.querySelector('forwarded');
-                var body = message.querySelector('body');
+                const chatbox = data.chatbox;
+                const message = data.stanza;
+                const history = message.querySelector('forwarded');
+                const body = message.querySelector('body');
 
                 if (!history && body && chatbox)
                 {

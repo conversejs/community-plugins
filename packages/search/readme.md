@@ -1,6 +1,6 @@
 # Conversation Search plugin for converse.js
 
-<img src="https://github.com/conversejs/community-plugins/blob/master/search/search.png" />
+<img src="https://github.com/conversejs/community-plugins/blob/master/packages/search/search.png" />
 
 ## Overview
 This plugin uses [XMPP Message Archive Management](https://xmpp.org/extensions/xep-0313.html) to do a full text search in the current chatbox or chatroom.
