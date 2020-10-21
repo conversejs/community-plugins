@@ -68,7 +68,7 @@
                 });
             });
 
-            console.log("browsertab plugin is ready");
+            console.debug("browsertab plugin is ready");
         }
     });
 
