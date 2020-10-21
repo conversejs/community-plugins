@@ -1,6 +1,6 @@
 # Stickers plugin for converse.js
 
-<img src="https://github.com/conversejs/community-plugins/blob/master/stickers/stickers.png" />
+<img src="https://github.com/conversejs/community-plugins/blob/master/packages/stickers/stickers.png" />
 
 ## Overview
 This plugin uses the custom emojis place holder in Converse to provide stickers. See [emoji_categories documentation](https://conversejs.org/docs/html/configuration.html#emoji-categories) for more details
