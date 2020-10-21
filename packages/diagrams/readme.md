@@ -24,7 +24,7 @@ B --> D[Server02]
 
 The text is then rendered into a SVG vector diagram and made part of the chat:
 
-<img src="https://github.com/conversejs/community-plugins/blob/master/diagrams/flowchat.png"/>
+<img src="https://github.com/conversejs/community-plugins/blob/master/packages/diagrams/flowchat.png"/>
 
 Music is produced with the ABC notation system like this
 ```
@@ -35,4 +35,4 @@ K:D
 
 The text is then rendered into music notation and made part of the chat:
 
-<img src="https://github.com/conversejs/community-plugins/blob/master/diagrams/music.png"/>
+<img src="https://github.com/conversejs/community-plugins/blob/master/packages/diagrams/music.png"/>
