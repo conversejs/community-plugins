@@ -1,10 +1,14 @@
 import jszip from "jszip";
-import JSZipUtils from "jszip-utils";
 import { saveAs } from 'file-saver';
 
 import "./download_dialog.scss";
 
-const URL_REGEX = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+const URL_REGEX = new RegExp('^https?:\\/\\/'+ // protocol
+                             '[a-z\\d-:\\.]+'+ // domain name + port
+                             '(?:\\/([-a-z\\d%_\\.~+]*))*'+ // path
+                             '(\\.[a-z\\d]+)$','i'); // file type
+
+const TIMESTAMP_FORMAT = 'YYYYMMDD_HHmm';
 
 const plugin = {
     toggle_download_dialog (ev) {
@@ -14,20 +18,10 @@ const plugin = {
     },
 
     initialize () {
-        const { dayjs, html, CustomElement } = converse.env;
+        const { dayjs, html, CustomElement, u } = converse.env;
         const { _converse } = this;
         const { __, api } = _converse;
         const download_view = document.createElement("converse-download-view");
-
-        api.settings.extend({
-            'allowed_download_servers': [] // list for addresses that are considered inside the download-dialog
-        });
-
-        api.listen.on('connected', () => {
-            if (api.settings.get('allowed_download_servers') < 1 ) {
-                api.settings.get('allowed_download_servers').push(_converse.domain);
-            }
-        });
 
         api.listen.on('getToolbarButtons', (context, buttons) => {
             const i18n_start_download_dialog = __('Start Download-Dialog');
@@ -48,43 +42,27 @@ const plugin = {
         );
 
         function downloadAttachements () {
-            function getFileType (str) {
-                if (str.lastIndexOf('.') < 0)
-                    return '';
-                return str.substr(str.lastIndexOf('.'));
-            }
-
-            function stripFileType (str) {
-                if (str.lastIndexOf('.') < 0)
-                    return str;
-                return str.substr(0, str.lastIndexOf('.'));
-            }
-
             const downloadables = [];
             this.model.messages.forEach(message => {
-                const body = message.get('message');
-                if (body) {
-                    const m = body.match(URL_REGEX);
-                    if (m && api.settings.get('allowed_download_servers').some(server => body.includes(server))) {
-                        const pathname = m[4];
-                        const filename = pathname.substr(pathname.lastIndexOf('/') + 1);
-                        const timestamp = dayjs(message.get('time')).format('YYYYMMDD_HHmm');
-                        downloadables.push({
-                            author: message.get('from'),
-                            link: body,
-                            time: dayjs(message.get('time')).subtract((new Date()).getTimezoneOffset(), "m"),
-                            timestamp: timestamp,
-                            filename: timestamp + '_' + stripFileType(filename),
-                            type: getFileType(filename),
-                            checked: true
-                        });
-                    }
+                const m = message?.get('message')?.match(URL_REGEX);
+                const url = m?.[0];
+                if (url && u.isImageDomainAllowed(url)) {
+                    const timestamp = dayjs(message.get('time')).format(TIMESTAMP_FORMAT);
+                    downloadables.push({
+                        author: message.get('from'),
+                        link: url,
+                        time: dayjs(message.get('time')).subtract((new Date()).getTimezoneOffset(), "m"),
+                        timestamp: timestamp,
+                        filename: timestamp + '_' + m[1],
+                        type: m[2],
+                        checked: true
+                    });
                 }
             });
 
             if (downloadables.length > 0) {
-                const chat_name = this.model.attributes.name === undefined ? this.model.attributes.user_id : this.model.attributes.name;
-                download_view.zipfileName = "conversejs_" + dayjs(Date.now()).format("YYYYMMDD_HHmm") + '_' + chat_name;
+                const chat_name = this.model.attributes.name ?? this.model.attributes.user_id;
+                download_view.zipfileName = "conversejs_" + dayjs(Date.now()).format(TIMESTAMP_FORMAT) + '_' + chat_name;
                 download_view.downloadables = downloadables;
                 download_view.inProgress = false;
                 download_view.hidden = false;
@@ -216,11 +194,11 @@ const plugin = {
             }
 
             static render_file (o) {
-                if (o.type === '.jpg' || o.type === '.jpeg' || o.type === '.png' || o.type === '.svg') {
+                if (u.isImageURL(o.link)) {
                     return MultimediaDownloadView.render_image(o);
-                } else if (o.type === '.mp3' || o.type === '.m4a' || o.type === '.ogg') {
+                } else if (u.isAudioURL(o.link)) {
                     return MultimediaDownloadView.render_audio(o);
-                } else if (o.type === '.mp4') {
+                } else if (u.isVideoURL(o.link)) {
                     return MultimediaDownloadView.render_video(o);
                 } else {
                     return MultimediaDownloadView.render_other(o);
@@ -249,40 +227,30 @@ const plugin = {
                     return;
                 }
 
-                // checking for duplicate filenames
-                selected.forEach(item1 => {
-                    let duplicate_counter = 0;
-                    selected.forEach(item2 => {
-                        if((item1.filename + item1.type) ===
-                            (item2.filename + item2.type) &&
-                            (item1 !== item2))
-                        {
-                            duplicate_counter++;
-                            item1.filename = item1.filename + '(' + duplicate_counter + ')';
+                this.inProgress = true;
+                const zip = new jszip();
+                Promise.all(selected.map(item => fetch(item.link)))
+                .then((values) => {
+                    const filenameMap = new Map();
+                    values.forEach((response, i) => {
+
+                        // prevent duplicate filenames
+                        let filename = selected[i].filename;
+                        const dupCount = filenameMap.get(filename) ?? 0;
+                        filenameMap.set(filename, dupCount+1);
+                        if (dupCount > 0) {
+                            filename += '('+(dupCount+1)+')';
+                        }
+
+                        if (response.ok) {
+                            zip.file(filename + selected[i].type, response.blob(), {binary: true, date: new Date(selected[i].time)});
+                        } else {
+                            zip.file(filename + __("_ERROR.txt"), __("The file ") + selected[i].link + __(" could not be downloaded.")+"\n");
                         }
                     });
-                });
-
-                this.inProgress = true;
-
-                const zip = new jszip();
-                let i = 0;
-
-                selected.forEach(item => {
-                    JSZipUtils.getBinaryContent(item.link, (err, data) => {
-                        if (err || data.byteLength === 0) {
-                            zip.file(item.filename + __("_ERROR.txt"), __("The file ") + item.link + __(" could not be downloaded.")+"\n");
-                        } else {
-                            zip.file(item.filename + item.type, data, {binary: true, date: new Date(item.time)});
-                        }
-                        i++;
-
-                        if (i === selected.length) {
-                            zip.generateAsync({type: "blob"}).then( content => {
-                                saveAs(content, this.zipfileName + ".zip");
-                                this.hidden = true;
-                            });
-                        }
+                    zip.generateAsync({type: "blob"}).then( content => {
+                        saveAs(content, this.zipfileName + ".zip");
+                        this.hidden = true;
                     });
                 });
             }
