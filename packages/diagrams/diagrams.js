@@ -29,6 +29,8 @@
     {
         //console.debug("doDiagram", body, text, msgId);
 
+        if (!body) return;
+
         if (body.startsWith("graph TD") ||
             body.startsWith("graph TB") ||
             body.startsWith("graph BT") ||
