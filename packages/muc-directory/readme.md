@@ -1,6 +1,6 @@
 # MUC Directory plugin for converse.js
 
-<img src="https://github.com/conversejs/community-plugins/blob/master/muc-directory/muc-directory.png" />
+<img src="https://github.com/conversejs/community-plugins/blob/master/packages/muc-directory/muc-directory.png" />
 
 ## Overview
 This plugin scans the contacts roster and does a service discovery on every XMPP domain found. It creates creates a tiled list of all MUC public chat rooms found. Click on any of the tiles to open the selected chat room.

@@ -16,8 +16,7 @@
 
             _converse.api.listen.on('afterMessageBodyTransformed', function(model, text)
             {
-               console.debug("afterMessageBodyTransformed", model, text);
-               doDiagram(model.get("body"), text, model.get("msgid"));
+               renderDiagram(model.get("body"), text, model.get("msgid"));
             });
 
             mermaid.initialize({});
@@ -26,9 +25,9 @@
         }
     });
 
-    function doDiagram(body, text, msgId)
+    function renderDiagram(body, text, msgId)
     {
-        console.debug("doDiagram", body, text, msgId);
+        //console.debug("doDiagram", body, text, msgId);
 
         if (body.startsWith("graph TD") ||
             body.startsWith("graph TB") ||

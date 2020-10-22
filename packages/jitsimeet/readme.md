@@ -10,7 +10,7 @@ This plugin uses a hosted Jitsi-Meet service to deliver an audio/video conferenc
 see https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin
 
 ## Configure
-To configure, edit the converse settings and modify all the jitsimeet_  values. See demo.html for an example
+To configure, edit the converse settings and modify all the jitsimeet_  values. See index.html for an example
 
 ```
 converse.initialize({

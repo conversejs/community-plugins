@@ -51,7 +51,7 @@
                         var room = body.substring(pos + url.length + 1);
                         var label = pos > 0 ? body.substring(0, pos) : jitsimeet_invitation;
                         var from = chatbox.getDisplayName().trim();
-                        var avatar = _converse.DEFAULT_IMAGE;
+                        var avatar = _converse.notification_icon;
 
                         if (data.chatbox.vcard.attributes.image) avatar = data.chatbox.vcard.attributes.image;
 

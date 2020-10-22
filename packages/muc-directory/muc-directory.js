@@ -185,7 +185,7 @@
 
         _converse.roster.forEach(function(contact)
         {
-            console.debug("muc-directory contact", contact);
+            //console.debug("muc-directory contact", contact);
 
             const domain = converse.env.Strophe.getDomainFromJid(contact.get("id"));
             if (domain.indexOf("pade.") == -1) domains[domain] = {};
@@ -232,7 +232,7 @@
     function getRoom(item)
     {
         const room = item.getAttribute("jid");
-        console.debug("getRoom", room);
+        //console.debug("getRoom", room);
         mucJids[room] = {jid: room};
     }
 
