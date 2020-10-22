@@ -138,20 +138,24 @@
             _converse.api.listen.on('afterMessageBodyTransformed', function(model, text)
             {
                 const body = model.get("body");
-                const pos = body.indexOf("https://");
 
-                if (pos > -1 && body.indexOf(_converse.api.settings.get("jitsimeet_url")) > -1)
+                if (body)
                 {
-                    console.debug("afterMessageBodyTransformed", body, text);
+                    const pos = body.indexOf("https://");
 
-                    const url = body.substring(pos);
-                    const link_jid = Strophe.getBareJidFromJid(model.get("from") || model.get("jid"));
-                    const link_room = url.substring(url.lastIndexOf("/") + 1);
-                    const link_label = jitsimeet_invitation;
-                    const link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
+                    if (pos > -1 && body.indexOf(_converse.api.settings.get("jitsimeet_url")) > -1)
+                    {
+                        console.debug("afterMessageBodyTransformed", body, text);
 
-                    text.references = [];
-                    text.addTemplateResult(0, body.length, html`<a @click=${clickVideo} data-room="${link_room}" data-url="${url}" data-jid="${link_jid}" id="${link_id}" href="#">${link_label} ${link_room}</a>`);
+                        const url = body.substring(pos);
+                        const link_jid = Strophe.getBareJidFromJid(model.get("from") || model.get("jid"));
+                        const link_room = url.substring(url.lastIndexOf("/") + 1);
+                        const link_label = jitsimeet_invitation;
+                        const link_id = link_room + "-" + Math.random().toString(36).substr(2,9);
+
+                        text.references = [];
+                        text.addTemplateResult(0, body.length, html`<a @click=${clickVideo} data-room="${link_room}" data-url="${url}" data-jid="${link_jid}" id="${link_id}" href="#">${link_label} ${link_room}</a>`);
+                    }
                 }
             });
 

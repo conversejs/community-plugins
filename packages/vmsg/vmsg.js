@@ -78,7 +78,7 @@
         ev.stopPropagation();
         ev.preventDefault();
 
-        if (!vmsgDialog) vmsgDialog = new VmsgDialog({ 'model': new Model({view: this.chatview}) });
+        vmsgDialog = new VmsgDialog({ 'model': new Model({view: this.chatview}) });
         vmsgDialog.show(ev);
     }
 }));
