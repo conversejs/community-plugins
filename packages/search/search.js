@@ -194,6 +194,7 @@
                     if (command === "search")
                     {
                         if (!searchDialog) searchDialog = new SearchDialog({ 'model': new converse.env.Model({view: view, keyword: match[2]}) });
+                        searchDialog.model.set("keyword", match[2]);
                         searchDialog.show();
                         return true;
                     }
