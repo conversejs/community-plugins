@@ -19,6 +19,9 @@
     <link type="text/css" rel="stylesheet" media="screen" href="packages/stickers/stickers.css" />
     <script src="packages/stickers/stickers.js"></script>
 
+    <script src="packages/muc-directory/muc-directory.js"></script>
+    <link type="text/css" rel="stylesheet" media="screen" href="packages/muc-directory/muc-directory.css" />
+
     <link type="text/css" rel="stylesheet" media="screen" href="packages/search/search.css" />
     <script src="packages/search/jspdf.debug.js"></script>
     <script src="packages/search/jspdf.plugin.autotable.js"></script>
@@ -83,7 +86,7 @@
         discover_connection_methods: false,
         bosh_service_url: 'https://conversejs.org/http-bind/',
         view_mode: 'fullscreen',
-        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "browsertab", "search", "directory", "diagrams", "vmsg", "screencast", "location"]
+        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "browsertab", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "location"]
     };
 
     converse.initialize(config);
