@@ -11,21 +11,27 @@
     "plugin"
   ],
   "author": "worlword",
-  "license": "Mozilla Public License version 2",
+  "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/conversejs/community-plugins.git"
+  },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
     "file-saver": "^2.0.2",
-    "jszip": "^3.5.0",
-    "jszip-utils": "^0.1.0"
+    "jszip": "^3.5.0"
   },
   "devDependencies": {
-    "css-loader": "^4.3.0",
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.1",
+    "css-loader": "^5.0.0",
     "node-sass": "^4.14.1",
-    "sass-loader": "^10.0.2",
-    "style-loader": "^1.2.1",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "sass-loader": "^10.0.3",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.1.3",
+    "webpack-cli": "^4.1.0"
   }
 }
