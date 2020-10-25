@@ -29,7 +29,7 @@
                   return html`<div class="modal-dialog modal-xl"> <div class="modal-content">
                          <div class="modal-header"><h1 class="modal-title">Search</h1><button type="button" class="close" data-dismiss="modal">&times;</button></div>
                          <div class="modal-body">
-                         <input id="pade-search-keywords" class="form-control" type="text" placeholder="Type a query and press [Enter] to search" ><p/><div id="pade-search-results"></div>
+                         <input value="${this.model.get('keyword') || ''}" id="pade-search-keywords" class="form-control" type="text" placeholder="Type a query and press [Enter] to search" ><p/><div id="pade-search-results"></div>
                          </div>
                          <div class="modal-footer">
                          <button type="button" class="btn btn-success btn-pdf">PDF</button>
@@ -43,7 +43,7 @@
                   {
                       if (that.model.get("keyword"))
                       {
-                          that.el.querySelector('#pade-search-keywords').style.display = "none";
+                          that.el.querySelector('#pade-search-keywords').value = that.model.get("keyword");
                           that.doSearch();
                       }
                       else {
@@ -191,9 +191,9 @@
                     const match = text.replace(/^\s*/, "").match(/^\/(.*?)(?: (.*))?$/) || [false, '', ''];
                     const command = match[1].toLowerCase();
 
-                    if (command === "search")
+                    if (command === "search" && match[2])
                     {
-                        if (!searchDialog) searchDialog = new SearchDialog({ 'model': new converse.env.Model({view: view, keyword: match[2]}) });
+                        if (!searchDialog) searchDialog = new SearchDialog({ 'model': new converse.env.Model({view: this, keyword: match[2]}) });
                         searchDialog.model.set("keyword", match[2]);
                         searchDialog.show();
                         return true;

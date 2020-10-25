@@ -164,7 +164,7 @@
                     {
                         if (!mucDirectoryDialog)
                         {
-                            mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new converse.env.Backbone.Model({}) });
+                            mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new Model({}) });
                         }
 
                         mucDirectoryDialog.show();
