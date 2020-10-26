@@ -1,6 +1,6 @@
 {
   "name": "@converse-plugins/download-dialog",
-  "version": "1.0.1",
+  "version": "1.0.2-alpha.0",
   "description": "Allows the user to download all mutlimedia-files from the chat-history",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
