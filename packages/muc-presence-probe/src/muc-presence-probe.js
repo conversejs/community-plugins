@@ -64,7 +64,7 @@ if (typeof converse === "undefined") {
     window.addEventListener(
         'converse-loaded',
         (ev) => {
-            converse = ev.converse;
+            converse = ev.details?.converse || ev.converse;
             converse.plugins.add("muc-presence-probe", plugin)
         }
     );
