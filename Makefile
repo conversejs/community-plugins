@@ -15,8 +15,3 @@ node_modules: $(LERNA) package.json package-lock.json
 .PHONY: serve
 serve: node_modules
 	$(HTTPSERVE) -p $(HTTPSERVE_PORT) -c-1
-
-
-.PHONY: publish
-publish: node_modules
-	$(LERNA) publish
