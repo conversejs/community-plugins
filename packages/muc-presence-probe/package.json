@@ -2,7 +2,7 @@
   "name": "@converse-plugins/muc-presence-probe",
   "author": "JC Brand",
   "license": "BSD-3-Clause",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "keywords": [
     "converse.js",
     "plugin"
