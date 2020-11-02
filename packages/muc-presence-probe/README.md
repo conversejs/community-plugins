@@ -19,6 +19,10 @@ This plugin requires [mod_muc_batched_probe](https://modules.prosody.im/mod_muc_
 
 # Changelog
 
+## 0.0.9 (2020-10-26)
+
+- Handle `converse` being on `event.detail` in Converse 7
+
 ## 0.0.6 (2020-07-15)
 
 - Handle promises being received from the `MAMResult` event
@@ -30,4 +34,3 @@ This plugin requires [mod_muc_batched_probe](https://modules.prosody.im/mod_muc_
 ## 0.0.4 (2020-05-07)
 
 - Add support for IQ request to probe multiple presences
-
