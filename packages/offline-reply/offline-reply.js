@@ -134,7 +134,7 @@
         console.debug("subscribeOfflineReply", jid);
         const from = _converse.connection.jid;
 
-        const stanza = $iq({type: 'set', to: jid}).c('pubsub', {xmlns: Strophe.NS.PUBSUB}).c('subscribe', {node: "urn:xmpp:json:0", jid: from}).up();
+        const stanza = $iq({type: 'set', to: jid}).c('pubsub', {xmlns: Strophe.NS.PUBSUB}).c('subscribe', {node: "urn:xmpp:json:0", jid: jid}).up();
 
         _converse.connection.sendIQ(stanza, function(result)
         {
