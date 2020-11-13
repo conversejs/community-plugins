@@ -135,13 +135,13 @@
                                 converse.initialize(config);
                             }
                             else {
-                                handleSubscription(config, subscription, keys);
+                                handleSubscription(subscription, keys);
                                 converse.initialize(config);
                             }
                         })
                     }
                     else {
-                        handleSubscription(config, subscription, JSON.parse(localStorage["converse.vapid.keys"]));
+                        handleSubscription(subscription, JSON.parse(localStorage["converse.vapid.keys"]));
                         converse.initialize(config);
                     }
 
