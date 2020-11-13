@@ -35,6 +35,9 @@
     <script src="packages/diagrams/diagrams.js"></script>
     <script src="packages/diagrams/abcjs.js"></script>
 
+    <script src="packages/offline-reply/webpush-browserify-bundle.js"></script>
+    <script src="packages/offline-reply/offline-reply.js"></script>
+
 </head>
 <body class="reset">
     <div class="converse-content" style="display:none">
@@ -76,7 +79,8 @@
     @licend
 
     */
-    let config = {
+
+    const config = {
         assets_path: './dist/',
         authentication: 'login',
         auto_away: 300,
@@ -84,10 +88,106 @@
         discover_connection_methods: false,
         bosh_service_url: 'https://conversejs.org/http-bind/',
         view_mode: 'fullscreen',
-        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "jitsimeet", "location"]
+        loglevel: 'debug',
+        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "jitsimeet", "location", "offline-reply"]
     };
 
-    converse.initialize(config);
+
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
+    function initServiceWorker()
+    {
+        if ('serviceWorker' in navigator && 'PushManager' in window)
+        {
+            console.debug('Service Worker and Push is supported');
+
+            navigator.serviceWorker.register('./serviceworker.js').then(function(registration)
+            {
+                swRegistration = registration;
+                console.debug('Service Worker is registered', swRegistration);
+
+                swRegistration.pushManager.getSubscription().then(function(subscription)
+                {
+                    if (subscription && !localStorage["converse.vapid.keys"])
+                    {
+                        subscription.unsubscribe();
+                        subscription = null;
+                    }
+
+                    if (!subscription) {
+                        makeSubscription(function(err, subscription, keys)
+                        {
+                            if (err)
+                            {
+                                converse.initialize(config);
+                            }
+                            else {
+                                handleSubscription(config, subscription, keys);
+                                converse.initialize(config);
+                            }
+                        })
+                    }
+                    else {
+                        handleSubscription(config, subscription, JSON.parse(localStorage["converse.vapid.keys"]));
+                        converse.initialize(config);
+                    }
+
+                }).catch(function(error) {
+                    console.debug('Error unsubscribing', error);
+                    converse.initialize( config )
+                });
+
+            }).catch(function(error) {
+                console.error('Service Worker Error', error);
+                converse.initialize( config )
+            });
+        } else {
+            console.warn('Push messaging is not supported');
+            converse.initialize( config )
+        }
+    }
+
+    function makeSubscription(callback)
+    {
+        const keys = window.WebPushLib.generateVAPIDKeys();
+        console.debug('makeSubscription', keys);
+
+        swRegistration.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(keys.publicKey)}).then(function(subscription)
+        {
+            console.debug('User is subscribed.');
+            localStorage["converse.vapid.keys"] = JSON.stringify(keys);
+            if (callback) callback(false, subscription, keys);
+
+        }).catch(function(err) {
+            console.error('Failed to subscribe the user: ', err);
+            if (callback) callback(true);
+        });
+    }
+
+    function handleSubscription(subscription, keys)
+    {
+        console.debug('handleSubscription', subscription, keys);
+
+        window.WebPushLib.selfSubscriptions = {}
+        window.WebPushLib.selfSecret = {privateKey: keys.privateKey, publicKey: keys.publicKey, subscription: subscription};
+        window.WebPushLib.setVapidDetails('xmpp:' + location.hostname, keys.publicKey, keys.privateKey);
+    }
+
+
+    initServiceWorker();
 
 </script>
 </body>
