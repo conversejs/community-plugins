@@ -110,7 +110,7 @@
         ev.stopPropagation();
         ev.preventDefault();
 
-        //subscribeOfflineReply(jid);
+        subscribeOfflineReply(jid);
     }
 
     function publishOfflineReply(json)
