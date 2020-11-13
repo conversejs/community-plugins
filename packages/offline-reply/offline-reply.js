@@ -110,7 +110,7 @@
         ev.stopPropagation();
         ev.preventDefault();
 
-        const jid = ev.target.getAttribute("data-jid");
+        const jid = ev.target.parentNode.getAttribute("data-jid");
         subscribeOfflineReply(jid);
     }
 
