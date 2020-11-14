@@ -90,7 +90,7 @@ self.addEventListener('message', function (evt) {
 })
 
 self.addEventListener('notificationclick', function(event) {
-    console.debug('notificationclick', event, credentials);
+    console.debug('notificationclick', event, xmppCon);
 
     event.notification.close();
 
@@ -102,7 +102,7 @@ self.addEventListener('notificationclick', function(event) {
         {
             if (xmppCon && event.reply && event.reply != "")
             {
-                xmppCon.connection.connect(credentials.jid, credentials.password, function (status)
+                xmppCon.connection.connect(xmppCon.jid, xmppCon.password, function (status)
                 {
                     console.log("XMPPConnection.connect", status);
 
