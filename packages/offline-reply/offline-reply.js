@@ -86,8 +86,6 @@
 
                 if (contact?.get("show") == "offline" && window.WebPushLib.selfSecret)
                 {
-                    fetchOfflineReply(jid);
-
                     let color = "fill:var(--chat-toolbar-btn-color);";
                     if (toolbar_el.model.get("type") == "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
 
@@ -118,7 +116,7 @@
     {
         console.debug("publishOfflineReply", json);
 
-        const stanza = $iq({type: 'set'}).c('pubsub', {xmlns: Strophe.NS.PUBSUB}).c('publish', {node: "urn:xmpp:json:0"}).c('item', {'id': 'current'}).c('json', {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)).up().up().up().c('publish-options').c('x', {'xmlns': Strophe.NS.XFORM, 'type': 'submit'}).c('field', {'var': 'FORM_TYPE', 'type': 'hidden'}).c('value').t('http://jabber.org/protocol/pubsub#publish-options').up().up().c('field', {'var': 'pubsub#persist_items'}).c('value').t('true').up().up().c('field', {'var': 'pubsub#access_model'}).c('value').t('whitelist');
+        const stanza = $iq({type: 'set'}).c('pubsub', {xmlns: Strophe.NS.PUBSUB}).c('publish', {node: "urn:xmpp:json:0"}).c('item', {'id': _converse.bare_jid}).c('json', {xmlns: "urn:xmpp:json:0"}).t(JSON.stringify(json)).up().up().up().c('publish-options').c('x', {'xmlns': Strophe.NS.XFORM, 'type': 'submit'}).c('field', {'var': 'FORM_TYPE', 'type': 'hidden'}).c('value').t('http://jabber.org/protocol/pubsub#publish-options').up().up().c('field', {'var': 'pubsub#persist_items'}).c('value').t('true').up().up().c('field', {'var': 'pubsub#access_model'}).c('value').t('open');
 
         _converse.connection.sendIQ(stanza, function(result)
         {
@@ -134,7 +132,7 @@
         console.debug("subscribeOfflineReply", jid);
         const from = _converse.connection.jid;
 
-        const stanza = $iq({type: 'set', to: jid}).c('pubsub', {xmlns: Strophe.NS.PUBSUB}).c('subscribe', {node: "urn:xmpp:json:0", jid: jid}).up();
+        const stanza = $iq({type: 'set', to: jid}).c('pubsub', {xmlns: Strophe.NS.PUBSUB}).c('subscribe', {node: "urn:xmpp:json:0", jid: from}).up();
 
         _converse.connection.sendIQ(stanza, function(result)
         {
@@ -145,10 +143,10 @@
         });
     }
 
-    function fetchOfflineReply(jid)
+    function fetchOfflineReply()
     {
-        console.debug("fetchOfflineReply", jid);
-        const stanza = $iq({type: 'get', to: jid}).c('pubsub', {xmlns: Strophe.NS.PUBSUB}).c('items', {node: "urn:xmpp:json:0"}).up();
+        console.debug("fetchOfflineReply");
+        const stanza = $iq({type: 'get'}).c('pubsub', {xmlns: Strophe.NS.PUBSUB}).c('items', {node: "urn:xmpp:json:0"}).up();
 
         _converse.connection.sendIQ(stanza, function(result)
         {
@@ -162,7 +160,7 @@
     function handlePubSub(stanza)
     {
         const from = stanza.getAttribute("from");
-        const handleElement = stanza.querySelector('json[xmlns="urn:xmpp:json:0"]');
+        const handleElement = stanza.querySelector('json');
         console.debug('handlePubSub', from, handleElement);
 
         if (handleElement)
@@ -178,7 +176,8 @@
 
         if (window.WebPushLib && window.WebPushLib.selfSecret)
         {
-            publishOfflineReply(window.WebPushLib.selfSecret)
+            publishOfflineReply(window.WebPushLib.selfSecret);
+            fetchOfflineReply();
         }
 
         _converse.connection.addHandler(function(message)
