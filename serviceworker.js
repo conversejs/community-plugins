@@ -86,7 +86,24 @@ self.addEventListener('notificationclose', function(e) {
 
 self.addEventListener('message', function (evt) {
   console.log('service worker postMessage received', evt.data);
+
+  if (evt.data.domain && evt.data.ws && evt.data.username && evt.data.password)
+  {
+    self.xmpp = clientXmpp({ service: evt.data.ws, domain: evt.data.domain, username: evt.data.username, password: evt.data.password });
+    console.log('service worker creating xmpp client', self.xmpp);
+
+    self.xmpp.on("online", async (address) => {
+      console.debug("online - sending message", address, self.xmpp_data);
+
+      const body = ">" + self.xmpp_data.msgBody + "\n\n" + self.xmpp_data.reply;
+      const message = xml("message", {type: self.xmpp_data.msgType, to: jid(self.xmpp_data.msgFrom) }, xml("body", {}, body));
+      await self.xmpp.send(message);
+      await self.xmpp.send(xml("presence", { type: "unavailable" }));
+      await self.xmpp.stop();
+    });
+  }
 })
+
 
 self.addEventListener('notificationclick', function(event) {
     console.debug('notificationclick', event);
@@ -95,32 +112,17 @@ self.addEventListener('notificationclick', function(event) {
 
     if (event.action === 'open' || event.reply)
     {
-        event.notification.data.reply = event.reply;
-
-        event.waitUntil(clients.matchAll({type: "window"}).then(function(clientList)
+        if (event.reply && event.reply != "" && self.xmpp)
         {
-            if (event.reply && event.reply != "")
+            self.xmpp_data = event.notification.data;
+            self.xmpp_data.reply = event.reply;
+
+            self.xmpp.start().catch(console.error);
+        }
+        else {
+
+            event.waitUntil(clients.matchAll({type: "window"}).then(function(clientList)
             {
-                const xmpp = clientXmpp({
-                  service: event.notification.data.ws,
-                  domain: event.notification.data.domain,
-                  username: event.notification.data.username,
-                  password: event.notification.data.password
-                });
-
-                xmpp.on("online", async (address) => {
-                  console.debug("online", address);
-
-                  const body = ">" + event.notification.data.msgBody + "\n\n" + event.reply;
-                  const message = xml("message", { from: event.notification.data.msgTo, type: event.notification.data.msgType, to: jid(event.notification.data.msgFrom) }, xml("body", {}, body));
-                  await xmpp.send(message);
-                  await xmpp.send(xml("presence", { type: "unavailable" }));
-                  await xmpp.stop();
-                });
-
-                xmpp.start().catch(console.error);
-            }
-            else {
                 const url = event.notification.data.url;
 
                 for (var i = 0; i < clientList.length; i++) {
@@ -134,7 +136,7 @@ self.addEventListener('notificationclick', function(event) {
                 if (clients.openWindow) {
                     return clients.openWindow(event.notification.data.url);
                 }
-            }
-        }));
+            }));
+        }
     }
 }, false);

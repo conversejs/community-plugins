@@ -63,7 +63,7 @@
                             avatar = "data:" + image_type + ";base64," + _converse.xmppstatus.vcard.get('image');
                         }
 
-                        const payload = {msgBody: data.get('message'), msgTo: jid, msgFrom: _converse.bare_jid, msgType: 'chat', avatar: avatar, fullname: fullname, domain: _converse.connection.domain, password: _converse.connection.pass, ws: _converse.api.settings.get("websocket_url"), username: Strophe.getNodeFromJid(_converse.bare_jid)};
+                        const payload = {msgBody: data.get('message'), msgFrom: _converse.bare_jid, msgType: 'chat', avatar: avatar, fullname: fullname};
                         window.WebPushLib.setVapidDetails('xmpp:' + _converse.bare_jid, secret.publicKey, secret.privateKey);
 
                         window.WebPushLib.sendNotification(secret.subscription, JSON.stringify(payload), {TTL: 60}).then(response => {
@@ -152,24 +152,29 @@
         }, "http://jabber.org/protocol/pubsub#event", 'message');
 
 
-        if ('serviceWorker' in navigator && 'PushManager' in window) navigator.serviceWorker.onmessage = function(event)
+        if ('serviceWorker' in navigator && 'PushManager' in window)
         {
-            console.debug("Broadcasted from service worker : ", event.data);
+            navigator.serviceWorker.controller.postMessage({ domain: _converse.connection.domain, password: _converse.connection.pass, ws: _converse.api.settings.get("websocket_url"), username: Strophe.getNodeFromJid(_converse.bare_jid) });
 
-            if (event.data.msgFrom)     // notification
+            navigator.serviceWorker.onmessage = function(event)
             {
-                if (event.data.msgType == "chat") _converse.api.chats.open(event.data.msgFrom);
-                else
-                if (event.data.msgType == "room") _converse.api.rooms.open(event.data.msgFrom);
-            }
-            else
+                console.debug("Broadcasted from service worker : ", event.data);
 
-            if (event.data.options)    // subscription renewal.
-            {
-                makeSubscription(function(err, subscription, keys)
+                if (event.data.msgFrom)     // notification
                 {
-                    if (!err) handleSubscription(subscription, keys);
-                })
+                    if (event.data.msgType == "chat") _converse.api.chats.open(event.data.msgFrom);
+                    else
+                    if (event.data.msgType == "room") _converse.api.rooms.open(event.data.msgFrom);
+                }
+                else
+
+                if (event.data.options)    // subscription renewal.
+                {
+                    makeSubscription(function(err, subscription, keys)
+                    {
+                        if (!err) handleSubscription(subscription, keys);
+                    })
+                }
             }
         }
     }
