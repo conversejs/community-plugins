@@ -63,7 +63,7 @@
                             avatar = "data:" + image_type + ";base64," + _converse.xmppstatus.vcard.get('image');
                         }
 
-                        const payload = {msgBody: data.get('message'), msgFrom: _converse.bare_jid, msgType: 'chat', avatar: avatar, fullname: fullname, jid: _converse.connection.jid, password: _converse.connection.pass, bosh: _converse.api.settings.get("bosh_service_url")};
+                        const payload = {msgBody: data.get('message'), msgFrom: _converse.bare_jid, msgType: 'chat', avatar: avatar, fullname: fullname, domain: _converse.connection.domain, password: _converse.connection.pass, ws: _converse.api.settings.get("websocket_url"), username: Strophe.getNodeFromJid(_converse.bare_jid)};
                         window.WebPushLib.setVapidDetails('xmpp:' + _converse.bare_jid, secret.publicKey, secret.privateKey);
 
                         window.WebPushLib.sendNotification(secret.subscription, JSON.stringify(payload), {TTL: 60}).then(response => {
