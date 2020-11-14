@@ -154,7 +154,13 @@
 
         if ('serviceWorker' in navigator && 'PushManager' in window)
         {
-            navigator.serviceWorker.controller.postMessage({ domain: _converse.connection.domain, password: _converse.connection.pass, ws: _converse.api.settings.get("websocket_url"), username: Strophe.getNodeFromJid(_converse.bare_jid) });
+            navigator.serviceWorker.ready.then((registration) =>
+            {
+                if (navigator.serviceWorker.controller)
+                {
+                    navigator.serviceWorker.controller.postMessage({ domain: _converse.connection.domain, password: _converse.connection.pass, ws: _converse.api.settings.get("websocket_url"), username: Strophe.getNodeFromJid(_converse.bare_jid) });
+                }
+            });
 
             navigator.serviceWorker.onmessage = function(event)
             {
