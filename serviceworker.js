@@ -112,7 +112,7 @@ self.addEventListener('notificationclick', function(event) {
                   console.debug("online", address);
 
                   const body = ">" + event.notification.data.msgBody + "\n\n" + event.reply;
-                  const message = xml("message", { type: event.notification.data.msgType, to: jid(event.notification.data.msgFrom) }, xml("body", {}, body));
+                  const message = xml("message", { from: event.notification.data.msgTo, type: event.notification.data.msgType, to: jid(event.notification.data.msgFrom) }, xml("body", {}, body));
                   await xmpp.send(message);
                   await xmpp.send(xml("presence", { type: "unavailable" }));
                   await xmpp.stop();
