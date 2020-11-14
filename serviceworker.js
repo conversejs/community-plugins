@@ -81,12 +81,6 @@ self.addEventListener('notificationclose', function(e) {
 
 self.addEventListener('message', function (evt) {
   console.log('service worker postMessage received', evt.data);
-
-  if (!xmppCon && evt.data.jid && evt.data.password && evt.data.bosh)
-  {
-      xmppCon = evt.data;
-      xmppCon.connection = new Strophe.Connection(evt.data.bosh);
-  }
 })
 
 self.addEventListener('notificationclick', function(event) {
@@ -102,15 +96,17 @@ self.addEventListener('notificationclick', function(event) {
         {
             if (xmppCon && event.reply && event.reply != "")
             {
-                xmppCon.connection.connect(xmppCon.jid, xmppCon.password, function (status)
+                const connection = new Strophe.Connection(event.notification.data.bosh);
+
+                connection.connect(event.notification.data.jid, event.notification.data.password, function (status)
                 {
                     console.log("XMPPConnection.connect", status);
 
                     if (status === Strophe.Status.CONNECTED)
                     {
                         const body = ">" + event.notification.data.msgBody + "\n\n" + event.reply;
-                        xmppCon.connection.send($msg({type: event.notification.data.msgType, to: event.notification.data.msgFrom}).c("body").t(body));
-                        setTimeout(xmppCon.connection.disconnect, 1000);
+                        connection.send($msg({type: event.notification.data.msgType, to: event.notification.data.msgFrom}).c("body").t(body));
+                        setTimeout(connection.disconnect, 1000);
                     }
                 });
             }
