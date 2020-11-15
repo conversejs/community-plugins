@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var _converse = null, Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, html, _, __, Model, BootstrapModal, offline_reply_label;
+    var _converse = null, Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, html, _, __, Model, BootstrapModal, offline_reply_label, selfSubscriptions = {};
 
     converse.plugins.add("offline-reply", {
 
@@ -37,7 +37,7 @@
 
             _converse.api.listen.on('connected', function()
             {
-                listenForOfflineReply();
+                initServiceWorker()
             });
 
             _converse.api.listen.on('messageSend', function(data)
@@ -48,9 +48,9 @@
 
                 if (contact?.get("show") == "offline")
                 {
-                    if (window.WebPushLib.selfSubscriptions[jid])
+                    if (selfSubscriptions[jid])
                     {
-                        const secret = window.WebPushLib.selfSubscriptions[jid];
+                        const secret = selfSubscriptions[jid];
                         console.debug("messageSend offline message", secret, data.get('message'));
 
                         const fullname = _converse.xmppstatus.vcard.get('fullname') || _converse.bare_jid;
@@ -131,7 +131,7 @@
         if (handleElement)
         {
             const json = handleElement.innerHTML;
-            window.WebPushLib.selfSubscriptions[from] = JSON.parse(json);
+            selfSubscriptions[from] = JSON.parse(json);
         }
     }
 
@@ -182,6 +182,99 @@
                     })
                 }
             }
+        }
+    }
+
+
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
+    function makeSubscription(callback)
+    {
+        const keys = window.WebPushLib.generateVAPIDKeys();
+        console.debug('makeSubscription', keys);
+
+        swRegistration.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(keys.publicKey)}).then(function(subscription)
+        {
+            console.debug('User is subscribed.');
+            localStorage["converse.vapid.keys"] = JSON.stringify(keys);
+            if (callback) callback(false, subscription, keys);
+
+        }).catch(function(err) {
+            console.error('Failed to subscribe the user: ', err);
+            if (callback) callback(true);
+        });
+    }
+
+    function handleSubscription(subscription, keys)
+    {
+        console.debug('handleSubscription', subscription, keys);
+
+        window.WebPushLib.selfSecret = {privateKey: keys.privateKey, publicKey: keys.publicKey, subscription: subscription};
+        window.WebPushLib.setVapidDetails('xmpp:' + location.hostname, keys.publicKey, keys.privateKey);
+    }
+
+    function initServiceWorker()
+    {
+        if ('serviceWorker' in navigator && 'PushManager' in window)
+        {
+            console.debug('Service Worker and Push is supported');
+
+            navigator.serviceWorker.register('./serviceworker.js').then(function(registration)
+            {
+                swRegistration = registration;
+                console.debug('Service Worker is registered', swRegistration);
+
+                swRegistration.pushManager.getSubscription().then(function(subscription)
+                {
+                    if (subscription && !localStorage["converse.vapid.keys"])
+                    {
+                        subscription.unsubscribe();
+                        subscription = null;
+                    }
+
+                    if (!subscription) {
+                        makeSubscription(function(err, subscription, keys)
+                        {
+                            if (err)
+                            {
+                                listenForOfflineReply();
+                            }
+                            else {
+                                handleSubscription(subscription, keys);
+                                listenForOfflineReply();
+                            }
+                        })
+                    }
+                    else {
+                        handleSubscription(subscription, JSON.parse(localStorage["converse.vapid.keys"]));
+                        listenForOfflineReply();
+                    }
+
+                }).catch(function(error) {
+                    console.debug('Error unsubscribing', error);
+                    listenForOfflineReply();
+                });
+
+            }).catch(function(error) {
+                console.error('Service Worker Error', error);
+                listenForOfflineReply();
+            });
+        } else {
+            console.warn('Push messaging is not supported');
+            listenForOfflineReply();
         }
     }
 }));
