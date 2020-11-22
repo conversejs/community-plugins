@@ -36,14 +36,14 @@
 /******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 	// Promise = chunk loading, 0 = chunk loaded
 /******/ 	var installedChunks = {
-/******/ 		177: 0
+/******/ 		178: 0
 /******/ 	};
 /******/
 /******/
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"0":"locales/dayjs/af","1":"locales/dayjs/ar","2":"locales/dayjs/ar-dz","3":"locales/dayjs/ar-kw","4":"locales/dayjs/ar-ly","5":"locales/dayjs/ar-ma","6":"locales/dayjs/ar-sa","7":"locales/dayjs/ar-tn","8":"locales/dayjs/az","9":"locales/dayjs/be","10":"locales/dayjs/bg","11":"locales/dayjs/bi","12":"locales/dayjs/bm","13":"locales/dayjs/bn","14":"locales/dayjs/bo","15":"locales/dayjs/br","16":"locales/dayjs/bs","17":"locales/dayjs/ca","18":"locales/dayjs/cs","19":"locales/dayjs/cv","20":"locales/dayjs/cy","21":"locales/dayjs/da","22":"locales/dayjs/de","23":"locales/dayjs/de-at","24":"locales/dayjs/de-ch","25":"locales/dayjs/dv","26":"locales/dayjs/el","27":"locales/dayjs/en","28":"locales/dayjs/en-SG","29":"locales/dayjs/en-au","30":"locales/dayjs/en-ca","31":"locales/dayjs/en-gb","32":"locales/dayjs/en-ie","33":"locales/dayjs/en-il","34":"locales/dayjs/en-in","35":"locales/dayjs/en-nz","36":"locales/dayjs/en-tt","37":"locales/dayjs/eo","38":"locales/dayjs/es","39":"locales/dayjs/es-do","40":"locales/dayjs/es-pr","41":"locales/dayjs/es-us","42":"locales/dayjs/et","43":"locales/dayjs/eu","44":"locales/dayjs/fa","45":"locales/dayjs/fi","46":"locales/dayjs/fo","47":"locales/dayjs/fr","48":"locales/dayjs/fr-ca","49":"locales/dayjs/fr-ch","50":"locales/dayjs/fy","51":"locales/dayjs/ga","52":"locales/dayjs/gd","53":"locales/dayjs/gl","54":"locales/dayjs/gom-latn","55":"locales/dayjs/gu","56":"locales/dayjs/he","57":"locales/dayjs/hi","58":"locales/dayjs/hr","59":"locales/dayjs/ht","60":"locales/dayjs/hu","61":"locales/dayjs/hy-am","62":"locales/dayjs/id","63":"locales/dayjs/is","64":"locales/dayjs/it","65":"locales/dayjs/it-ch","66":"locales/dayjs/ja","67":"locales/dayjs/jv","68":"locales/dayjs/ka","69":"locales/dayjs/kk","70":"locales/dayjs/km","71":"locales/dayjs/kn","72":"locales/dayjs/ko","73":"locales/dayjs/ku","74":"locales/dayjs/ky","75":"locales/dayjs/lb","76":"locales/dayjs/lo","77":"locales/dayjs/lt","78":"locales/dayjs/lv","79":"locales/dayjs/me","80":"locales/dayjs/mi","81":"locales/dayjs/mk","82":"locales/dayjs/ml","83":"locales/dayjs/mn","84":"locales/dayjs/mr","85":"locales/dayjs/ms","86":"locales/dayjs/ms-my","87":"locales/dayjs/mt","88":"locales/dayjs/my","89":"locales/dayjs/nb","90":"locales/dayjs/ne","91":"locales/dayjs/nl","92":"locales/dayjs/nl-be","93":"locales/dayjs/nn","94":"locales/dayjs/oc-lnc","95":"locales/dayjs/pa-in","96":"locales/dayjs/pl","97":"locales/dayjs/pt","98":"locales/dayjs/pt-br","99":"locales/dayjs/ro","100":"locales/dayjs/ru","101":"locales/dayjs/rw","102":"locales/dayjs/sd","103":"locales/dayjs/se","104":"locales/dayjs/si","105":"locales/dayjs/sk","106":"locales/dayjs/sl","107":"locales/dayjs/sq","108":"locales/dayjs/sr","109":"locales/dayjs/sr-cyrl","110":"locales/dayjs/ss","111":"locales/dayjs/sv","112":"locales/dayjs/sw","113":"locales/dayjs/ta","114":"locales/dayjs/te","115":"locales/dayjs/tet","116":"locales/dayjs/tg","117":"locales/dayjs/th","118":"locales/dayjs/tk","119":"locales/dayjs/tl-ph","120":"locales/dayjs/tlh","121":"locales/dayjs/tr","122":"locales/dayjs/tzl","123":"locales/dayjs/tzm","124":"locales/dayjs/tzm-latn","125":"locales/dayjs/ug-cn","126":"locales/dayjs/uk","127":"locales/dayjs/ur","128":"locales/dayjs/uz","129":"locales/dayjs/uz-latn","130":"locales/dayjs/vi","131":"locales/dayjs/x-pseudo","132":"locales/dayjs/yo","133":"locales/dayjs/zh","134":"locales/dayjs/zh-cn","135":"locales/dayjs/zh-hk","136":"locales/dayjs/zh-tw","137":"emojis","138":"icons","139":"locales/af-LC_MESSAGES-converse-po","140":"locales/ar-LC_MESSAGES-converse-po","141":"locales/bg-LC_MESSAGES-converse-po","142":"locales/ca-LC_MESSAGES-converse-po","143":"locales/cs-LC_MESSAGES-converse-po","144":"locales/da-LC_MESSAGES-converse-po","145":"locales/dayjs/index-d-ts","146":"locales/dayjs/types-d-ts","147":"locales/de-LC_MESSAGES-converse-po","148":"locales/eo-LC_MESSAGES-converse-po","149":"locales/es-LC_MESSAGES-converse-po","150":"locales/eu-LC_MESSAGES-converse-po","151":"locales/fi-LC_MESSAGES-converse-po","152":"locales/fr-LC_MESSAGES-converse-po","153":"locales/gl-LC_MESSAGES-converse-po","154":"locales/he-LC_MESSAGES-converse-po","155":"locales/hi-LC_MESSAGES-converse-po","156":"locales/hu-LC_MESSAGES-converse-po","157":"locales/id-LC_MESSAGES-converse-po","158":"locales/it-LC_MESSAGES-converse-po","159":"locales/ja-LC_MESSAGES-converse-po","160":"locales/lt-LC_MESSAGES-converse-po","161":"locales/mr-LC_MESSAGES-converse-po","162":"locales/nb-LC_MESSAGES-converse-po","163":"locales/nl-LC_MESSAGES-converse-po","164":"locales/nl_BE-LC_MESSAGES-converse-po","165":"locales/oc-LC_MESSAGES-converse-po","166":"locales/pl-LC_MESSAGES-converse-po","167":"locales/pt-LC_MESSAGES-converse-po","168":"locales/pt_BR-LC_MESSAGES-converse-po","169":"locales/ro-LC_MESSAGES-converse-po","170":"locales/ru-LC_MESSAGES-converse-po","171":"locales/th-LC_MESSAGES-converse-po","172":"locales/tr-LC_MESSAGES-converse-po","173":"locales/uk-LC_MESSAGES-converse-po","174":"locales/vi-LC_MESSAGES-converse-po","175":"locales/zh_CN-LC_MESSAGES-converse-po","176":"locales/zh_TW-LC_MESSAGES-converse-po"}[chunkId]||chunkId) + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"0":"locales/dayjs/af","1":"locales/dayjs/ar","2":"locales/dayjs/ar-dz","3":"locales/dayjs/ar-kw","4":"locales/dayjs/ar-ly","5":"locales/dayjs/ar-ma","6":"locales/dayjs/ar-sa","7":"locales/dayjs/ar-tn","8":"locales/dayjs/az","9":"locales/dayjs/be","10":"locales/dayjs/bg","11":"locales/dayjs/bi","12":"locales/dayjs/bm","13":"locales/dayjs/bn","14":"locales/dayjs/bo","15":"locales/dayjs/br","16":"locales/dayjs/bs","17":"locales/dayjs/ca","18":"locales/dayjs/cs","19":"locales/dayjs/cv","20":"locales/dayjs/cy","21":"locales/dayjs/da","22":"locales/dayjs/de","23":"locales/dayjs/de-at","24":"locales/dayjs/de-ch","25":"locales/dayjs/dv","26":"locales/dayjs/el","27":"locales/dayjs/en","28":"locales/dayjs/en-SG","29":"locales/dayjs/en-au","30":"locales/dayjs/en-ca","31":"locales/dayjs/en-gb","32":"locales/dayjs/en-ie","33":"locales/dayjs/en-il","34":"locales/dayjs/en-in","35":"locales/dayjs/en-nz","36":"locales/dayjs/en-tt","37":"locales/dayjs/eo","38":"locales/dayjs/es","39":"locales/dayjs/es-do","40":"locales/dayjs/es-pr","41":"locales/dayjs/es-us","42":"locales/dayjs/et","43":"locales/dayjs/eu","44":"locales/dayjs/fa","45":"locales/dayjs/fi","46":"locales/dayjs/fo","47":"locales/dayjs/fr","48":"locales/dayjs/fr-ca","49":"locales/dayjs/fr-ch","50":"locales/dayjs/fy","51":"locales/dayjs/ga","52":"locales/dayjs/gd","53":"locales/dayjs/gl","54":"locales/dayjs/gom-latn","55":"locales/dayjs/gu","56":"locales/dayjs/he","57":"locales/dayjs/hi","58":"locales/dayjs/hr","59":"locales/dayjs/ht","60":"locales/dayjs/hu","61":"locales/dayjs/hy-am","62":"locales/dayjs/id","63":"locales/dayjs/is","64":"locales/dayjs/it","65":"locales/dayjs/it-ch","66":"locales/dayjs/ja","67":"locales/dayjs/jv","68":"locales/dayjs/ka","69":"locales/dayjs/kk","70":"locales/dayjs/km","71":"locales/dayjs/kn","72":"locales/dayjs/ko","73":"locales/dayjs/ku","74":"locales/dayjs/ky","75":"locales/dayjs/lb","76":"locales/dayjs/lo","77":"locales/dayjs/lt","78":"locales/dayjs/lv","79":"locales/dayjs/me","80":"locales/dayjs/mi","81":"locales/dayjs/mk","82":"locales/dayjs/ml","83":"locales/dayjs/mn","84":"locales/dayjs/mr","85":"locales/dayjs/ms","86":"locales/dayjs/ms-my","87":"locales/dayjs/mt","88":"locales/dayjs/my","89":"locales/dayjs/nb","90":"locales/dayjs/ne","91":"locales/dayjs/nl","92":"locales/dayjs/nl-be","93":"locales/dayjs/nn","94":"locales/dayjs/oc-lnc","95":"locales/dayjs/pa-in","96":"locales/dayjs/pl","97":"locales/dayjs/pt","98":"locales/dayjs/pt-br","99":"locales/dayjs/ro","100":"locales/dayjs/ru","101":"locales/dayjs/rw","102":"locales/dayjs/sd","103":"locales/dayjs/se","104":"locales/dayjs/si","105":"locales/dayjs/sk","106":"locales/dayjs/sl","107":"locales/dayjs/sq","108":"locales/dayjs/sr","109":"locales/dayjs/sr-cyrl","110":"locales/dayjs/ss","111":"locales/dayjs/sv","112":"locales/dayjs/sw","113":"locales/dayjs/ta","114":"locales/dayjs/te","115":"locales/dayjs/tet","116":"locales/dayjs/tg","117":"locales/dayjs/th","118":"locales/dayjs/tk","119":"locales/dayjs/tl-ph","120":"locales/dayjs/tlh","121":"locales/dayjs/tr","122":"locales/dayjs/tzl","123":"locales/dayjs/tzm","124":"locales/dayjs/tzm-latn","125":"locales/dayjs/ug-cn","126":"locales/dayjs/uk","127":"locales/dayjs/ur","128":"locales/dayjs/uz","129":"locales/dayjs/uz-latn","130":"locales/dayjs/vi","131":"locales/dayjs/x-pseudo","132":"locales/dayjs/yo","133":"locales/dayjs/zh","134":"locales/dayjs/zh-cn","135":"locales/dayjs/zh-hk","136":"locales/dayjs/zh-tw","137":"emojis","138":"icons","139":"locales/af-LC_MESSAGES-converse-po","140":"locales/ar-LC_MESSAGES-converse-po","141":"locales/bg-LC_MESSAGES-converse-po","142":"locales/ca-LC_MESSAGES-converse-po","143":"locales/cs-LC_MESSAGES-converse-po","144":"locales/da-LC_MESSAGES-converse-po","145":"locales/dayjs/index-d-ts","146":"locales/dayjs/types-d-ts","147":"locales/de-LC_MESSAGES-converse-po","148":"locales/eo-LC_MESSAGES-converse-po","149":"locales/es-LC_MESSAGES-converse-po","150":"locales/eu-LC_MESSAGES-converse-po","151":"locales/fi-LC_MESSAGES-converse-po","152":"locales/fr-LC_MESSAGES-converse-po","153":"locales/gl-LC_MESSAGES-converse-po","154":"locales/he-LC_MESSAGES-converse-po","155":"locales/hi-LC_MESSAGES-converse-po","156":"locales/hu-LC_MESSAGES-converse-po","157":"locales/id-LC_MESSAGES-converse-po","158":"locales/it-LC_MESSAGES-converse-po","159":"locales/ja-LC_MESSAGES-converse-po","160":"locales/lt-LC_MESSAGES-converse-po","161":"locales/mr-LC_MESSAGES-converse-po","162":"locales/nb-LC_MESSAGES-converse-po","163":"locales/nl-LC_MESSAGES-converse-po","164":"locales/nl_BE-LC_MESSAGES-converse-po","165":"locales/oc-LC_MESSAGES-converse-po","166":"locales/pl-LC_MESSAGES-converse-po","167":"locales/pt-LC_MESSAGES-converse-po","168":"locales/pt_BR-LC_MESSAGES-converse-po","169":"locales/ro-LC_MESSAGES-converse-po","170":"locales/ru-LC_MESSAGES-converse-po","171":"locales/sv-LC_MESSAGES-converse-po","172":"locales/th-LC_MESSAGES-converse-po","173":"locales/tr-LC_MESSAGES-converse-po","174":"locales/uk-LC_MESSAGES-converse-po","175":"locales/vi-LC_MESSAGES-converse-po","176":"locales/zh_CN-LC_MESSAGES-converse-po","177":"locales/zh_TW-LC_MESSAGES-converse-po"}[chunkId]||chunkId) + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -47723,6 +47723,269 @@ exports.default = (0, _driver2.default)('webExtensionLocalStorage', 'local');
 /* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var _ = {escape:__webpack_require__(8)};
+module.exports = function(o) {
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+__p += '<!-- src/templates/form_captcha.html -->\n';
+ if (o.label) { ;
+__p += '\r\n<label>\r\n    ' +
+__e(o.label) +
+'\r\n</label>\r\n';
+ } ;
+__p += '\r\n<img src="data:' +
+__e(o.type) +
+';base64,' +
+__e(o.data) +
+'">\r\n<input name="' +
+__e(o.name) +
+'" type="text" ';
+ if (o.required) { ;
+__p += ' required="required" ';
+ } ;
+__p += ' />\r\n\r\n\r\n';
+return __p
+};
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(8)};
+module.exports = function(o) {
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+__p += '<!-- src/templates/form_checkbox.html -->\n<div class="form-group">\r\n    <input id="' +
+__e(o.id) +
+'" name="' +
+__e(o.name) +
+'" type="checkbox" ' +
+__e(o.checked) +
+' ';
+ if (o.required) { ;
+__p += ' required ';
+ } ;
+__p += ' />\r\n    <label class="form-check-label" for="' +
+__e(o.id) +
+'">' +
+__e(o.label) +
+'</label>\r\n</div>\r\n';
+return __p
+};
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(8)};
+module.exports = function(o) {
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+__p += '<!-- src/templates/form_select.html -->\n<div class="form-group">\r\n    <label for="' +
+__e(o.id) +
+'">' +
+__e(o.label) +
+'</label>\r\n    <select class="form-control" id="' +
+__e(o.id) +
+'" name="' +
+__e(o.name) +
+'" ';
+ if (o.multiple) { ;
+__p += ' multiple="multiple" ';
+ } ;
+__p += '>' +
+((__t = (o.options)) == null ? '' : __t) +
+'</select>\r\n</div>\r\n';
+return __p
+};
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(8)};
+module.exports = function(o) {
+var __t, __p = '', __e = _.escape;
+__p += '<!-- src/templates/form_textarea.html -->\n<label class="label-ta">' +
+__e(o.label) +
+'</label>\r\n<textarea name="' +
+__e(o.name) +
+'">' +
+__e(o.value) +
+'</textarea>\r\n';
+return __p
+};
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(8)};
+module.exports = function(o) {
+var __t, __p = '', __e = _.escape;
+__p += '<!-- src/templates/form_url.html -->\n<label>\r\n    ' +
+__e(o.label) +
+'\r\n    <a class="form-url" target="_blank" rel="noopener" href="' +
+__e(o.value) +
+'">' +
+__e(o.value) +
+'</a>\r\n</label>\r\n';
+return __p
+};
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(8)};
+module.exports = function(o) {
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+__p += '<!-- src/templates/select_option.html -->\n<option value="' +
+__e(o.value) +
+'" ';
+ if (o.selected) { ;
+__p += ' selected="selected" ';
+ } ;
+__p += ' >' +
+__e(o.label) +
+'</option>\r\n';
+return __p
+};
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/*
+ 2020 Jason Mulligan <jason.mulligan@avoidwork.com>
+ @version 6.1.0
+*/
+!function(e){var x=/^(b|B)$/,M={iec:{bits:["b","Kib","Mib","Gib","Tib","Pib","Eib","Zib","Yib"],bytes:["B","KiB","MiB","GiB","TiB","PiB","EiB","ZiB","YiB"]},jedec:{bits:["b","Kb","Mb","Gb","Tb","Pb","Eb","Zb","Yb"],bytes:["B","KB","MB","GB","TB","PB","EB","ZB","YB"]}},w={iec:["","kibi","mebi","gibi","tebi","pebi","exbi","zebi","yobi"],jedec:["","kilo","mega","giga","tera","peta","exa","zetta","yotta"]};function t(e){var i,t,o,n,b,r,a,l,s,d,u,c,f,p,B,y=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{},g=[],v=0,m=void 0,h=void 0;if(isNaN(e))throw new TypeError("Invalid number");return t=!0===y.bits,u=!0===y.unix,i=y.base||2,d=void 0!==y.round?y.round:u?1:2,r=void 0!==y.locale?y.locale:"",a=y.localeOptions||{},c=void 0!==y.separator?y.separator:"",f=void 0!==y.spacer?y.spacer:u?"":" ",B=y.symbols||{},p=2===i&&y.standard||"jedec",s=y.output||"string",n=!0===y.fullform,b=y.fullforms instanceof Array?y.fullforms:[],m=void 0!==y.exponent?y.exponent:-1,o=2<i?1e3:1024,(l=(h=Number(e))<0)&&(h=-h),(-1===m||isNaN(m))&&(m=Math.floor(Math.log(h)/Math.log(o)))<0&&(m=0),8<m&&(m=8),"exponent"===s?m:(0===h?(g[0]=0,g[1]=u?"":M[p][t?"bits":"bytes"][m]):(v=h/(2===i?Math.pow(2,10*m):Math.pow(1e3,m)),t&&o<=(v*=8)&&m<8&&(v/=o,m++),g[0]=Number(v.toFixed(0<m?d:0)),g[0]===o&&m<8&&void 0===y.exponent&&(g[0]=1,m++),g[1]=10===i&&1===m?t?"kb":"kB":M[p][t?"bits":"bytes"][m],u&&(g[1]="jedec"===p?g[1].charAt(0):0<m?g[1].replace(/B$/,""):g[1],x.test(g[1])&&(g[0]=Math.floor(g[0]),g[1]=""))),l&&(g[0]=-g[0]),g[1]=B[g[1]]||g[1],!0===r?g[0]=g[0].toLocaleString():0<r.length?g[0]=g[0].toLocaleString(r,a):0<c.length&&(g[0]=g[0].toString().replace(".",c)),"array"===s?g:(n&&(g[1]=b[m]?b[m]:w[p][m]+(t?"bit":"byte")+(1===g[0]?"":"s")),"object"===s?{value:g[0],symbol:g[1],exponent:m}:g.join(f)))}t.partial=function(i){return function(e){return t(e,i)}}, true?module.exports=t:undefined}("undefined"!=typeof window?window:global);
+//# sourceMappingURL=filesize.min.js.map
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(8)};
+module.exports = function(o) {
+var __t, __p = '', __e = _.escape;
+__p += '<!-- src/templates/controlbox_toggle.html -->\n<span class="toggle-feedback">' +
+__e(o.label_toggle) +
+'</span>\r\n';
+return __p
+};
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(8)};
+module.exports = function(o) {
+var __t, __p = '';
+__p += '<!-- src/templates/dragresize.html -->\n<div class="dragresize dragresize-top"></div>\r\n<div class="dragresize dragresize-topleft"></div>\r\n<div class="dragresize dragresize-left"></div>\r\n';
+return __p
+};
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = {escape:__webpack_require__(8)};
+module.exports = function(o) {
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+__p += '<!-- src/templates/room_description.html -->\n<!-- FIXME: check markup in mockup -->\r\n<div class="room-info">\r\n<p class="room-info"><strong>' +
+__e(o.label_jid) +
+'</strong> ' +
+__e(o.jid) +
+'</p>\r\n<p class="room-info"><strong>' +
+__e(o.label_desc) +
+'</strong> ' +
+__e(o.desc) +
+'</p>\r\n<p class="room-info"><strong>' +
+__e(o.label_occ) +
+'</strong> ' +
+__e(o.occ) +
+'</p>\r\n<p class="room-info"><strong>' +
+__e(o.label_features) +
+'</strong>\r\n    <ul>\r\n        ';
+ if (o.passwordprotected) { ;
+__p += '\r\n        <li class="room-info locked">' +
+__e(o.label_requires_auth) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n        ';
+ if (o.hidden) { ;
+__p += '\r\n        <li class="room-info">' +
+__e(o.label_hidden) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n        ';
+ if (o.membersonly) { ;
+__p += '\r\n        <li class="room-info">' +
+__e(o.label_requires_invite) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n        ';
+ if (o.moderated) { ;
+__p += '\r\n        <li class="room-info">' +
+__e(o.label_moderated) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n        ';
+ if (o.nonanonymous) { ;
+__p += '\r\n        <li class="room-info">' +
+__e(o.label_non_anon) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n        ';
+ if (o.open) { ;
+__p += '\r\n        <li class="room-info">' +
+__e(o.label_open_room) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n        ';
+ if (o.persistent) { ;
+__p += '\r\n        <li class="room-info">' +
+__e(o.label_permanent_room) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n        ';
+ if (o.publicroom) { ;
+__p += '\r\n        <li class="room-info">' +
+__e(o.label_public) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n        ';
+ if (o.semianonymous) { ;
+__p += '\r\n        <li class="room-info">' +
+__e(o.label_semi_anon) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n        ';
+ if (o.temporary) { ;
+__p += '\r\n        <li class="room-info">' +
+__e(o.label_temp_room) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n        ';
+ if (o.unmoderated) { ;
+__p += '\r\n        <li class="room-info">' +
+__e(o.label_unmoderated) +
+'</li>\r\n        ';
+ } ;
+__p += '\r\n    </ul>\r\n</p>\r\n</div>\r\n';
+return __p
+};
+
+/***/ }),
+/* 180 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
  * @license MIT or GPL-2.0
  * @fileOverview Favico animations
@@ -48488,269 +48751,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 })();
 
-
-/***/ }),
-/* 171 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(8)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/form_captcha.html -->\n';
- if (o.label) { ;
-__p += '\r\n<label>\r\n    ' +
-__e(o.label) +
-'\r\n</label>\r\n';
- } ;
-__p += '\r\n<img src="data:' +
-__e(o.type) +
-';base64,' +
-__e(o.data) +
-'">\r\n<input name="' +
-__e(o.name) +
-'" type="text" ';
- if (o.required) { ;
-__p += ' required="required" ';
- } ;
-__p += ' />\r\n\r\n\r\n';
-return __p
-};
-
-/***/ }),
-/* 172 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(8)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/form_checkbox.html -->\n<div class="form-group">\r\n    <input id="' +
-__e(o.id) +
-'" name="' +
-__e(o.name) +
-'" type="checkbox" ' +
-__e(o.checked) +
-' ';
- if (o.required) { ;
-__p += ' required ';
- } ;
-__p += ' />\r\n    <label class="form-check-label" for="' +
-__e(o.id) +
-'">' +
-__e(o.label) +
-'</label>\r\n</div>\r\n';
-return __p
-};
-
-/***/ }),
-/* 173 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(8)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/form_select.html -->\n<div class="form-group">\r\n    <label for="' +
-__e(o.id) +
-'">' +
-__e(o.label) +
-'</label>\r\n    <select class="form-control" id="' +
-__e(o.id) +
-'" name="' +
-__e(o.name) +
-'" ';
- if (o.multiple) { ;
-__p += ' multiple="multiple" ';
- } ;
-__p += '>' +
-((__t = (o.options)) == null ? '' : __t) +
-'</select>\r\n</div>\r\n';
-return __p
-};
-
-/***/ }),
-/* 174 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(8)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/form_textarea.html -->\n<label class="label-ta">' +
-__e(o.label) +
-'</label>\r\n<textarea name="' +
-__e(o.name) +
-'">' +
-__e(o.value) +
-'</textarea>\r\n';
-return __p
-};
-
-/***/ }),
-/* 175 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(8)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/form_url.html -->\n<label>\r\n    ' +
-__e(o.label) +
-'\r\n    <a class="form-url" target="_blank" rel="noopener" href="' +
-__e(o.value) +
-'">' +
-__e(o.value) +
-'</a>\r\n</label>\r\n';
-return __p
-};
-
-/***/ }),
-/* 176 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(8)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/select_option.html -->\n<option value="' +
-__e(o.value) +
-'" ';
- if (o.selected) { ;
-__p += ' selected="selected" ';
- } ;
-__p += ' >' +
-__e(o.label) +
-'</option>\r\n';
-return __p
-};
-
-/***/ }),
-/* 177 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/*
- 2020 Jason Mulligan <jason.mulligan@avoidwork.com>
- @version 6.1.0
-*/
-!function(e){var x=/^(b|B)$/,M={iec:{bits:["b","Kib","Mib","Gib","Tib","Pib","Eib","Zib","Yib"],bytes:["B","KiB","MiB","GiB","TiB","PiB","EiB","ZiB","YiB"]},jedec:{bits:["b","Kb","Mb","Gb","Tb","Pb","Eb","Zb","Yb"],bytes:["B","KB","MB","GB","TB","PB","EB","ZB","YB"]}},w={iec:["","kibi","mebi","gibi","tebi","pebi","exbi","zebi","yobi"],jedec:["","kilo","mega","giga","tera","peta","exa","zetta","yotta"]};function t(e){var i,t,o,n,b,r,a,l,s,d,u,c,f,p,B,y=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{},g=[],v=0,m=void 0,h=void 0;if(isNaN(e))throw new TypeError("Invalid number");return t=!0===y.bits,u=!0===y.unix,i=y.base||2,d=void 0!==y.round?y.round:u?1:2,r=void 0!==y.locale?y.locale:"",a=y.localeOptions||{},c=void 0!==y.separator?y.separator:"",f=void 0!==y.spacer?y.spacer:u?"":" ",B=y.symbols||{},p=2===i&&y.standard||"jedec",s=y.output||"string",n=!0===y.fullform,b=y.fullforms instanceof Array?y.fullforms:[],m=void 0!==y.exponent?y.exponent:-1,o=2<i?1e3:1024,(l=(h=Number(e))<0)&&(h=-h),(-1===m||isNaN(m))&&(m=Math.floor(Math.log(h)/Math.log(o)))<0&&(m=0),8<m&&(m=8),"exponent"===s?m:(0===h?(g[0]=0,g[1]=u?"":M[p][t?"bits":"bytes"][m]):(v=h/(2===i?Math.pow(2,10*m):Math.pow(1e3,m)),t&&o<=(v*=8)&&m<8&&(v/=o,m++),g[0]=Number(v.toFixed(0<m?d:0)),g[0]===o&&m<8&&void 0===y.exponent&&(g[0]=1,m++),g[1]=10===i&&1===m?t?"kb":"kB":M[p][t?"bits":"bytes"][m],u&&(g[1]="jedec"===p?g[1].charAt(0):0<m?g[1].replace(/B$/,""):g[1],x.test(g[1])&&(g[0]=Math.floor(g[0]),g[1]=""))),l&&(g[0]=-g[0]),g[1]=B[g[1]]||g[1],!0===r?g[0]=g[0].toLocaleString():0<r.length?g[0]=g[0].toLocaleString(r,a):0<c.length&&(g[0]=g[0].toString().replace(".",c)),"array"===s?g:(n&&(g[1]=b[m]?b[m]:w[p][m]+(t?"bit":"byte")+(1===g[0]?"":"s")),"object"===s?{value:g[0],symbol:g[1],exponent:m}:g.join(f)))}t.partial=function(i){return function(e){return t(e,i)}}, true?module.exports=t:undefined}("undefined"!=typeof window?window:global);
-//# sourceMappingURL=filesize.min.js.map
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(8)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape;
-__p += '<!-- src/templates/controlbox_toggle.html -->\n<span class="toggle-feedback">' +
-__e(o.label_toggle) +
-'</span>\r\n';
-return __p
-};
-
-/***/ }),
-/* 179 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(8)};
-module.exports = function(o) {
-var __t, __p = '';
-__p += '<!-- src/templates/dragresize.html -->\n<div class="dragresize dragresize-top"></div>\r\n<div class="dragresize dragresize-topleft"></div>\r\n<div class="dragresize dragresize-left"></div>\r\n';
-return __p
-};
-
-/***/ }),
-/* 180 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _ = {escape:__webpack_require__(8)};
-module.exports = function(o) {
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-__p += '<!-- src/templates/room_description.html -->\n<!-- FIXME: check markup in mockup -->\r\n<div class="room-info">\r\n<p class="room-info"><strong>' +
-__e(o.label_jid) +
-'</strong> ' +
-__e(o.jid) +
-'</p>\r\n<p class="room-info"><strong>' +
-__e(o.label_desc) +
-'</strong> ' +
-__e(o.desc) +
-'</p>\r\n<p class="room-info"><strong>' +
-__e(o.label_occ) +
-'</strong> ' +
-__e(o.occ) +
-'</p>\r\n<p class="room-info"><strong>' +
-__e(o.label_features) +
-'</strong>\r\n    <ul>\r\n        ';
- if (o.passwordprotected) { ;
-__p += '\r\n        <li class="room-info locked">' +
-__e(o.label_requires_auth) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n        ';
- if (o.hidden) { ;
-__p += '\r\n        <li class="room-info">' +
-__e(o.label_hidden) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n        ';
- if (o.membersonly) { ;
-__p += '\r\n        <li class="room-info">' +
-__e(o.label_requires_invite) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n        ';
- if (o.moderated) { ;
-__p += '\r\n        <li class="room-info">' +
-__e(o.label_moderated) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n        ';
- if (o.nonanonymous) { ;
-__p += '\r\n        <li class="room-info">' +
-__e(o.label_non_anon) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n        ';
- if (o.open) { ;
-__p += '\r\n        <li class="room-info">' +
-__e(o.label_open_room) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n        ';
- if (o.persistent) { ;
-__p += '\r\n        <li class="room-info">' +
-__e(o.label_permanent_room) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n        ';
- if (o.publicroom) { ;
-__p += '\r\n        <li class="room-info">' +
-__e(o.label_public) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n        ';
- if (o.semianonymous) { ;
-__p += '\r\n        <li class="room-info">' +
-__e(o.label_semi_anon) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n        ';
- if (o.temporary) { ;
-__p += '\r\n        <li class="room-info">' +
-__e(o.label_temp_room) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n        ';
- if (o.unmoderated) { ;
-__p += '\r\n        <li class="room-info">' +
-__e(o.label_unmoderated) +
-'</li>\r\n        ';
- } ;
-__p += '\r\n    </ul>\r\n</p>\r\n</div>\r\n';
-return __p
-};
 
 /***/ }),
 /* 181 */
@@ -56390,29 +56390,33 @@ var map = {
 		536,
 		170
 	],
-	"./th/LC_MESSAGES/converse.po": [
+	"./sv/LC_MESSAGES/converse.po": [
 		537,
 		171
 	],
-	"./tr/LC_MESSAGES/converse.po": [
+	"./th/LC_MESSAGES/converse.po": [
 		538,
 		172
 	],
-	"./uk/LC_MESSAGES/converse.po": [
+	"./tr/LC_MESSAGES/converse.po": [
 		539,
 		173
 	],
-	"./vi/LC_MESSAGES/converse.po": [
+	"./uk/LC_MESSAGES/converse.po": [
 		540,
 		174
 	],
-	"./zh_CN/LC_MESSAGES/converse.po": [
+	"./vi/LC_MESSAGES/converse.po": [
 		541,
 		175
 	],
-	"./zh_TW/LC_MESSAGES/converse.po": [
+	"./zh_CN/LC_MESSAGES/converse.po": [
 		542,
 		176
+	],
+	"./zh_TW/LC_MESSAGES/converse.po": [
+		543,
+		177
 	]
 };
 function webpackAsyncContext(req) {
@@ -56945,7 +56949,7 @@ var map = {
 		62
 	],
 	"./index.d.ts": [
-		543,
+		544,
 		145
 	],
 	"./is": [
@@ -57421,7 +57425,7 @@ var map = {
 		121
 	],
 	"./types.d.ts": [
-		544,
+		545,
 		146
 	],
 	"./tzl": [
@@ -75121,7 +75125,7 @@ const converse_core_converse = {
    */
   '___': str => str
 };
-converse_core_converse.VERSION_NAME = "v6.0.1dev";
+converse_core_converse.VERSION_NAME = "v7.0.2dev";
 Object.assign(converse_core_converse, Events); // Make converse pluggable
 
 pluggable.enable(converse_core_converse, '_converse', 'pluggable');
@@ -75952,7 +75956,7 @@ function initPlugins() {
   converse_core_converse.api.trigger('pluginsInitialized');
 }
 
-function initClientConfig() {
+async function initClientConfig() {
   /* The client config refers to configuration of the client which is
    * independent of any particular user.
    * What this means is that config values need to persist across
@@ -75964,8 +75968,10 @@ function initClientConfig() {
     'trusted': true
   });
   converse_core_converse.config.browserStorage = createStore(id, "session");
-
-  converse_core_converse.config.fetch();
+  await new Promise(r => converse_core_converse.config.fetch({
+    'success': r,
+    'error': r
+  }));
   /**
    * Triggered once the XMPP-client configuration has been initialized.
    * The client configuration is independent of any particular and its values
@@ -75975,7 +75981,6 @@ function initClientConfig() {
    * @example
    * _converse.api.listen.on('clientConfigInitialized', () => { ... });
    */
-
 
   converse_core_converse.api.trigger('clientConfigInitialized');
 }
@@ -76486,7 +76491,7 @@ Object.assign(converse, {
 
     converse_core_converse.send_initial_presence = true;
     await initSessionStorage();
-    initClientConfig();
+    await initClientConfig();
     await i18n.initialize();
     initPlugins();
     converse_core_registerGlobalEventHandlers();
@@ -78149,8 +78154,6 @@ converse.plugins.add('converse-chat', {
             }
 
             this.save(settings);
-
-            converse_core_converse.incrementMsgCounter();
           } else {
             this.sendMarkerForMessage(message);
           }
@@ -79901,7 +79904,7 @@ converse.plugins.add('converse-emoji', {
             converse.emojis.initialized = true;
             const {
               default: json
-            } = await __webpack_require__.e(/* import() | emojis */ 137).then(__webpack_require__.t.bind(null, 546, 3));
+            } = await __webpack_require__.e(/* import() | emojis */ 137).then(__webpack_require__.t.bind(null, 547, 3));
             converse.emojis.json = json;
             converse.emojis.by_sn = Object.keys(json).reduce((result, cat) => Object.assign(result, json[cat]), {});
             converse.emojis.list = Object.values(converse.emojis.by_sn);
@@ -81570,7 +81573,7 @@ converse.plugins.add('converse-muc', {
        */
       getDiscoInfo() {
         return converse_core_api.disco.getIdentity('conference', 'text', this.get('jid')).then(identity => this.save({
-          'name': identity && identity.get('name')
+          'name': identity === null || identity === void 0 ? void 0 : identity.get('name')
         })).then(() => this.getDiscoInfoFields()).then(() => this.getDiscoInfoFeatures()).catch(e => headless_log.error(e));
       },
 
@@ -82985,8 +82988,6 @@ converse.plugins.add('converse-muc', {
 
             if (this.isUserMentioned(message)) {
               settings.num_unread = this.get('num_unread') + 1;
-
-              converse_core_converse.incrementMsgCounter();
             }
 
             this.save(settings);
@@ -83446,7 +83447,7 @@ converse.plugins.add('converse-muc', {
          *     }
          * );
          */
-        async open(jids, attrs, force = false) {
+        async open(jids, attrs = {}, force = false) {
           await converse_core_api.waitUntil('chatBoxesFetched');
 
           if (jids === undefined) {
@@ -84181,17 +84182,12 @@ converse.plugins.add('converse-carbons', {
   }
 
 });
-// EXTERNAL MODULE: ./node_modules/favico.js-slevomat/favico.js
-var favico = __webpack_require__(170);
-var favico_default = /*#__PURE__*/__webpack_require__.n(favico);
-
 // CONCATENATED MODULE: ./src/headless/converse-chatboxes.js
 /**
  * @module converse-chatboxes
  * @copyright 2020, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
  */
-
 
 
 
@@ -84211,43 +84207,6 @@ converse.plugins.add('converse-chatboxes', {
      * loaded by converse.js's plugin machinery.
      */
     converse_core_api.promises.add(['chatBoxesFetched', 'chatBoxesInitialized', 'privateChatsAutoJoined']);
-    let msg_counter = 0;
-    const favicon = new favico_default.a({
-      type: 'circle',
-      position: 'up',
-      animation: 'none'
-    });
-
-    converse_core_converse.incrementMsgCounter = function () {
-      msg_counter += 1;
-      favicon.badge(msg_counter);
-      const title = document.title;
-
-      if (!title) {
-        return;
-      }
-
-      if (title.search(/^Messages \(\d+\) /) === -1) {
-        document.title = "Messages (".concat(msg_counter, ") ").concat(title);
-      } else {
-        document.title = title.replace(/^Messages \(\d+\) /, "Messages (".concat(msg_counter, ") "));
-      }
-    };
-
-    converse_core_converse.clearMsgCounter = function () {
-      msg_counter = 0;
-      favicon.badge(msg_counter);
-      const title = document.title;
-
-      if (!title) {
-        return;
-      }
-
-      if (title.search(/^Messages \(\d+\) /) !== -1) {
-        document.title = title.replace(/^Messages \(\d+\) /, "");
-      }
-    };
-
     converse_core_converse.ChatBoxes = collection_Collection.extend({
       comparator: 'time_opened',
 
@@ -84258,12 +84217,12 @@ converse.plugins.add('converse-chatboxes', {
       onChatBoxesFetched(collection) {
         collection.filter(c => !c.isValid()).forEach(c => c.destroy());
         /**
-         * Triggered when a message stanza is been received and processed.
+         * Triggered once all chat boxes have been recreated from the browser cache
          * @event _converse#chatBoxesFetched
          * @type { object }
          * @property { _converse.ChatBox | _converse.ChatRoom } chatbox
          * @property { XMLElement } stanza
-         * @example _converse.api.listen.on('message', obj => { ... });
+         * @example _converse.api.listen.on('chatBoxesFetched', obj => { ... });
          * @example _converse.api.waitUntil('chatBoxesFetched').then(() => { ... });
          */
 
@@ -84333,7 +84292,6 @@ converse.plugins.add('converse-chatboxes', {
     });
     converse_core_api.listen.on('presencesInitialized', reconnecting => converse_core_converse.chatboxes.onConnected(reconnecting));
     converse_core_api.listen.on('reconnected', () => converse_core_converse.chatboxes.forEach(m => m.onReconnection()));
-    converse_core_api.listen.on('windowStateChanged', d => d.state === 'visible' && converse_core_converse.clearMsgCounter());
     /************************ END Event Handlers ************************/
 
     /************************ BEGIN API ************************/
@@ -90263,11 +90221,11 @@ function file_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.sl
 
 /* harmony default export */ var templates_file = (o => lit_html_html(file_templateObject(), o.url, o.label_download));
 // EXTERNAL MODULE: ./src/templates/form_captcha.html
-var form_captcha = __webpack_require__(171);
+var form_captcha = __webpack_require__(170);
 var form_captcha_default = /*#__PURE__*/__webpack_require__.n(form_captcha);
 
 // EXTERNAL MODULE: ./src/templates/form_checkbox.html
-var form_checkbox = __webpack_require__(172);
+var form_checkbox = __webpack_require__(171);
 var form_checkbox_default = /*#__PURE__*/__webpack_require__.n(form_checkbox);
 
 // EXTERNAL MODULE: ./src/templates/form_input.html
@@ -90275,15 +90233,15 @@ var form_input = __webpack_require__(64);
 var form_input_default = /*#__PURE__*/__webpack_require__.n(form_input);
 
 // EXTERNAL MODULE: ./src/templates/form_select.html
-var form_select = __webpack_require__(173);
+var form_select = __webpack_require__(172);
 var form_select_default = /*#__PURE__*/__webpack_require__.n(form_select);
 
 // EXTERNAL MODULE: ./src/templates/form_textarea.html
-var form_textarea = __webpack_require__(174);
+var form_textarea = __webpack_require__(173);
 var form_textarea_default = /*#__PURE__*/__webpack_require__.n(form_textarea);
 
 // EXTERNAL MODULE: ./src/templates/form_url.html
-var form_url = __webpack_require__(175);
+var form_url = __webpack_require__(174);
 var form_url_default = /*#__PURE__*/__webpack_require__.n(form_url);
 
 // EXTERNAL MODULE: ./src/templates/form_username.html
@@ -90350,7 +90308,7 @@ function templates_image_taggedTemplateLiteral(strings, raw) { if (!raw) { raw =
 
 /* harmony default export */ var templates_image = (o => lit_html_html(templates_image_templateObject(), renderImage(o.url, o.url, o.onLoad, o.onClick)));
 // EXTERNAL MODULE: ./src/templates/select_option.html
-var select_option = __webpack_require__(176);
+var select_option = __webpack_require__(175);
 var select_option_default = /*#__PURE__*/__webpack_require__.n(select_option);
 
 // CONCATENATED MODULE: ./src/templates/video.js
@@ -91849,7 +91807,7 @@ function message_versions_modal_taggedTemplateLiteral(strings, raw) { if (!raw) 
 
 }));
 // EXTERNAL MODULE: ./node_modules/filesize/lib/filesize.min.js
-var lib_filesize_min = __webpack_require__(177);
+var lib_filesize_min = __webpack_require__(176);
 var lib_filesize_min_default = /*#__PURE__*/__webpack_require__.n(lib_filesize_min);
 
 // CONCATENATED MODULE: ./src/templates/avatar.js
@@ -93343,7 +93301,9 @@ const emoji_picker_header = o => {
 };
 
 const emoji_item = o => {
-  return lit_html_html(emoji_picker_templateObject3(), o.shouldBeHidden(o.emoji.sn) ? 'hidden' : '', o.emoji.sn, o.emoji.sn, o.insertEmoji, o.emoji.sn, emoji_picker_u.shortnamesToEmojis(o.emoji.sn));
+  return lit_html_html(emoji_picker_templateObject3(), o.shouldBeHidden(o.emoji.sn) ? 'hidden' : '', o.emoji.sn, o.emoji.sn, o.insertEmoji, o.emoji.sn, emoji_picker_u.shortnamesToEmojis(o.emoji.sn, {
+    'add_title_wrapper': true
+  }));
 };
 
 const tpl_search_results = o => {
@@ -93368,7 +93328,9 @@ const tpl_all_emojis = o => {
 };
 
 const skintone_emoji = o => {
-  return lit_html_html(emoji_picker_templateObject7(), o.skintone, o.current_skintone === o.skintone ? 'picked' : '', o.skintone, o.onSkintonePicked, emoji_picker_u.shortnamesToEmojis(':' + o.skintone + ':'));
+  return lit_html_html(emoji_picker_templateObject7(), o.skintone, o.current_skintone === o.skintone ? 'picked' : '', o.skintone, o.onSkintonePicked, emoji_picker_u.shortnamesToEmojis(':' + o.skintone + ':', {
+    'add_title_wrapper': true
+  }));
 };
 
 const tpl_emoji_picker = o => {
@@ -93607,7 +93569,9 @@ class emoji_picker_EmojiPicker extends element_CustomElement {
       'query': this.query,
       'search_results': this.search_results,
       'render_emojis': this.render_emojis,
-      'sn2Emoji': shortname => components_emoji_picker_u.shortnamesToEmojis(this.getTonedShortname(shortname))
+      'sn2Emoji': shortname => components_emoji_picker_u.shortnamesToEmojis(this.getTonedShortname(shortname), {
+        'add_title_wrapper': true
+      })
     });
   }
 
@@ -94333,7 +94297,7 @@ function font_awesome_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = st
 class font_awesome_FontAwesome extends element_CustomElement {
   constructor() {
     super();
-    const promise = __webpack_require__.e(/* import() | icons */ 138).then(__webpack_require__.t.bind(null, 547, 7));
+    const promise = __webpack_require__.e(/* import() | icons */ 138).then(__webpack_require__.t.bind(null, 548, 7));
     this.data = promise.then(d => lit_html_html(font_awesome_templateObject(), unsafeSVG(d.default())));
   }
 
@@ -98513,7 +98477,7 @@ function controlbox_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = stri
 
 /* harmony default export */ var templates_controlbox = (o => lit_html_html(controlbox_templateObject(), o.sticky_controlbox ? '' : lit_html_html(controlbox_templateObject2())));
 // EXTERNAL MODULE: ./src/templates/controlbox_toggle.html
-var controlbox_toggle = __webpack_require__(178);
+var controlbox_toggle = __webpack_require__(177);
 var controlbox_toggle_default = /*#__PURE__*/__webpack_require__.n(controlbox_toggle);
 
 // CONCATENATED MODULE: ./src/templates/login_panel.js
@@ -99319,7 +99283,7 @@ converse.plugins.add('converse-controlbox', {
 
 });
 // EXTERNAL MODULE: ./src/templates/dragresize.html
-var dragresize = __webpack_require__(179);
+var dragresize = __webpack_require__(178);
 var dragresize_default = /*#__PURE__*/__webpack_require__.n(dragresize);
 
 // CONCATENATED MODULE: ./src/converse-dragresize.js
@@ -101072,7 +101036,7 @@ const tpl_item = (o, item) => {
   return lit_html_html(list_chatrooms_modal_templateObject3(), i18n_list_chatrooms, modal_header_close_button, o.show_form ? list_chatrooms_modal_form(o) : '', o.loading_items ? lit_html_html(list_chatrooms_modal_templateObject4(), spinner()) : '', o.feedback_text ? lit_html_html(list_chatrooms_modal_templateObject5(), o.feedback_text) : '', repeat(o.items, item => item.jid, item => tpl_item(o, item)), modal_close_button);
 });
 // EXTERNAL MODULE: ./src/templates/room_description.html
-var room_description = __webpack_require__(180);
+var room_description = __webpack_require__(179);
 var room_description_default = /*#__PURE__*/__webpack_require__.n(room_description);
 
 // CONCATENATED MODULE: ./src/modals/muc-list.js
@@ -102273,7 +102237,7 @@ const chatroom_head_tpl_standalone_btns = o => o.standalone_btns.reverse().map(b
 });
 // CONCATENATED MODULE: ./src/templates/muc_nickname_form.js
 function muc_nickname_form_templateObject() {
-  const data = muc_nickname_form_taggedTemplateLiteral(["\n        <div class=\"chatroom-form-container muc-nickname-form\">\n            <form class=\"converse-form chatroom-form converse-centered-form\">\n                <fieldset class=\"form-group\">\n                    <label>", "</label>\n                    <input type=\"text\" required=\"required\" name=\"nick\" value=\"", "\"\n                        class=\"form-control\" placeholder=\"", "\"/>\n                </fieldset>\n                <fieldset class=\"form-group\">\n                    <input type=\"submit\" class=\"btn btn-primary\" name=\"join\" value=\"", "\"/>\n                </fieldset>\n            </form>\n        </div>"]);
+  const data = muc_nickname_form_taggedTemplateLiteral(["\n        <div class=\"chatroom-form-container muc-nickname-form\">\n            <form class=\"converse-form chatroom-form converse-centered-form\">\n                <fieldset class=\"form-group\">\n                    <label>", "</label>\n                    <p class=\"validation-message\">", "</p>\n                    <input type=\"text\"\n                        required=\"required\"\n                        name=\"nick\"\n                        value=\"", "\"\n                        class=\"form-control ", "\"\n                        placeholder=\"", "\"/>\n                </fieldset>\n                <fieldset class=\"form-group\">\n                    <input type=\"submit\" class=\"btn btn-primary\" name=\"join\" value=\"", "\"/>\n                </fieldset>\n            </form>\n        </div>"]);
 
   muc_nickname_form_templateObject = function _templateObject() {
     return data;
@@ -102293,7 +102257,7 @@ function muc_nickname_form_taggedTemplateLiteral(strings, raw) { if (!raw) { raw
   const i18n_join = i18n_('Enter groupchat');
 
   const i18n_heading = converse_core_api.settings.get('muc_show_logs_before_join') ? i18n_('Choose a nickname to enter') : i18n_('Please choose your nickname');
-  return lit_html_html(muc_nickname_form_templateObject(), i18n_heading, o.nick || '', i18n_nickname, i18n_join);
+  return lit_html_html(muc_nickname_form_templateObject(), i18n_heading, o.nickname_validation_message, o.nick || '', o.nickname_validation_message ? 'error' : '', i18n_nickname, i18n_join);
 });
 // CONCATENATED MODULE: ./src/templates/muc_config_form.js
 function muc_config_form_templateObject2() {
@@ -104307,7 +104271,7 @@ function headline_panel_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = 
 
 const converse_headlines_view_u = converse.env.utils;
 const HeadlinesBoxView = ChatBoxView.extend({
-  className: 'chatbox headlines',
+  className: 'chatbox headlines hidden',
   events: {
     'click .close-chatbox-button': 'close',
     'click .toggle-chatbox-button': 'minimize',
@@ -104520,6 +104484,10 @@ converse.plugins.add('converse-headlines-view', {
   }
 
 });
+// EXTERNAL MODULE: ./node_modules/favico.js-slevomat/favico.js
+var favico = __webpack_require__(180);
+var favico_default = /*#__PURE__*/__webpack_require__.n(favico);
+
 // CONCATENATED MODULE: ./src/converse-notification.js
 /**
  * @module converse-notification
@@ -104529,11 +104497,29 @@ converse.plugins.add('converse-headlines-view', {
 
 
 
+
 const {
   Strophe: converse_notification_Strophe
 } = converse.env;
 const converse_notification_u = converse.env.utils;
 const supports_html5_notification = ("Notification" in window);
+converse.env.Favico = favico_default.a;
+let favicon;
+
+function updateUnreadFavicon() {
+  if (converse_core_api.settings.get('update_title')) {
+    var _favicon;
+
+    favicon = (_favicon = favicon) !== null && _favicon !== void 0 ? _favicon : new converse.env.Favico({
+      type: 'circle',
+      animation: 'pop'
+    });
+    const chats = converse_core_converse.chatboxes.models;
+    const num_unread = chats.reduce((acc, chat) => acc + (chat.get('num_unread') || 0), 0);
+    favicon.badge(num_unread);
+  }
+}
+
 converse.plugins.add('converse-notification', {
   dependencies: ["converse-chatboxes"],
 
@@ -104542,6 +104528,7 @@ converse.plugins.add('converse-notification', {
      * loaded by converse.js's plugin machinery.
      */
     converse_core_api.settings.extend({
+      update_title: true,
       notify_all_room_messages: false,
       show_desktop_notifications: true,
       show_chat_state_notifications: false,
@@ -104848,7 +104835,12 @@ converse.plugins.add('converse-notification', {
         Notification.requestPermission();
       }
     };
+    /************************ BEGIN Event Handlers ************************/
 
+
+    converse_core_api.listen.on('clearSession', () => favicon = null); // Needed for tests
+
+    converse_core_api.waitUntil('chatBoxesInitialized').then(() => converse_core_converse.chatboxes.on('change:num_unread', updateUnreadFavicon));
     converse_core_api.listen.on('pluginsInitialized', function () {
       // We only register event handlers after all plugins are
       // registered, because other plugins might override some of our
@@ -105495,7 +105487,7 @@ const omemo_page = o => {
   const i18n_profile = i18n_('Profile');
 
   const navigation = lit_html_html(profile_modal_templateObject7(), i18n_profile, i18n_omemo);
-  return lit_html_html(profile_modal_templateObject8(), heading_profile, modal_header_close_button, converse_core_converse.pluggable.plugins['converse-omemo'].enabled(converse_core_converse) && navigation, o.image, o.width, o.height, i18n_jid, o.jid, i18n_fullname, o.fullname || '', i18n_nickname, o.nickname || '', i18n_url, o.url || '', i18n_email, o.email || '', i18n_role, o.role || '', i18n_role_help, i18n_save, converse_core_converse.pluggable.plugins['converse-omemo'].enabled(converse_core_converse) && omemo_page(o));
+  return lit_html_html(profile_modal_templateObject8(), heading_profile, modal_header_close_button, converse_core_converse.pluggable.plugins['converse-omemo'].enabled(converse_core_converse) && navigation || '', o.image, o.width, o.height, i18n_jid, o.jid, i18n_fullname, o.fullname || '', i18n_nickname, o.nickname || '', i18n_url, o.url || '', i18n_email, o.email || '', i18n_role, o.role || '', i18n_role_help, i18n_save, converse_core_converse.pluggable.plugins['converse-omemo'].enabled(converse_core_converse) && omemo_page(o) || '');
 });
 // CONCATENATED MODULE: ./src/converse-profile.js
 /**
@@ -105977,6 +105969,52 @@ class IQError extends Error {
     this.iq = iq;
   }
 
+}
+
+function parseEncryptedMessage(stanza, attrs) {
+  if (attrs.is_encrypted && attrs.encrypted.key) {
+    // https://xmpp.org/extensions/xep-0384.html#usecases-receiving
+    if (attrs.encrypted.prekey === true) {
+      return decryptPrekeyWhisperMessage(attrs);
+    } else {
+      return decryptWhisperMessage(attrs);
+    }
+  } else {
+    return attrs;
+  }
+}
+
+function onChatBoxesInitialized() {
+  converse_core_converse.chatboxes.on('add', chatbox => {
+    checkOMEMOSupported(chatbox);
+
+    if (chatbox.get('type') === converse_core_converse.CHATROOMS_TYPE) {
+      chatbox.occupants.on('add', o => onOccupantAdded(chatbox, o));
+      chatbox.features.on('change', () => checkOMEMOSupported(chatbox));
+    }
+  });
+}
+
+function onChatInitialized(view) {
+  view.listenTo(view.model.messages, 'add', message => {
+    if (message.get('is_encrypted') && !message.get('is_error')) {
+      view.model.save('omemo_supported', true);
+    }
+  });
+  view.listenTo(view.model, 'change:omemo_supported', () => {
+    if (!view.model.get('omemo_supported') && view.model.get('omemo_active')) {
+      view.model.set('omemo_active', false);
+    } else {
+      var _view$el$querySelecto;
+
+      // Manually trigger an update, setting omemo_active to
+      // false above will automatically trigger one.
+      (_view$el$querySelecto = view.el.querySelector('converse-chat-toolbar')) === null || _view$el$querySelecto === void 0 ? void 0 : _view$el$querySelecto.requestUpdate();
+    }
+  });
+  view.listenTo(view.model, 'change:omemo_active', () => {
+    view.el.querySelector('converse-chat-toolbar').requestUpdate();
+  });
 }
 
 const omemo = converse.env.omemo = {
@@ -106520,7 +106558,47 @@ function getOMEMOToolbarButton(toolbar_el, buttons) {
   buttons.push(lit_html_html(converse_omemo_templateObject(), title, !model.get('omemo_supported'), toggleOMEMO, model.get('omemo_active') ? "fa-lock" : "fa-unlock", converse_core_api.settings.get('assets_path'), model.get('omemo_active') ? "var(--info-color)" : "var(--error-color)"));
   return buttons;
 }
+/**
+ * Mixin object that contains OMEMO-related methods for
+ * {@link _converse.ChatBox} or {@link _converse.ChatRoom} objects.
+ *
+ * @typedef {Object} OMEMOEnabledChatBox
+ */
 
+
+const OMEMOEnabledChatBox = {
+  encryptKey(plaintext, device) {
+    return getSessionCipher(device.get('jid'), device.get('id')).encrypt(plaintext).then(payload => ({
+      'payload': payload,
+      'device': device
+    }));
+  },
+
+  handleMessageSendError(e) {
+    if (e.name === 'IQError') {
+      this.save('omemo_supported', false);
+      const err_msgs = [];
+
+      if (converse_omemo_sizzle("presence-subscription-required[xmlns=\"".concat(converse_omemo_Strophe.NS.PUBSUB_ERROR, "\"]"), e.iq).length) {
+        err_msgs.push(i18n_("Sorry, we're unable to send an encrypted message because %1$s " + "requires you to be subscribed to their presence in order to see their OMEMO information", e.iq.getAttribute('from')));
+      } else if (converse_omemo_sizzle("remote-server-not-found[xmlns=\"urn:ietf:params:xml:ns:xmpp-stanzas\"]", e.iq).length) {
+        err_msgs.push(i18n_("Sorry, we're unable to send an encrypted message because the remote server for %1$s could not be found", e.iq.getAttribute('from')));
+      } else {
+        err_msgs.push(i18n_("Unable to send an encrypted message due to an unexpected error."));
+        err_msgs.push(e.iq.outerHTML);
+      }
+
+      converse_core_api.alert('error', i18n_('Error'), err_msgs);
+      headless_log.error(e);
+    } else if (e.user_facing) {
+      converse_core_api.alert('error', i18n_('Error'), [e.message]);
+      headless_log.error(e);
+    } else {
+      throw e;
+    }
+  }
+
+};
 converse.plugins.add('converse-omemo', {
   enabled(_converse) {
     return window.libsignal && _converse.config.get('trusted') && !converse_core_api.settings.get('clear_cache_on_logout') && !_converse.api.settings.get("blacklisted_plugins").includes('converse-omemo');
@@ -106651,46 +106729,6 @@ converse.plugins.add('converse-omemo', {
     converse_core_api.promises.add(['OMEMOInitialized']);
     converse_core_converse.NUM_PREKEYS = 100; // Set here so that tests can override
 
-    /**
-     * Mixin object that contains OMEMO-related methods for
-     * {@link _converse.ChatBox} or {@link _converse.ChatRoom} objects.
-     *
-     * @typedef {Object} OMEMOEnabledChatBox
-     */
-
-    const OMEMOEnabledChatBox = {
-      encryptKey(plaintext, device) {
-        return getSessionCipher(device.get('jid'), device.get('id')).encrypt(plaintext).then(payload => ({
-          'payload': payload,
-          'device': device
-        }));
-      },
-
-      handleMessageSendError(e) {
-        if (e.name === 'IQError') {
-          this.save('omemo_supported', false);
-          const err_msgs = [];
-
-          if (converse_omemo_sizzle("presence-subscription-required[xmlns=\"".concat(converse_omemo_Strophe.NS.PUBSUB_ERROR, "\"]"), e.iq).length) {
-            err_msgs.push(i18n_("Sorry, we're unable to send an encrypted message because %1$s " + "requires you to be subscribed to their presence in order to see their OMEMO information", e.iq.getAttribute('from')));
-          } else if (converse_omemo_sizzle("remote-server-not-found[xmlns=\"urn:ietf:params:xml:ns:xmpp-stanzas\"]", e.iq).length) {
-            err_msgs.push(i18n_("Sorry, we're unable to send an encrypted message because the remote server for %1$s could not be found", e.iq.getAttribute('from')));
-          } else {
-            err_msgs.push(i18n_("Unable to send an encrypted message due to an unexpected error."));
-            err_msgs.push(e.iq.outerHTML);
-          }
-
-          converse_core_api.alert('error', i18n_('Error'), err_msgs);
-          headless_log.error(e);
-        } else if (e.user_facing) {
-          converse_core_api.alert('error', i18n_('Error'), [e.message]);
-          headless_log.error(e);
-        } else {
-          throw e;
-        }
-      }
-
-    };
     Object.assign(converse_core_converse.ChatBox.prototype, OMEMOEnabledChatBox);
 
     converse_core_converse.generateFingerprints = async function (jid) {
@@ -107318,55 +107356,11 @@ converse.plugins.add('converse-omemo', {
       }
 
     });
-
-    function parseEncryptedMessage(stanza, attrs) {
-      if (attrs.is_encrypted && attrs.encrypted.key) {
-        // https://xmpp.org/extensions/xep-0384.html#usecases-receiving
-        if (attrs.encrypted.prekey === true) {
-          return decryptPrekeyWhisperMessage(attrs);
-        } else {
-          return decryptWhisperMessage(attrs);
-        }
-      } else {
-        return attrs;
-      }
-    }
     /******************** Event Handlers ********************/
 
-
+    converse_core_api.waitUntil('chatBoxesInitialized').then(onChatBoxesInitialized);
     converse_core_api.listen.on('parseMessage', parseEncryptedMessage);
     converse_core_api.listen.on('parseMUCMessage', parseEncryptedMessage);
-    converse_core_api.waitUntil('chatBoxesInitialized').then(() => converse_core_converse.chatboxes.on('add', chatbox => {
-      checkOMEMOSupported(chatbox);
-
-      if (chatbox.get('type') === converse_core_converse.CHATROOMS_TYPE) {
-        chatbox.occupants.on('add', o => onOccupantAdded(chatbox, o));
-        chatbox.features.on('change', () => checkOMEMOSupported(chatbox));
-      }
-    }));
-
-    const onChatInitialized = view => {
-      view.listenTo(view.model.messages, 'add', message => {
-        if (message.get('is_encrypted') && !message.get('is_error')) {
-          view.model.save('omemo_supported', true);
-        }
-      });
-      view.listenTo(view.model, 'change:omemo_supported', () => {
-        if (!view.model.get('omemo_supported') && view.model.get('omemo_active')) {
-          view.model.set('omemo_active', false);
-        } else {
-          var _view$el$querySelecto;
-
-          // Manually trigger an update, setting omemo_active to
-          // false above will automatically trigger one.
-          (_view$el$querySelecto = view.el.querySelector('converse-chat-toolbar')) === null || _view$el$querySelecto === void 0 ? void 0 : _view$el$querySelecto.requestUpdate();
-        }
-      });
-      view.listenTo(view.model, 'change:omemo_active', () => {
-        view.el.querySelector('converse-chat-toolbar').requestUpdate();
-      });
-    };
-
     converse_core_api.listen.on('chatBoxViewInitialized', onChatInitialized);
     converse_core_api.listen.on('chatRoomViewInitialized', onChatInitialized);
     converse_core_api.listen.on('connected', registerPEPPushHandler);

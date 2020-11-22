@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    var _converse = null, Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, html, _, __, Model, BootstrapModal, offline_reply_label, selfSubscriptions = {};
+    var _converse = null, Strophe, $iq, $msg, $pres, $build, b64_sha1, dayjs, html, _, __, Model, BootstrapModal, offline_reply_label, swRegistration, selfSubscriptions = {};
 
     converse.plugins.add("offline-reply", {
 
