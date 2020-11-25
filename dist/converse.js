@@ -13391,7 +13391,7 @@ exports["filterCSS"] = (filterCSS);
 /* 19 */
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.6.11' };
+var core = module.exports = { version: '2.6.12' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -44395,7 +44395,7 @@ var store = global[SHARED] || (global[SHARED] = {});
 })('versions', []).push({
   version: core.version,
   mode: __webpack_require__(88) ? 'pure' : 'global',
-  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
+  copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
 });
 
 
@@ -68626,9 +68626,10 @@ const st = {
      * @property { Boolean } is_markable - Can this message be marked with a XEP-0333 chat marker?
      * @property { Boolean } is_marker - Is this message a XEP-0333 Chat Marker?
      * @property { Boolean } is_only_emojis - Does the message body contain only emojis?
-     * @property { Boolean } is_valid_receipt_request - Does this message request a XEP-0184 receipt (and is not from us or a carbon or archived message)
      * @property { Boolean } is_spoiler - Is this a XEP-0382 spoiler message?
      * @property { Boolean } is_tombstone - Is this a XEP-0424 tombstone?
+     * @property { Boolean } is_unstyled - Whether XEP-0393 styling hints should be ignored
+     * @property { Boolean } is_valid_receipt_request - Does this message request a XEP-0184 receipt (and is not from us or a carbon or archived message)
      * @property { Object } encrypted -  XEP-0384 encryption payload attributes
      * @property { String } body - The contents of the <body> tag of the message stanza
      * @property { String } chat_state - The XEP-0085 chat state notification contained in this message
@@ -68676,6 +68677,7 @@ const st = {
       'is_delayed': !!delay,
       'is_markable': !!sizzle_default()("markable[xmlns=\"".concat(stanza_Strophe.NS.MARKERS, "\"]"), stanza).length,
       'is_marker': !!marker,
+      'is_unstyled': !!sizzle_default()("unstyled[xmlns=\"".concat(stanza_Strophe.NS.STYLING, "\"]"), stanza).length,
       'marker_id': marker && marker.getAttribute('id'),
       'msgid': stanza.getAttribute('id') || original_stanza.getAttribute('id'),
       'nick': (_contact = contact) === null || _contact === void 0 ? void 0 : (_contact$attributes = _contact.attributes) === null || _contact$attributes === void 0 ? void 0 : _contact$attributes.nickname,
@@ -68763,9 +68765,10 @@ const st = {
      * @property { Boolean } is_markable - Can this message be marked with a XEP-0333 chat marker?
      * @property { Boolean } is_marker - Is this message a XEP-0333 Chat Marker?
      * @property { Boolean } is_only_emojis - Does the message body contain only emojis?
-     * @property { Boolean } is_valid_receipt_request - Does this message request a XEP-0184 receipt (and is not from us or a carbon or archived message)
      * @property { Boolean } is_spoiler - Is this a XEP-0382 spoiler message?
      * @property { Boolean } is_tombstone - Is this a XEP-0424 tombstone?
+     * @property { Boolean } is_unstyled - Whether XEP-0393 styling hints should be ignored
+     * @property { Boolean } is_valid_receipt_request - Does this message request a XEP-0184 receipt (and is not from us or a carbon or archived message)
      * @property { Object } encrypted -  XEP-0384 encryption payload attributes
      * @property { String } body - The contents of the <body> tag of the message stanza
      * @property { String } chat_state - The XEP-0085 chat state notification contained in this message
@@ -68817,6 +68820,7 @@ const st = {
       'is_headline': st.isHeadline(stanza),
       'is_markable': !!sizzle_default()("markable[xmlns=\"".concat(stanza_Strophe.NS.MARKERS, "\"]"), stanza).length,
       'is_marker': !!marker,
+      'is_unstyled': !!sizzle_default()("unstyled[xmlns=\"".concat(stanza_Strophe.NS.STYLING, "\"]"), stanza).length,
       'marker_id': marker && marker.getAttribute('id'),
       'msgid': stanza.getAttribute('id') || original_stanza.getAttribute('id'),
       'receipt_id': getReceiptId(stanza),
@@ -74940,6 +74944,7 @@ strophe["e" /* Strophe */].addNamespace('RSM', 'http://jabber.org/protocol/rsm')
 strophe["e" /* Strophe */].addNamespace('SID', 'urn:xmpp:sid:0');
 strophe["e" /* Strophe */].addNamespace('SPOILER', 'urn:xmpp:spoiler:0');
 strophe["e" /* Strophe */].addNamespace('STANZAS', 'urn:ietf:params:xml:ns:xmpp-stanzas');
+strophe["e" /* Strophe */].addNamespace('STYLING', 'urn:xmpp:styling:0');
 strophe["e" /* Strophe */].addNamespace('VCARD', 'vcard-temp');
 strophe["e" /* Strophe */].addNamespace('VCARDUPDATE', 'vcard-temp:x:update');
 strophe["e" /* Strophe */].addNamespace('XFORM', 'jabber:x:data');
@@ -75125,7 +75130,7 @@ const converse_core_converse = {
    */
   '___': str => str
 };
-converse_core_converse.VERSION_NAME = "v7.0.2dev";
+converse_core_converse.VERSION_NAME = "v7.0.3dev";
 Object.assign(converse_core_converse, Events); // Make converse pluggable
 
 pluggable.enable(converse_core_converse, '_converse', 'pluggable');
@@ -76834,6 +76839,7 @@ converse.plugins.add('converse-chat', {
     converse_core_api.settings.extend({
       'allow_message_corrections': 'all',
       'allow_message_retraction': 'all',
+      'allow_message_styling': true,
       'auto_join_private_chats': [],
       'clear_messages_on_reconnection': false,
       'filter_by_resource': false,
@@ -80268,7 +80274,7 @@ function parse_helpers_defineProperty(obj, key, value) { if (key in obj) { Objec
 /**
  * @copyright 2020, the Converse.js contributors
  * @license Mozilla Public License (MPLv2)
- * @description Pure functions to help funcitonally parse messages.
+ * @description Pure functions to help functionally parse messages.
  * @todo Other parsing helpers can be made more abstract and placed here.
  */
 const helpers = {}; // Captures all mentions, but includes a space before the @
@@ -89869,9 +89875,67 @@ const until = directive_directive((...args) => (part) => {
     }
 });
 //# sourceMappingURL=until.js.map
-// CONCATENATED MODULE: ./src/templates/directives/body.js
+// CONCATENATED MODULE: ./src/templates/directives/styling.js
+function styling_templateObject2() {
+  const data = styling_taggedTemplateLiteral(["", ""]);
+
+  styling_templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
+function styling_templateObject() {
+  const data = styling_taggedTemplateLiteral(["", ""]);
+
+  styling_templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function styling_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+
+
+
+
+async function styling_transform(t) {
+  await t.addTemplates();
+  return t.payload;
+}
+
+function styling_renderer(text, model, offset) {
+  const t = new text_MessageText(text, model, offset, false);
+  return lit_html_html(styling_templateObject(), until(styling_transform(t), lit_html_html(styling_templateObject2(), t)));
+}
+
+const renderStylingDirectiveBody = directive_directive((text, model, offset) => p => p.setValue(styling_renderer(text, model, offset)));
+// CONCATENATED MODULE: ./src/shared/message/styling.js
+function _templateObject6() {
+  const data = message_styling_taggedTemplateLiteral(["<span class=\"styling-directive\">*</span><b>", "</b><span class=\"styling-directive\">*</span>"]);
+
+  _templateObject6 = function _templateObject6() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject5() {
+  const data = message_styling_taggedTemplateLiteral(["<span class=\"styling-directive\">~</span><del>", "</del><span class=\"styling-directive\">~</span>"]);
+
+  _templateObject5 = function _templateObject5() {
+    return data;
+  };
+
+  return data;
+}
+
 function _templateObject4() {
-  const data = body_taggedTemplateLiteral(["", ""]);
+  const data = message_styling_taggedTemplateLiteral(["<blockquote>", "</blockquote>"]);
 
   _templateObject4 = function _templateObject4() {
     return data;
@@ -89880,37 +89944,242 @@ function _templateObject4() {
   return data;
 }
 
-function body_templateObject3() {
-  const data = body_taggedTemplateLiteral(["", ""]);
+function styling_templateObject3() {
+  const data = message_styling_taggedTemplateLiteral(["<div class=\"styling-directive\">```</div><code class=\"block\">", "</code><div class=\"styling-directive\">```</div>"], ["<div class=\"styling-directive\">\\`\\`\\`</div><code class=\"block\">", "</code><div class=\"styling-directive\">\\`\\`\\`</div>"]);
 
-  body_templateObject3 = function _templateObject3() {
+  styling_templateObject3 = function _templateObject3() {
     return data;
   };
 
   return data;
 }
 
-function body_templateObject2() {
-  const data = body_taggedTemplateLiteral(["<span class=\"mention\">", "</span>"]);
+function message_styling_templateObject2() {
+  const data = message_styling_taggedTemplateLiteral(["<span class=\"styling-directive\">`</span><code>", "</code><span class=\"styling-directive\">`</span>"], ["<span class=\"styling-directive\">\\`</span><code>", "</code><span class=\"styling-directive\">\\`</span>"]);
 
-  body_templateObject2 = function _templateObject2() {
+  message_styling_templateObject2 = function _templateObject2() {
     return data;
   };
 
   return data;
 }
 
-function body_templateObject() {
-  const data = body_taggedTemplateLiteral(["<span class=\"mention mention--self badge badge-info\">", "</span>"]);
+function message_styling_templateObject() {
+  const data = message_styling_taggedTemplateLiteral(["<span class=\"styling-directive\">_</span><i>", "</i><span class=\"styling-directive\">_</span>"]);
 
-  body_templateObject = function _templateObject() {
+  message_styling_templateObject = function _templateObject() {
     return data;
   };
 
   return data;
 }
 
-function body_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+function message_styling_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+/**
+ * @copyright 2020, the Converse.js contributors
+ * @license Mozilla Public License (MPLv2)
+ * @description Utility functions to help with parsing XEP-393 message styling hints
+ * @todo Other parsing helpers can be made more abstract and placed here.
+ */
+
+
+const styling_directives = ['*', '_', '~', '`', '```', '>'];
+const styling_map = {
+  '*': {
+    'name': 'strong',
+    'type': 'span'
+  },
+  '_': {
+    'name': 'emphasis',
+    'type': 'span'
+  },
+  '~': {
+    'name': 'strike',
+    'type': 'span'
+  },
+  '`': {
+    'name': 'preformatted',
+    'type': 'span'
+  },
+  '```': {
+    'name': 'preformatted_block',
+    'type': 'block'
+  },
+  '>': {
+    'name': 'quote',
+    'type': 'block'
+  }
+};
+const dont_escape = ['_', '>', '`', '~'];
+const styling_templates = {
+  // m is the chatbox model
+  // i is the offset of this directive relative to the start of the original message
+  'emphasis': (txt, m, i) => lit_html_html(message_styling_templateObject(), renderStylingDirectiveBody(txt, m, i)),
+  'preformatted': txt => lit_html_html(message_styling_templateObject2(), txt),
+  'preformatted_block': txt => lit_html_html(styling_templateObject3(), txt),
+  'quote': (txt, m, i) => lit_html_html(_templateObject4(), renderStylingDirectiveBody(txt, m, i)),
+  'strike': (txt, m, i) => lit_html_html(_templateObject5(), renderStylingDirectiveBody(txt, m, i)),
+  'strong': (txt, m, i) => lit_html_html(_templateObject6(), renderStylingDirectiveBody(txt, m, i))
+};
+/**
+ * Checks whether a given character "d" at index "i" of "text" is a valid opening or closing directive.
+ * It's valid if it's not part of a word.
+ * @param { String } d - The potential directive
+ * @param { String } text - The text in which  the directive appears
+ * @param { Number } i - The directive index
+ * @param { Boolean } opening - Check for a valid opening or closing directive
+ */
+
+function isValidDirective(d, text, i, opening) {
+  // Ignore directives that are parts of words
+  // More info on the Regexes used here: https://javascript.info/regexp-unicode#unicode-properties-p
+  if (opening) {
+    const regex = RegExp(dont_escape.includes(d) ? "^(\\p{L}|\\p{N})".concat(d) : "^(\\p{L}|\\p{N})\\".concat(d), 'u');
+
+    if (i > 1 && regex.test(text.slice(i - 1))) {
+      return false;
+    }
+  } else {
+    const regex = RegExp(dont_escape.includes(d) ? "^".concat(d, "(\\p{L}|\\p{N})") : "^\\".concat(d, "(\\p{L}|\\p{N})"), 'u');
+
+    if (i < text.length - 1 && regex.test(text.slice(i))) {
+      return false;
+    }
+  }
+
+  return true;
+}
+/**
+ * Given a specific index "i" of "text", return the directive it matches or
+ * null otherwise.
+ * @param { String } text - The text in which  the directive appears
+ * @param { Number } i - The directive index
+ * @param { Boolean } opening - Whether we're looking for an opening or closing directive
+ */
+
+
+function getDirective(text, i, opening = true) {
+  let d;
+
+  if (/(^```\s*\n|^```\s*$)/.test(text.slice(i)) && (i === 0 || text[i - 1] === '\n' || text[i - 1] === '>')) {
+    d = text.slice(i, i + 3);
+  } else if (styling_directives.includes(text.slice(i, i + 1)) && text[i] !== text[i + 1]) {
+    d = text.slice(i, i + 1);
+    if (!isValidDirective(d, text, i, opening)) return null;
+  } else {
+    return null;
+  }
+
+  return d;
+}
+/**
+ * Given an opening directive "d", an index "i" and the text, check whether
+ * we've found the closing directive.
+ * @param { String } d -The directive
+ * @param { Number } i - The directive index
+ * @param { String } text -The text in which the directive appears
+ */
+
+
+function isDirectiveEnd(d, i, text) {
+  const dtype = styling_map[d].type; // directive type
+
+  return i === text.length || getDirective(text, i, false) === d || dtype === 'span' && text[i] === '\n';
+}
+/**
+ * Given a directive "d", which occurs in "text" at index "i", check that it
+ * has a valid closing directive and return the length from start to end of the
+ * directive.
+ * @param { String } d -The directive
+ * @param { Number } i - The directive index
+ * @param { String } text -The text in which the directive appears
+ */
+
+
+function getDirectiveLength(d, text, i) {
+  if (!d) {
+    return 0;
+  }
+
+  const begin = i;
+  i += d.length;
+
+  if (isQuoteDirective(d)) {
+    i += text.slice(i).split(/\n[^>]/).shift().length;
+    return i - begin;
+  } else if (styling_map[d].type === 'span') {
+    const line = text.slice(i + 1).split('\n').shift();
+    let j = 0;
+    let idx = line.indexOf(d);
+
+    while (idx !== -1) {
+      if (isDirectiveEnd(d, i + 1 + idx, text)) return idx + 1 + 2 * d.length;
+      idx = line.indexOf(d, j++);
+    }
+
+    return 0;
+  } else {
+    const substring = text.slice(i + 1);
+    let j;
+    let idx = substring.indexOf(d);
+
+    while (idx !== -1) {
+      if (isDirectiveEnd(d, i + 1 + idx, text)) return idx + 1 + 2 * d.length;
+      idx = substring.indexOf(d, j++);
+    }
+
+    return 0;
+  }
+}
+
+function getDirectiveAndLength(text, i) {
+  const d = getDirective(text, i);
+  const length = d ? getDirectiveLength(d, text, i) : 0;
+  return length > 0 ? {
+    d,
+    length
+  } : {};
+}
+const isQuoteDirective = d => ['>', '&gt;'].includes(d);
+function getDirectiveTemplate(d, text, model, offset) {
+  const template = styling_templates[styling_map[d].name];
+
+  if (isQuoteDirective(d)) {
+    return template(text.replace(/\n>/g, '\n').replace(/\n$/, ''), model, offset);
+  } else {
+    return template(text, model, offset);
+  }
+}
+function containsDirectives(text) {
+  for (let i = 0; i < styling_directives.length; i++) {
+    if (text.includes(styling_directives[i])) {
+      return true;
+    }
+  }
+}
+// CONCATENATED MODULE: ./src/shared/message/text.js
+function text_templateObject2() {
+  const data = text_taggedTemplateLiteral(["<span class=\"mention\">", "</span>"]);
+
+  text_templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
+function text_templateObject() {
+  const data = text_taggedTemplateLiteral(["<span class=\"mention mention--self badge badge-info\">", "</span>"]);
+
+  text_templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function text_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 
 
@@ -89918,7 +90187,14 @@ function body_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.sl
 
 
 
-const body_u = converse.env.utils;
+
+const text_u = converse.env.utils;
+
+const text_isString = s => typeof s === 'string';
+
+const tpl_mention_with_nick = o => lit_html_html(text_templateObject(), o.mention);
+
+const tpl_mention = o => lit_html_html(text_templateObject2(), o.mention);
 /**
  * @class MessageText
  * A String subclass that is used to represent the rich text
@@ -89937,14 +90213,208 @@ const body_u = converse.env.utils;
  * rich features.
  */
 
-class body_MessageText extends String {
+
+class text_MessageText extends String {
   /**
    * Create a new {@link MessageText} instance.
    * @param { String } text - The plain text that was received from the `<message>` stanza.
+   * @param { Message } model - The model representing the message to which
+   *  this MessageText instance belongs
+   * @param { Integer } offset - The offset of this particular piece of text
+   *  from the start of the original message text. This is necessary because
+   *  MessageText instances can be nested when templates call directives
+   *  which create new MessageText instances (as happens with XEP-393 styling directives).
+   * @param { Boolean } show_images - Whether image URLs should be rendered as <img> tags.
+   * @param { Function } onImgLoad - Callback for when an inline rendered image has been loaded
+   * @param { Function } onImgClick - Callback for when an inline rendered image has been clicked
    */
-  constructor(text) {
+  constructor(text, model, offset = 0, show_images, onImgLoad, onImgClick) {
     super(text);
+    this.model = model;
+    this.offset = offset;
+    this.onImgClick = onImgClick;
+    this.onImgLoad = onImgLoad;
     this.references = [];
+    this.show_images = show_images;
+    this.payload = [];
+  }
+
+  addHyperlinks(text) {
+    const objs = [];
+
+    try {
+      const parse_options = {
+        'start': /\b(?:([a-z][a-z0-9.+-]*:\/\/)|xmpp:|mailto:|www\.)/gi
+      };
+      URI_default.a.withinString(text, (url, start, end) => {
+        objs.push({
+          url,
+          start,
+          end
+        });
+        return url;
+      }, parse_options);
+    } catch (error) {
+      headless_log.debug(error);
+      return;
+    }
+
+    objs.forEach(url_obj => {
+      const url_text = text.slice(url_obj.start, url_obj.end);
+      const filtered_url = text_u.filterQueryParamsFromURL(url_text);
+      this.addTemplateResult(url_obj.start, url_obj.end, this.show_images && text_u.isImageURL(url_text) && text_u.isImageDomainAllowed(url_text) ? text_u.convertToImageTag(filtered_url, this.onImgLoad, this.onImgClick) : text_u.convertUrlToHyperlink(filtered_url));
+    });
+  }
+
+  addMapURLs(text) {
+    const regex = /geo:([\-0-9.]+),([\-0-9.]+)(?:,([\-0-9.]+))?(?:\?(.*))?/g;
+    const matches = text.matchAll(regex);
+
+    for (const m of matches) {
+      this.addTemplateResult(m.index, m.index + m.input.length, text_u.convertUrlToHyperlink(m.input.replace(regex, converse_core_converse.geouri_replacement)));
+    }
+  }
+
+  async addEmojis(text) {
+    await converse_core_api.emojis.initialize();
+    const references = [...getShortnameReferences(text.toString()), ...getCodePointReferences(text.toString())];
+    references.forEach(e => {
+      this.addTemplateResult(e.begin, e.end, getEmojiMarkup(e, {
+        'add_title_wrapper': true
+      }));
+    });
+  }
+
+  addMentionReferences(text, offset) {
+    var _this$model$get;
+
+    if (!this.model.collection) {
+      // This model doesn't belong to a collection anymore, so it must be
+      // have been removed in the meantime and can be ignored.
+      headless_log.debug('addMentionReferences: ignoring dangling model');
+      return;
+    }
+
+    const nick = this.model.collection.chatbox.get('nick');
+    (_this$model$get = this.model.get('references')) === null || _this$model$get === void 0 ? void 0 : _this$model$get.forEach(ref => {
+      const begin = Number(ref.begin) - offset;
+
+      if (begin >= text.length) {
+        return;
+      }
+
+      const end = Number(ref.end) - offset;
+      const mention = text.slice(begin, end);
+
+      if (mention === nick) {
+        this.addTemplateResult(begin, end, tpl_mention_with_nick({
+          mention
+        }));
+      } else {
+        this.addTemplateResult(begin, end, tpl_mention({
+          mention
+        }));
+      }
+    });
+  }
+
+  addStylingReferences() {
+    if (this.model.get('is_unstyled') || !converse_core_api.settings.get('allow_message_styling')) {
+      return;
+    }
+
+    let i = 0;
+    const references = [];
+
+    if (containsDirectives(this)) {
+      while (i < this.length) {
+        const {
+          d,
+          length
+        } = getDirectiveAndLength(this, i);
+
+        if (d && length) {
+          const begin = d === '```' ? i + d.length + 1 : i + d.length;
+          const end = isQuoteDirective(d) ? i + length + 1 : i + length;
+          const slice_end = isQuoteDirective(d) ? end : end - d.length;
+          references.push({
+            'begin': i,
+            'template': getDirectiveTemplate(d, this.slice(begin, slice_end), this.model, i + d.length),
+            end
+          });
+          i = end;
+        }
+
+        i++;
+      }
+    }
+
+    references.forEach(ref => this.addTemplateResult(ref.begin, ref.end, ref.template));
+  }
+
+  trimMeMessage() {
+    if (this.offset === 0) {
+      // Subtract `/me ` from 3rd person messages
+      if (this.isMeCommand()) {
+        this.payload[0] = this.payload[0].substring(4);
+      }
+    }
+  }
+  /**
+   * Parse the text and add template references for rendering the "rich" parts.
+   *
+   * @param { MessageText } text
+   * @param { Boolean } show_images - Should URLs of images be rendered as `<img>` tags?
+   * @param { Function } onImgLoad
+   * @param { Function } onImgClick
+   **/
+
+
+  async addTemplates() {
+    /**
+     * Synchronous event which provides a hook for transforming a chat message's body text
+     * before the default transformations have been applied.
+     * @event _converse#beforeMessageBodyTransformed
+     * @param { MessageText } text - A {@link MessageText } instance. You
+     *  can call {@link MessageText#addTemplateResult } on it in order to
+     *  add TemplateResult objects meant to render rich parts of the message.
+     * @example _converse.api.listen.on('beforeMessageBodyTransformed', (view, text) => { ... });
+     */
+    await converse_core_api.trigger('beforeMessageBodyTransformed', this, {
+      'Synchronous': true
+    });
+    this.addStylingReferences();
+    const payload = this.marshall();
+    let offset = this.offset;
+
+    for (const text of payload) {
+      if (text_isString(text)) {
+        this.addHyperlinks(text);
+        this.addMapURLs(text);
+        await this.addEmojis(text);
+        this.addMentionReferences(text, offset);
+        offset += text.length;
+      } else {
+        offset += text.begin;
+      }
+    }
+    /**
+     * Synchronous event which provides a hook for transforming a chat message's body text
+     * after the default transformations have been applied.
+     * @event _converse#afterMessageBodyTransformed
+     * @param { MessageText } text - A {@link MessageText } instance. You
+     *  can call {@link MessageText#addTemplateResult} on it in order to
+     *  add TemplateResult objects meant to render rich parts of the message.
+     * @example _converse.api.listen.on('afterMessageBodyTransformed', (view, text) => { ... });
+     */
+
+
+    await converse_core_api.trigger('afterMessageBodyTransformed', this, {
+      'Synchronous': true
+    });
+    this.payload = this.marshall();
+    this.trimMeMessage();
+    this.payload = this.payload.map(item => text_isString(item) ? item : item.template);
   }
   /**
    * The "rich" markup parts of a chat message are represented by lit-html
@@ -89988,94 +90458,40 @@ class body_MessageText extends String {
     let list = [this.toString()];
     this.references.sort((a, b) => b.begin - a.begin).forEach(ref => {
       const text = list.shift();
-      list = [text.slice(0, ref.begin), ref.template, text.slice(ref.end), ...list];
-    }); // Subtract `/me ` from 3rd person messages
-
-    if (this.isMeCommand()) list[0] = list[0].substring(4);
-
-    const isString = s => typeof s === 'string';
-
-    return list.reduce((acc, i) => isString(i) ? [...acc, body_MessageText.replaceText(i)] : [...acc, i], []);
+      list = [text.slice(0, ref.begin), ref, text.slice(ref.end), ...list];
+    });
+    return list.reduce((acc, i) => text_isString(i) ? [...acc, text_MessageText.replaceText(i)] : [...acc, i], []);
   }
 
 }
+// CONCATENATED MODULE: ./src/templates/directives/body.js
+function body_templateObject2() {
+  const data = body_taggedTemplateLiteral(["", ""]);
 
-function addMapURLs(text) {
-  const regex = /geo:([\-0-9.]+),([\-0-9.]+)(?:,([\-0-9.]+))?(?:\?(.*))?/g;
-  const matches = text.matchAll(regex);
+  body_templateObject2 = function _templateObject2() {
+    return data;
+  };
 
-  for (const m of matches) {
-    text.addTemplateResult(m.index, m.index + m.input.length, body_u.convertUrlToHyperlink(m.input.replace(regex, converse_core_converse.geouri_replacement)));
-  }
+  return data;
 }
 
-function addHyperlinks(text, onImgLoad, onImgClick) {
-  const objs = [];
+function body_templateObject() {
+  const data = body_taggedTemplateLiteral(["", ""]);
 
-  try {
-    const parse_options = {
-      'start': /\b(?:([a-z][a-z0-9.+-]*:\/\/)|xmpp:|mailto:|www\.)/gi
-    };
-    URI_default.a.withinString(text, (url, start, end) => {
-      objs.push({
-        url,
-        start,
-        end
-      });
-      return url;
-    }, parse_options);
-  } catch (error) {
-    headless_log.debug(error);
-    return;
-  }
+  body_templateObject = function _templateObject() {
+    return data;
+  };
 
-  const show_images = converse_core_api.settings.get('show_images_inline');
-  objs.forEach(url_obj => {
-    const url_text = text.slice(url_obj.start, url_obj.end);
-    const filtered_url = body_u.filterQueryParamsFromURL(url_text);
-    text.addTemplateResult(url_obj.start, url_obj.end, show_images && body_u.isImageURL(url_text) && body_u.isImageDomainAllowed(url_text) ? body_u.convertToImageTag(filtered_url, onImgLoad, onImgClick) : body_u.convertUrlToHyperlink(filtered_url));
-  });
+  return data;
 }
 
-async function addEmojis(text) {
-  await converse_core_api.emojis.initialize();
-  const references = [...getShortnameReferences(text.toString()), ...getCodePointReferences(text.toString())];
-  references.forEach(e => {
-    text.addTemplateResult(e.begin, e.end, getEmojiMarkup(e, {
-      'add_title_wrapper': true
-    }));
-  });
-}
+function body_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-const tpl_mention_with_nick = o => lit_html_html(body_templateObject(), o.mention);
 
-const tpl_mention = o => lit_html_html(body_templateObject2(), o.mention);
 
-function addReferences(text, model) {
-  var _model$get;
 
-  if (!model.collection) {
-    // This model doesn't belong to a collection anymore, so it must be
-    // have been removed in the meantime and can be ignored.
-    headless_log.debug('addReferences: ignoring dangling model');
-    return;
-  }
 
-  const nick = model.collection.chatbox.get('nick');
-  (_model$get = model.get('references')) === null || _model$get === void 0 ? void 0 : _model$get.forEach(ref => {
-    const mention = text.slice(ref.begin, ref.end);
-
-    if (mention === nick) {
-      text.addTemplateResult(ref.begin, ref.end, tpl_mention_with_nick({
-        mention
-      }));
-    } else {
-      text.addTemplateResult(ref.begin, ref.end, tpl_mention({
-        mention
-      }));
-    }
-  });
-}
+const body_u = converse.env.utils;
 
 class body_MessageBodyRenderer {
   constructor(component) {
@@ -90099,46 +90515,15 @@ class body_MessageBodyRenderer {
   }
 
   async transform() {
-    const text = new body_MessageText(this.text);
-    /**
-     * Synchronous event which provides a hook for transforming a chat message's body text
-     * before the default transformations have been applied.
-     * @event _converse#beforeMessageBodyTransformed
-     * @param { _converse.Message } model - The model representing the message
-     * @param { MessageText } text - A {@link MessageText } instance. You
-     * can call {@link MessageText#addTemplateResult } on it in order to
-     * add TemplateResult objects meant to render rich parts of the
-     * message.
-     * @example _converse.api.listen.on('beforeMessageBodyTransformed', (view, text) => { ... });
-     */
-
-    await converse_core_api.trigger('beforeMessageBodyTransformed', this.model, text, {
-      'Synchronous': true
-    });
-    addHyperlinks(text, () => this.scrollDownOnImageLoad(), ev => this.component.showImageModal(ev));
-    addMapURLs(text);
-    await addEmojis(text);
-    addReferences(text, this.model);
-    /**
-     * Synchronous event which provides a hook for transforming a chat message's body text
-     * after the default transformations have been applied.
-     * @event _converse#afterMessageBodyTransformed
-     * @param { _converse.Message } model - The model representing the message
-     * @param { MessageText } text - A {@link MessageText } instance. You
-     * can call {@link MessageText#addTemplateResult} on it in order to
-     * add TemplateResult objects meant to render rich parts of the
-     * message.
-     * @example _converse.api.listen.on('afterMessageBodyTransformed', (view, text) => { ... });
-     */
-
-    await converse_core_api.trigger('afterMessageBodyTransformed', this.model, text, {
-      'Synchronous': true
-    });
-    return text.marshall();
+    const show_images = converse_core_api.settings.get('show_images_inline');
+    const offset = 0;
+    const text = new text_MessageText(this.text, this.model, offset, show_images, () => this.scrollDownOnImageLoad(), ev => this.component.showImageModal(ev));
+    await text.addTemplates();
+    return text.payload;
   }
 
   render() {
-    return lit_html_html(body_templateObject3(), until(this.transform(), lit_html_html(_templateObject4(), this.text)));
+    return lit_html_html(body_templateObject(), until(this.transform(), lit_html_html(body_templateObject2(), this.text)));
   }
 
 }
@@ -91844,10 +92229,10 @@ const renderAvatar = directive_directive(o => part => {
   part.setValue(avatar(data));
 });
 // CONCATENATED MODULE: ./src/templates/chat_message.js
-function _templateObject5() {
+function chat_message_templateObject5() {
   const data = chat_message_taggedTemplateLiteral(["\n                            <time timestamp=\"", "\" class=\"chat-msg__time\">", "</time>&nbsp;\n                            <span class=\"chat-msg__author\">", "", "</span>&nbsp;"]);
 
-  _templateObject5 = function _templateObject5() {
+  chat_message_templateObject5 = function _templateObject5() {
     return data;
   };
 
@@ -91902,7 +92287,7 @@ function chat_message_taggedTemplateLiteral(strings, raw) { if (!raw) { raw = st
 /* harmony default export */ var chat_message = (o => {
   const i18n_new_messages = i18n_('New messages');
 
-  return lit_html_html(chat_message_templateObject(), o.is_first_unread ? lit_html_html(chat_message_templateObject2(), i18n_new_messages) : '', o.getExtraMessageClasses(), o.time, o.msgid, o.from, o.is_encrypted, o.msgid, o.shouldShowAvatar() ? renderAvatar(o.getAvatarData()) : '', o.sender, o.is_me_message ? 'chat-msg__content--action' : '', !o.is_me_message ? lit_html_html(chat_message_templateObject3(), o.username, o.renderAvatarByline(), o.is_encrypted ? lit_html_html(chat_message_templateObject4()) : '') : '', o.message_type, o.received ? 'chat-msg__body--received' : '', o.is_delayed ? 'chat-msg__body--delayed' : '', o.is_me_message ? lit_html_html(_templateObject5(), o.edited || o.time, o.pretty_time, o.is_me_message ? '**' : '', o.username) : '', o.is_retracted ? o.renderRetraction() : o.renderMessageText(), o.chatview, o.model, o.correcting, o.editable, o.is_retracted, o.message_type);
+  return lit_html_html(chat_message_templateObject(), o.is_first_unread ? lit_html_html(chat_message_templateObject2(), i18n_new_messages) : '', o.getExtraMessageClasses(), o.time, o.msgid, o.from, o.is_encrypted, o.msgid, o.shouldShowAvatar() ? renderAvatar(o.getAvatarData()) : '', o.sender, o.is_me_message ? 'chat-msg__content--action' : '', !o.is_me_message ? lit_html_html(chat_message_templateObject3(), o.username, o.renderAvatarByline(), o.is_encrypted ? lit_html_html(chat_message_templateObject4()) : '') : '', o.message_type, o.received ? 'chat-msg__body--received' : '', o.is_delayed ? 'chat-msg__body--delayed' : '', o.is_me_message ? lit_html_html(chat_message_templateObject5(), o.edited || o.time, o.pretty_time, o.is_me_message ? '**' : '', o.username) : '', o.is_retracted ? o.renderRetraction() : o.renderMessageText(), o.chatview, o.model, o.correcting, o.editable, o.is_retracted, o.message_type);
 });
 // CONCATENATED MODULE: ./src/templates/spinner.js
 function spinner_templateObject() {
@@ -92010,10 +92395,10 @@ function _templateObject7() {
   return data;
 }
 
-function _templateObject6() {
+function message_templateObject6() {
   const data = message_taggedTemplateLiteral(["\n            <div>", "</div>\n            ", "\n        "]);
 
-  _templateObject6 = function _templateObject6() {
+  message_templateObject6 = function _templateObject6() {
     return data;
   };
 
@@ -92342,7 +92727,7 @@ class message_Message extends element_CustomElement {
 
   renderRetraction() {
     const retraction_text = this.is_retracted ? this.getRetractionText() : null;
-    return lit_html_html(_templateObject6(), retraction_text, this.moderation_reason ? lit_html_html(_templateObject7(), this.moderation_reason) : '');
+    return lit_html_html(message_templateObject6(), retraction_text, this.moderation_reason ? lit_html_html(_templateObject7(), this.moderation_reason) : '');
   }
 
   renderMessageText() {
@@ -104507,7 +104892,7 @@ converse.env.Favico = favico_default.a;
 let favicon;
 
 function updateUnreadFavicon() {
-  if (converse_core_api.settings.get('update_title')) {
+  if (converse_core_api.settings.get('show_tab_notifications')) {
     var _favicon;
 
     favicon = (_favicon = favicon) !== null && _favicon !== void 0 ? _favicon : new converse.env.Favico({
@@ -104528,17 +104913,17 @@ converse.plugins.add('converse-notification', {
      * loaded by converse.js's plugin machinery.
      */
     converse_core_api.settings.extend({
-      update_title: true,
-      notify_all_room_messages: false,
-      show_desktop_notifications: true,
-      show_chat_state_notifications: false,
-      chatstate_notification_blacklist: [],
       // ^ a list of JIDs to ignore concerning chat state notifications
-      play_sounds: true,
-      sounds_path: converse_core_api.settings.get("assets_path") + '/sounds/',
-      notification_icon: 'logo/conversejs-filled.svg',
+      chatstate_notification_blacklist: [],
       notification_delay: 5000,
-      notify_nicknames_without_references: false
+      notification_icon: 'logo/conversejs-filled.svg',
+      notify_all_room_messages: false,
+      notify_nicknames_without_references: false,
+      play_sounds: true,
+      show_chat_state_notifications: false,
+      show_desktop_notifications: true,
+      show_tab_notifications: true,
+      sounds_path: converse_core_api.settings.get("assets_path") + '/sounds/'
     });
     /**
      * Is this a group message for which we should notify the user?
