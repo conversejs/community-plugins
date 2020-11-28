@@ -38,6 +38,8 @@
     <script src="packages/offline-reply/webpush-browserify-bundle.js"></script>
     <script src="packages/offline-reply/offline-reply.js"></script>
 
+    <script src="packages/http-auth/http-auth.js"></script>
+
 </head>
 <body class="reset">
     <div class="converse-content" style="display:none">
@@ -90,7 +92,7 @@
         websocket_url: 'wss://conversejs.org/xmpp-websocket',
         view_mode: 'fullscreen',
         loglevel: 'debug',
-        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "jitsimeet", "location", "offline-reply"]
+        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "jitsimeet", "location", "offline-reply", "http-auth"]
     };
 
     converse.initialize( config )
