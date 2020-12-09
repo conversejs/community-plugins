@@ -215,7 +215,7 @@ __webpack_require__.d(__webpack_exports__, "e", function() { return /* binding *
 // UNUSED EXPORTS: SHA1, MD5
 
 // EXTERNAL MODULE: ./src/headless/node_modules/strophe.js/src/shims.js
-var shims = __webpack_require__(14);
+var shims = __webpack_require__(15);
 
 // CONCATENATED MODULE: ./src/headless/node_modules/strophe.js/src/md5.js
 /*
@@ -498,7 +498,7 @@ const utils = {
 };
 
 // EXTERNAL MODULE: ./node_modules/abab/index.js
-var abab = __webpack_require__(9);
+var abab = __webpack_require__(10);
 
 // CONCATENATED MODULE: ./src/headless/node_modules/strophe.js/src/core.js
 /*
@@ -4298,12 +4298,13 @@ Strophe.SASLXOAuth2 = class SASLXOAuth2 extends Strophe.SASLMechanism {
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ $build; });
 __webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ $iq; });
-__webpack_require__.d(__webpack_exports__, "c", function() { return /* binding */ Strophe; });
+__webpack_require__.d(__webpack_exports__, "d", function() { return /* binding */ Strophe; });
+__webpack_require__.d(__webpack_exports__, "c", function() { return /* reexport */ SHA1; });
 
-// UNUSED EXPORTS: $msg, $pres, SHA1, MD5
+// UNUSED EXPORTS: $msg, $pres, MD5
 
 // EXTERNAL MODULE: ./node_modules/strophe.js/src/shims.js
-var shims = __webpack_require__(15);
+var shims = __webpack_require__(9);
 
 // CONCATENATED MODULE: ./node_modules/strophe.js/src/md5.js
 /*
@@ -4792,7 +4793,7 @@ const utils = {
 };
 
 // EXTERNAL MODULE: ./node_modules/abab/index.js
-var abab = __webpack_require__(9);
+var abab = __webpack_require__(10);
 
 // CONCATENATED MODULE: ./node_modules/strophe.js/src/core.js
 /*
@@ -4872,7 +4873,7 @@ function $pres(attrs) {
 
 const Strophe = {
   /** Constant: VERSION */
-  VERSION: "1.4.0",
+  VERSION: "1.4.1",
 
   /** Constants: XMPP Namespace Constants
    *  Common namespace constants from the XMPP RFCs and XEPs.
@@ -5145,7 +5146,7 @@ const Strophe = {
    */
   xmlGenerator() {
     if (!Strophe._xmlGenerator) {
-      Strophe._xmlGenerator = shims["b" /* getDummyXMLDOMDocument */]();
+      Strophe._xmlGenerator = shims["c" /* getDummyXMLDOMDocument */]();
     }
 
     return Strophe._xmlGenerator;
@@ -5583,8 +5584,10 @@ const Strophe = {
    *    (String) msg - The log message.
    */
   log(level, msg) {
-    if (level === this.LogLevel.FATAL && typeof window.console === 'object' && typeof window.console.error === 'function') {
-      window.console.error(msg);
+    if (level === this.LogLevel.FATAL) {
+      var _console;
+
+      (_console = console) === null || _console === void 0 ? void 0 : _console.error(msg);
     }
   },
 
@@ -6369,17 +6372,8 @@ Strophe.Connection = class Connection {
     this.service = service; // Configuration options
 
     this.options = options || {};
-    const proto = this.options.protocol || ""; // Select protocal based on service or options
-
-    if (this.options.worker) {
-      this._proto = new Strophe.WorkerWebsocket(this);
-    } else if (service.indexOf("ws:") === 0 || service.indexOf("wss:") === 0 || proto.indexOf("ws") === 0) {
-      this._proto = new Strophe.Websocket(this);
-    } else {
-      this._proto = new Strophe.Bosh(this);
-    }
+    this.setProtocol();
     /* The connected JID. */
-
 
     this.jid = "";
     /* the JIDs domain */
@@ -6432,6 +6426,22 @@ Strophe.Connection = class Connection {
         this[k] = new F();
         this[k].init(this);
       }
+    }
+  }
+  /** Function: setProtocol
+   *  Select protocal based on this.options or this.service
+   */
+
+
+  setProtocol() {
+    const proto = this.options.protocol || "";
+
+    if (this.options.worker) {
+      this._proto = new Strophe.WorkerWebsocket(this);
+    } else if (this.service.indexOf("ws:") === 0 || this.service.indexOf("wss:") === 0 || proto.indexOf("ws") === 0) {
+      this._proto = new Strophe.Websocket(this);
+    } else {
+      this._proto = new Strophe.Bosh(this);
     }
   }
   /** Function: reset
@@ -8527,7 +8537,7 @@ Strophe.SASLXOAuth2 = class SASLXOAuth2 extends Strophe.SASLMechanism {
 
 };
 
-/* harmony default export */ var core = __webpack_exports__["d"] = ({
+/* harmony default export */ var core = __webpack_exports__["e"] = ({
   'Strophe': Strophe,
   '$build': $build,
   '$iq': $iq,
@@ -10720,7 +10730,7 @@ global.$msg = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "f"].$msg;
 global.$pres = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "f"].$pres;
 global.Strophe = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "f"].Strophe;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
 
 /***/ }),
 /* 4 */
@@ -11331,6 +11341,138 @@ module.exports = escape;
 
 /***/ }),
 /* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return WebSocket; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DOMParser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getDummyXMLDOMDocument; });
+/*
+ * This module provides uniform
+ * Shims APIs and globals that are not present in all JS environments,
+ * the most common example for Strophe being browser APIs like WebSocket
+ * and DOM that don't exist under nodejs.
+ *
+ * Usually these will be supplied in nodejs by conditionally requiring a
+ * NPM module that provides a compatible implementation.
+ */
+
+/* global global */
+
+/**
+ * WHATWG WebSockets API
+ * https://www.w3.org/TR/websockets/
+ *
+ * Interface to use the web socket protocol
+ *
+ * Used implementations:
+ * - supported browsers: built-in in WebSocket global
+ *   https://developer.mozilla.org/en-US/docs/Web/API/WebSocket#Browser_compatibility
+ * - nodejs: use standard-compliant 'ws' module
+ *   https://www.npmjs.com/package/ws
+ */
+function getWebSocketImplementation() {
+  let WebSocketImplementation = global.WebSocket;
+
+  if (typeof WebSocketImplementation === 'undefined') {
+    try {
+      WebSocketImplementation = __webpack_require__(499);
+    } catch (err) {
+      throw new Error('You must install the "ws" package to use Strophe in nodejs.');
+    }
+  }
+
+  return WebSocketImplementation;
+}
+
+const WebSocket = getWebSocketImplementation();
+/**
+ * DOMParser
+ * https://w3c.github.io/DOM-Parsing/#the-domparser-interface
+ *
+ * Interface to parse XML strings into Document objects
+ *
+ * Used implementations:
+ * - supported browsers: built-in in DOMParser global
+ *   https://developer.mozilla.org/en-US/docs/Web/API/DOMParser#Browser_compatibility
+ * - nodejs: use 'xmldom' module
+ *   https://www.npmjs.com/package/xmldom
+ */
+
+function getDOMParserImplementation() {
+  let DOMParserImplementation = global.DOMParser;
+
+  if (typeof DOMParserImplementation === 'undefined') {
+    try {
+      DOMParserImplementation = __webpack_require__(47).DOMParser;
+    } catch (err) {
+      throw new Error('You must install the "xmldom" package to use Strophe in nodejs.');
+    }
+  }
+
+  return DOMParserImplementation;
+}
+
+const DOMParser = getDOMParserImplementation();
+/**
+ *  Gets IE xml doc object. Used by getDummyXMLDocument shim.
+ *
+ *  Returns:
+ *    A Microsoft XML DOM Object
+ *  See Also:
+ *    http://msdn.microsoft.com/en-us/library/ms757837%28VS.85%29.aspx
+ */
+
+function _getIEXmlDom() {
+  const docStrings = ["Msxml2.DOMDocument.6.0", "Msxml2.DOMDocument.5.0", "Msxml2.DOMDocument.4.0", "MSXML2.DOMDocument.3.0", "MSXML2.DOMDocument", "MSXML.DOMDocument", "Microsoft.XMLDOM"];
+
+  for (let d = 0; d < docStrings.length; d++) {
+    try {
+      // eslint-disable-next-line no-undef
+      const doc = new ActiveXObject(docStrings[d]);
+      return doc;
+    } catch (e) {// Try next one
+    }
+  }
+}
+/**
+ * Creates a dummy XML DOM document to serve as an element and text node generator.
+ *
+ * Used implementations:
+ *  - IE < 10: avoid using createDocument() due to a memory leak, use ie-specific
+ *    workaround
+ *  - other supported browsers: use document's createDocument
+ *  - nodejs: use 'xmldom'
+ */
+
+
+function getDummyXMLDOMDocument() {
+  // nodejs
+  if (typeof document === 'undefined') {
+    try {
+      const DOMImplementation = __webpack_require__(47).DOMImplementation;
+
+      return new DOMImplementation().createDocument('jabber:client', 'strophe', null);
+    } catch (err) {
+      throw new Error('You must install the "xmldom" package to use Strophe in nodejs.');
+    }
+  } // IE < 10
+
+
+  if (document.implementation.createDocument === undefined || document.implementation.createDocument && document.documentMode && document.documentMode < 10) {
+    const doc = _getIEXmlDom();
+
+    doc.appendChild(doc.createElement('strophe'));
+    return doc;
+  } // All other supported browsers
+
+
+  return document.implementation.createDocument('jabber:client', 'strophe', null);
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11346,7 +11488,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var freeGlobal = __webpack_require__(96);
@@ -11360,7 +11502,7 @@ var root = freeGlobal || freeSelf || Function('return this')();
 module.exports = root;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 var g; // This works in non-strict mode
@@ -11383,7 +11525,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -11392,7 +11534,7 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11430,7 +11572,7 @@ var nodeUtil = function () {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(69)(module)))
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11559,139 +11701,7 @@ function getDummyXMLDOMDocument() {
 
   return document.implementation.createDocument('jabber:client', 'strophe', null);
 }
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
-
-/***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* unused harmony export WebSocket */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DOMParser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getDummyXMLDOMDocument; });
-/*
- * This module provides uniform
- * Shims APIs and globals that are not present in all JS environments,
- * the most common example for Strophe being browser APIs like WebSocket
- * and DOM that don't exist under nodejs.
- *
- * Usually these will be supplied in nodejs by conditionally requiring a
- * NPM module that provides a compatible implementation.
- */
-
-/* global global */
-
-/**
- * WHATWG WebSockets API
- * https://www.w3.org/TR/websockets/
- *
- * Interface to use the web socket protocol
- *
- * Used implementations:
- * - supported browsers: built-in in WebSocket global
- *   https://developer.mozilla.org/en-US/docs/Web/API/WebSocket#Browser_compatibility
- * - nodejs: use standard-compliant 'ws' module
- *   https://www.npmjs.com/package/ws
- */
-function getWebSocketImplementation() {
-  let WebSocketImplementation = global.WebSocket;
-
-  if (typeof WebSocketImplementation === 'undefined') {
-    try {
-      WebSocketImplementation = __webpack_require__(499);
-    } catch (err) {
-      throw new Error('You must install the "ws" package to use Strophe in nodejs.');
-    }
-  }
-
-  return WebSocketImplementation;
-}
-
-const WebSocket = getWebSocketImplementation();
-/**
- * DOMParser
- * https://w3c.github.io/DOM-Parsing/#the-domparser-interface
- *
- * Interface to parse XML strings into Document objects
- *
- * Used implementations:
- * - supported browsers: built-in in DOMParser global
- *   https://developer.mozilla.org/en-US/docs/Web/API/DOMParser#Browser_compatibility
- * - nodejs: use 'xmldom' module
- *   https://www.npmjs.com/package/xmldom
- */
-
-function getDOMParserImplementation() {
-  let DOMParserImplementation = global.DOMParser;
-
-  if (typeof DOMParserImplementation === 'undefined') {
-    try {
-      DOMParserImplementation = __webpack_require__(47).DOMParser;
-    } catch (err) {
-      throw new Error('You must install the "xmldom" package to use Strophe in nodejs.');
-    }
-  }
-
-  return DOMParserImplementation;
-}
-
-const DOMParser = getDOMParserImplementation();
-/**
- *  Gets IE xml doc object. Used by getDummyXMLDocument shim.
- *
- *  Returns:
- *    A Microsoft XML DOM Object
- *  See Also:
- *    http://msdn.microsoft.com/en-us/library/ms757837%28VS.85%29.aspx
- */
-
-function _getIEXmlDom() {
-  const docStrings = ["Msxml2.DOMDocument.6.0", "Msxml2.DOMDocument.5.0", "Msxml2.DOMDocument.4.0", "MSXML2.DOMDocument.3.0", "MSXML2.DOMDocument", "MSXML.DOMDocument", "Microsoft.XMLDOM"];
-
-  for (let d = 0; d < docStrings.length; d++) {
-    try {
-      // eslint-disable-next-line no-undef
-      const doc = new ActiveXObject(docStrings[d]);
-      return doc;
-    } catch (e) {// Try next one
-    }
-  }
-}
-/**
- * Creates a dummy XML DOM document to serve as an element and text node generator.
- *
- * Used implementations:
- *  - IE < 10: avoid using createDocument() due to a memory leak, use ie-specific
- *    workaround
- *  - other supported browsers: use document's createDocument
- *  - nodejs: use 'xmldom'
- */
-
-
-function getDummyXMLDOMDocument() {
-  // nodejs
-  if (typeof document === 'undefined') {
-    try {
-      const DOMImplementation = __webpack_require__(47).DOMImplementation;
-
-      return new DOMImplementation().createDocument('jabber:client', 'strophe', null);
-    } catch (err) {
-      throw new Error('You must install the "xmldom" package to use Strophe in nodejs.');
-    }
-  } // IE < 10
-
-
-  if (document.implementation.createDocument === undefined || document.implementation.createDocument && document.documentMode && document.documentMode < 10) {
-    const doc = _getIEXmlDom();
-
-    doc.appendChild(doc.createElement('strophe'));
-    return doc;
-  } // All other supported browsers
-
-
-  return document.implementation.createDocument('jabber:client', 'strophe', null);
-}
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
 
 /***/ }),
 /* 16 */
@@ -11731,7 +11741,7 @@ var store = __webpack_require__(144)('wks');
 
 var uid = __webpack_require__(145);
 
-var Symbol = __webpack_require__(12).Symbol;
+var Symbol = __webpack_require__(13).Symbol;
 
 var USE_SYMBOL = typeof Symbol == 'function';
 
@@ -13902,11 +13912,12 @@ module.exports = isObjectLike;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var _bosh__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(498);
+/* WEBPACK VAR INJECTION */(function(global) {/* unused harmony export b64_sha1 */
+/* harmony import */ var _bosh__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(498);
 /* harmony import */ var _websocket__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(158);
 /* harmony import */ var _worker_websocket__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(500);
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _core__WEBPACK_IMPORTED_MODULE_3__["c"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _core__WEBPACK_IMPORTED_MODULE_3__["d"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _core__WEBPACK_IMPORTED_MODULE_3__["b"]; });
 
@@ -13915,13 +13926,16 @@ module.exports = isObjectLike;
 
 
 
-global.$build = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "d"].$build;
-global.$iq = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "d"].$iq;
-global.$msg = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "d"].$msg;
-global.$pres = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "d"].$pres;
-global.Strophe = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "d"].Strophe;
+global.$build = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "e"].$build;
+global.$iq = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "e"].$iq;
+global.$msg = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "e"].$msg;
+global.$pres = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "e"].$pres;
+global.Strophe = _core__WEBPACK_IMPORTED_MODULE_3__[/* default */ "e"].Strophe;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
+const {
+  b64_sha1
+} = _core__WEBPACK_IMPORTED_MODULE_3__[/* SHA1 */ "c"];
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
 
 /***/ }),
 /* 24 */
@@ -16868,7 +16882,7 @@ module.exports = function (it) {
     }]
   }, {}, [4])(4);
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
 
 /***/ }),
 /* 28 */,
@@ -16914,7 +16928,7 @@ module.exports = isArrayLike;
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(12);
+var global = __webpack_require__(13);
 
 var core = __webpack_require__(19);
 
@@ -18789,7 +18803,7 @@ module.exports = keys;
     Tooltip: Tooltip
   };
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
 
 /***/ }),
 /* 35 */
@@ -30854,7 +30868,7 @@ root._=_;// Define as an anonymous module so, through path mapping, it can be
 !(__WEBPACK_AMD_DEFINE_RESULT__ = (function(){return _;}).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));}// Check for `exports` after `define` in case a build optimizer adds it.
 else {}}).call(this);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11), __webpack_require__(46)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12), __webpack_require__(46)(module)))
 
 /***/ }),
 /* 44 */
@@ -31226,7 +31240,7 @@ module.exports = isSymbol;
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(10);
+var root = __webpack_require__(11);
 /** Built-in value references. */
 
 
@@ -31613,7 +31627,7 @@ module.exports = isFunction;
 /* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
 /* harmony default export */ __webpack_exports__["a"] = (freeGlobal);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
 
 /***/ }),
 /* 64 */
@@ -33288,7 +33302,7 @@ in order to offer easy upgrades -- jsgettext.berlios.de
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(14);
+/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 /*
     This program is distributed under the terms of the MIT license.
@@ -34211,7 +34225,7 @@ module.exports = getHolder;
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(25),
-    root = __webpack_require__(10);
+    root = __webpack_require__(11);
 /* Built-in method references that are verified to be native. */
 
 
@@ -34339,7 +34353,7 @@ module.exports = function (exec) {
 
 var isObject = __webpack_require__(41);
 
-var document = __webpack_require__(12).document; // typeof document.createElement is 'object' in old IE
+var document = __webpack_require__(13).document; // typeof document.createElement is 'object' in old IE
 
 
 var is = isObject(document) && isObject(document.createElement);
@@ -36286,7 +36300,7 @@ exports.XMLSerializer = XMLSerializer; //}
 /* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
 module.exports = freeGlobal;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
 
 /***/ }),
 /* 97 */
@@ -36412,7 +36426,7 @@ module.exports = isArguments;
 /* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(10),
+/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(11),
     stubFalse = __webpack_require__(344);
 /** Detect free variable `exports`. */
 
@@ -36898,7 +36912,7 @@ module.exports = metaMap;
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(25),
-    root = __webpack_require__(10);
+    root = __webpack_require__(11);
 /* Built-in method references that are verified to be native. */
 
 
@@ -36917,7 +36931,7 @@ var composeArgs = __webpack_require__(119),
     getHolder = __webpack_require__(77),
     reorder = __webpack_require__(382),
     replaceHolders = __webpack_require__(52),
-    root = __webpack_require__(10);
+    root = __webpack_require__(11);
 /** Used to compose bitmasks for function metadata. */
 
 
@@ -38057,7 +38071,7 @@ module.exports = function (it) {
 
 var core = __webpack_require__(19);
 
-var global = __webpack_require__(12);
+var global = __webpack_require__(13);
 
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || (global[SHARED] = {});
@@ -38202,7 +38216,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 /* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var document = __webpack_require__(12).document;
+var document = __webpack_require__(13).document;
 
 module.exports = document && document.documentElement;
 
@@ -38265,7 +38279,7 @@ var html = __webpack_require__(148);
 
 var cel = __webpack_require__(83);
 
-var global = __webpack_require__(12);
+var global = __webpack_require__(13);
 
 var process = global.process;
 var setTask = global.setImmediate;
@@ -38397,7 +38411,7 @@ module.exports = function (C, x) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(14);
+/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 /*
     This program is distributed under the terms of the MIT license.
@@ -39948,7 +39962,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "e"].Bosh.prototype.strip = nul
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else {}
 })(this);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(46)(module), __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(46)(module), __webpack_require__(12)))
 
 /***/ }),
 /* 156 */
@@ -40415,7 +40429,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
+/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /*
     This program is distributed under the terms of the MIT license.
@@ -40425,7 +40439,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 */
 
 /* global window, clearTimeout, WebSocket, DOMParser */
- // eslint-disable-line no-unused-vars
 
 
 /** Class: Strophe.WebSocket
@@ -40447,7 +40460,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  *  WebSocket support implemented by Andreas Guth (andreas.guth@rwth-aachen.de)
  */
 
-_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocket {
+_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Websocket = class Websocket {
   /** PrivateConstructor: Strophe.Websocket
    *  Create and initialize a Strophe.WebSocket object.
    *  Currently only sets the connection Object.
@@ -40495,7 +40508,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
 
   _buildStream() {
     return Object(_core__WEBPACK_IMPORTED_MODULE_1__[/* $build */ "a"])("open", {
-      "xmlns": _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].NS.FRAMING,
+      "xmlns": _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].NS.FRAMING,
       "to": this._conn.domain,
       "version": '1.0'
     });
@@ -40515,7 +40528,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
     let errors;
 
     if (bodyWrap.getElementsByTagNameNS) {
-      errors = bodyWrap.getElementsByTagNameNS(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].NS.STREAM, "error");
+      errors = bodyWrap.getElementsByTagNameNS(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].NS.STREAM, "error");
     } else {
       errors = bodyWrap.getElementsByTagName("stream:error");
     }
@@ -40555,7 +40568,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
       errorString += " - " + text;
     }
 
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error(errorString); // close the connection on stream_error
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error(errorString); // close the connection on stream_error
 
     this._conn._changeConnectStatus(connectstatus, condition);
 
@@ -40587,7 +40600,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
     // Ensure that there is no open WebSocket from a previous Connection.
     this._closeSocket();
 
-    this.socket = new WebSocket(this._conn.service, "xmpp");
+    this.socket = new _shims__WEBPACK_IMPORTED_MODULE_0__[/* WebSocket */ "b"](this._conn.service, "xmpp");
 
     this.socket.onopen = () => this._onOpen();
 
@@ -40609,10 +40622,10 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
 
 
   _connect_cb(bodyWrap) {
-    const error = this._checkStreamError(bodyWrap, _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL);
+    const error = this._checkStreamError(bodyWrap, _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL);
 
     if (error) {
-      return _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL;
+      return _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL;
     }
   }
   /** PrivateFunction: _handleStreamStart
@@ -40632,7 +40645,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
 
     if (typeof ns !== "string") {
       error = "Missing xmlns in <open />";
-    } else if (ns !== _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].NS.FRAMING) {
+    } else if (ns !== _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].NS.FRAMING) {
       error = "Wrong xmlns in <open />: " + ns;
     }
 
@@ -40645,7 +40658,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
     }
 
     if (error) {
-      this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL, error);
+      this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL, error);
 
       this._conn._doDisconnect();
 
@@ -40695,7 +40708,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
         const isSecureRedirect = service.indexOf("wss:") >= 0 && see_uri.indexOf("wss:") >= 0 || service.indexOf("ws:") >= 0;
 
         if (isSecureRedirect) {
-          this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.REDIRECT, "Received see-other-uri, resetting connection");
+          this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.REDIRECT, "Received see-other-uri, resetting connection");
 
           this._conn.reset();
 
@@ -40704,7 +40717,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
           this._connect();
         }
       } else {
-        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL, "Received closing stream");
+        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL, "Received closing stream");
 
         this._conn._doDisconnect();
       }
@@ -40741,25 +40754,25 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
 
 
   _disconnect(pres) {
-    if (this.socket && this.socket.readyState !== WebSocket.CLOSED) {
+    if (this.socket && this.socket.readyState !== _shims__WEBPACK_IMPORTED_MODULE_0__[/* WebSocket */ "b"].CLOSED) {
       if (pres) {
         this._conn.send(pres);
       }
 
       const close = Object(_core__WEBPACK_IMPORTED_MODULE_1__[/* $build */ "a"])("close", {
-        "xmlns": _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].NS.FRAMING
+        "xmlns": _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].NS.FRAMING
       });
 
       this._conn.xmlOutput(close.tree());
 
-      const closeString = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].serialize(close);
+      const closeString = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].serialize(close);
 
       this._conn.rawOutput(closeString);
 
       try {
         this.socket.send(closeString);
       } catch (e) {
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].warn("Couldn't send <close /> tag.");
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].warn("Couldn't send <close /> tag.");
       }
     }
 
@@ -40773,7 +40786,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
 
 
   _doDisconnect() {
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("WebSockets _doDisconnect was called");
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("WebSockets _doDisconnect was called");
 
     this._closeSocket();
   }
@@ -40802,7 +40815,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
         this.socket.onmessage = null;
         this.socket.close();
       } catch (e) {
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug(e.message);
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug(e.message);
       }
     }
 
@@ -40827,7 +40840,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
 
   _onClose(e) {
     if (this._conn.connected && !this._conn.disconnecting) {
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("Websocket closed unexpectedly");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("Websocket closed unexpectedly");
 
       this._conn._doDisconnect();
     } else if (e && e.code === 1006 && !this._conn.connected && this.socket) {
@@ -40835,13 +40848,13 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
       // call onerror when the initial connection fails) we need to
       // dispatch a CONNFAIL status update to be consistent with the
       // behavior on other browsers.
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("Websocket closed unexcectedly");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("Websocket closed unexcectedly");
 
-      this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL, "The WebSocket connection could not be established or was disconnected.");
+      this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL, "The WebSocket connection could not be established or was disconnected.");
 
       this._conn._doDisconnect();
     } else {
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("Websocket closed");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("Websocket closed");
     }
   }
   /** PrivateFunction: _no_auth_received
@@ -40852,9 +40865,9 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
 
 
   _no_auth_received(callback) {
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("Server did not offer a supported authentication mechanism");
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("Server did not offer a supported authentication mechanism");
 
-    this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL, _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].ErrorCondition.NO_AUTH_MECH);
+    this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL, _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].ErrorCondition.NO_AUTH_MECH);
 
     if (callback) {
       callback.call(this._conn);
@@ -40887,9 +40900,9 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
 
 
   _onError(error) {
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("Websocket error " + error);
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("Websocket error " + error);
 
-    this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL, "The WebSocket connection could not be established or was disconnected.");
+    this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL, "The WebSocket connection could not be established or was disconnected.");
 
     this._disconnect();
   }
@@ -40914,7 +40927,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
             stanza = data[i];
           }
 
-          const rawStanza = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].serialize(stanza);
+          const rawStanza = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].serialize(stanza);
 
           this._conn.xmlOutput(stanza);
 
@@ -40980,7 +40993,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
       elem = new _shims__WEBPACK_IMPORTED_MODULE_0__[/* DOMParser */ "a"]().parseFromString(data, "text/xml").documentElement;
     }
 
-    if (this._checkStreamError(elem, _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.ERROR)) {
+    if (this._checkStreamError(elem, _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.ERROR)) {
       return;
     } //handle unavailable presence stanza before disconnecting
 
@@ -40988,7 +41001,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
     if (this._conn.disconnecting && elem.firstChild.nodeName === "presence" && elem.firstChild.getAttribute("type") === "unavailable") {
       this._conn.xmlInput(elem);
 
-      this._conn.rawInput(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].serialize(elem)); // if we are already disconnecting we will ignore the unavailable stanza and
+      this._conn.rawInput(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].serialize(elem)); // if we are already disconnecting we will ignore the unavailable stanza and
       // wait for the </stream:stream> tag before we close the connection
 
 
@@ -41005,13 +41018,13 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket = class Websocke
 
 
   _onOpen() {
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("Websocket open");
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("Websocket open");
 
     const start = this._buildStream();
 
     this._conn.xmlOutput(start.tree());
 
-    const startString = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].serialize(start);
+    const startString = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].serialize(start);
 
     this._conn.rawOutput(startString);
 
@@ -41501,7 +41514,7 @@ exports.default = (0, _driver2.default)('webExtensionLocalStorage', 'local');
     };
   },  true ? module.exports = t : undefined;
 }("undefined" != typeof window ? window : global);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
 
 /***/ }),
 /* 170 */
@@ -41700,7 +41713,7 @@ return __p
     };
   },  true ? module.exports = t : undefined;
 }("undefined" != typeof window ? window : global);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
 
 /***/ }),
 /* 177 */
@@ -44976,7 +44989,7 @@ module.exports = isMasked;
 /* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(10);
+var root = __webpack_require__(11);
 /** Used to detect overreaching core-js shims. */
 
 
@@ -45471,7 +45484,7 @@ module.exports = createWrap;
 /***/ (function(module, exports, __webpack_require__) {
 
 var createCtor = __webpack_require__(51),
-    root = __webpack_require__(10);
+    root = __webpack_require__(11);
 /** Used to compose bitmasks for function metadata. */
 
 
@@ -45511,7 +45524,7 @@ var apply = __webpack_require__(72),
     createRecurry = __webpack_require__(121),
     getHolder = __webpack_require__(77),
     replaceHolders = __webpack_require__(52),
-    root = __webpack_require__(10);
+    root = __webpack_require__(11);
 /**
  * Creates a function that wraps `func` to enable currying.
  *
@@ -46027,7 +46040,7 @@ module.exports = reorder;
 
 var apply = __webpack_require__(72),
     createCtor = __webpack_require__(51),
-    root = __webpack_require__(10);
+    root = __webpack_require__(11);
 /** Used to compose bitmasks for function metadata. */
 
 
@@ -47229,7 +47242,7 @@ module.exports = equalByTag;
 /* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(10);
+var root = __webpack_require__(11);
 /** Built-in value references. */
 
 
@@ -47436,7 +47449,7 @@ module.exports = arrayFilter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(25),
-    root = __webpack_require__(10);
+    root = __webpack_require__(11);
 /* Built-in method references that are verified to be native. */
 
 
@@ -47448,7 +47461,7 @@ module.exports = DataView;
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(25),
-    root = __webpack_require__(10);
+    root = __webpack_require__(11);
 /* Built-in method references that are verified to be native. */
 
 
@@ -47460,7 +47473,7 @@ module.exports = Promise;
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(25),
-    root = __webpack_require__(10);
+    root = __webpack_require__(11);
 /* Built-in method references that are verified to be native. */
 
 
@@ -49477,7 +49490,7 @@ module.exports = Object.getPrototypeOf || function (O) {
 
 __webpack_require__(475);
 
-var global = __webpack_require__(12);
+var global = __webpack_require__(13);
 
 var hide = __webpack_require__(31);
 
@@ -49569,7 +49582,7 @@ module.exports = function (done, value) {
 
 var LIBRARY = __webpack_require__(88);
 
-var global = __webpack_require__(12);
+var global = __webpack_require__(13);
 
 var ctx = __webpack_require__(58);
 
@@ -50050,7 +50063,7 @@ module.exports = function (fn, args, that) {
 /* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(12);
+var global = __webpack_require__(13);
 
 var macrotask = __webpack_require__(151).set;
 
@@ -50139,7 +50152,7 @@ module.exports = function () {
 /* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(12);
+var global = __webpack_require__(13);
 
 var navigator = global.navigator;
 module.exports = navigator && navigator.userAgent || '';
@@ -50165,7 +50178,7 @@ module.exports = function (target, src, safe) {
 "use strict";
 
 
-var global = __webpack_require__(12);
+var global = __webpack_require__(13);
 
 var core = __webpack_require__(19);
 
@@ -50246,7 +50259,7 @@ var $export = __webpack_require__(30);
 
 var core = __webpack_require__(19);
 
-var global = __webpack_require__(12);
+var global = __webpack_require__(13);
 
 var speciesConstructor = __webpack_require__(150);
 
@@ -51883,7 +51896,7 @@ module.exports = basePropertyOf;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
+/* harmony import */ var _shims__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /*
     This program is distributed under the terms of the MIT license.
@@ -51903,7 +51916,7 @@ module.exports = basePropertyOf;
  *  information.  It is not meant to be used from user's code.
  */
 
-_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Request = class Request {
+_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Request = class Request {
   /** PrivateConstructor: Strophe.Request
    *  Create and initialize a new Strophe.Request object.
    *
@@ -51915,9 +51928,9 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Request = class Request {
    *    (Integer) sends - The number of times this same request has been sent.
    */
   constructor(elem, func, rid, sends) {
-    this.id = ++_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"]._requestId;
+    this.id = ++_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"]._requestId;
     this.xmlData = elem;
-    this.data = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].serialize(elem); // save original function in case we need to make a new request
+    this.data = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].serialize(elem); // save original function in case we need to make a new request
     // from this one.
 
     this.origFunc = func;
@@ -51970,23 +51983,23 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Request = class Request {
       node = this.xhr.responseXML.documentElement;
 
       if (node.tagName === "parsererror") {
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("invalid response received");
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("responseText: " + this.xhr.responseText);
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("responseXML: " + _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].serialize(this.xhr.responseXML));
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("invalid response received");
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("responseText: " + this.xhr.responseText);
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("responseXML: " + _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].serialize(this.xhr.responseXML));
         throw new Error("parsererror");
       }
     } else if (this.xhr.responseText) {
       // In React Native, we may get responseText but no responseXML.  We can try to parse it manually.
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("Got responseText but no responseXML; attempting to parse it with DOMParser...");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("Got responseText but no responseXML; attempting to parse it with DOMParser...");
       node = new _shims__WEBPACK_IMPORTED_MODULE_0__[/* DOMParser */ "a"]().parseFromString(this.xhr.responseText, 'application/xml').documentElement;
 
       if (!node) {
         throw new Error('Parsing produced null node');
       } else if (node.querySelector('parsererror')) {
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("invalid response received: " + node.querySelector('parsererror').textContent);
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("responseText: " + this.xhr.responseText);
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("invalid response received: " + node.querySelector('parsererror').textContent);
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("responseText: " + this.xhr.responseText);
         const error = new Error();
-        error.name = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].ErrorCondition.BAD_FORMAT;
+        error.name = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].ErrorCondition.BAD_FORMAT;
         throw error;
       }
     }
@@ -52047,7 +52060,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Request = class Request {
  *    A new Strophe.Bosh object.
  */
 
-_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
+_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Bosh = class Bosh {
   constructor(connection) {
     this._conn = connection;
     /* request id for body tags */
@@ -52076,7 +52089,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
   _buildBody() {
     const bodyWrap = Object(_core__WEBPACK_IMPORTED_MODULE_1__[/* $build */ "a"])('body', {
       'rid': this.rid++,
-      'xmlns': _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].NS.HTTPBIND
+      'xmlns': _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].NS.HTTPBIND
     });
 
     if (this.sid !== null) {
@@ -52129,7 +52142,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
       "content": "text/xml; charset=utf-8",
       "ver": "1.6",
       "xmpp:version": "1.0",
-      "xmlns:xmpp": _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].NS.BOSH
+      "xmlns:xmpp": _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].NS.BOSH
     });
 
     if (route) {
@@ -52140,7 +52153,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
 
     const _connect_cb = this._conn._connect_cb;
 
-    this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Request(body.tree(), this._onRequestStateChange.bind(this, _connect_cb.bind(this._conn)), body.tree().getAttribute("rid")));
+    this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Request(body.tree(), this._onRequestStateChange.bind(this, _connect_cb.bind(this._conn)), body.tree().getAttribute("rid")));
 
     this._throttledRequestHandler();
   }
@@ -52175,14 +52188,14 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
     this.sid = sid;
     this.rid = rid;
     this._conn.connect_callback = callback;
-    this._conn.domain = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].getDomainFromJid(this._conn.jid);
+    this._conn.domain = _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].getDomainFromJid(this._conn.jid);
     this._conn.authenticated = true;
     this._conn.connected = true;
     this.wait = wait || this.wait;
     this.hold = hold || this.hold;
     this.window = wind || this.window;
 
-    this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.ATTACHED, null);
+    this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.ATTACHED, null);
   }
   /** PrivateFunction: _restore
    *  Attempt to restore a cached BOSH session
@@ -52208,9 +52221,9 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
   _restore(jid, callback, wait, hold, wind) {
     const session = JSON.parse(window.sessionStorage.getItem('strophe-bosh-session'));
 
-    if (typeof session !== "undefined" && session !== null && session.rid && session.sid && session.jid && (typeof jid === "undefined" || jid === null || _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].getBareJidFromJid(session.jid) === _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].getBareJidFromJid(jid) || // If authcid is null, then it's an anonymous login, so
+    if (typeof session !== "undefined" && session !== null && session.rid && session.sid && session.jid && (typeof jid === "undefined" || jid === null || _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].getBareJidFromJid(session.jid) === _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].getBareJidFromJid(jid) || // If authcid is null, then it's an anonymous login, so
     // we compare only the domains:
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].getNodeFromJid(jid) === null && _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].getDomainFromJid(session.jid) === jid)) {
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].getNodeFromJid(jid) === null && _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].getDomainFromJid(session.jid) === jid)) {
       this._conn.restored = true;
 
       this._attach(session.jid, session.sid, session.rid, callback, wait, hold, wind);
@@ -52257,7 +52270,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
     if (typ !== null && typ === "terminate") {
       // an error occurred
       let cond = bodyWrap.getAttribute("condition");
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("BOSH-Connection failed: " + cond);
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("BOSH-Connection failed: " + cond);
       const conflict = bodyWrap.getElementsByTagName("conflict");
 
       if (cond !== null) {
@@ -52265,14 +52278,14 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
           cond = "conflict";
         }
 
-        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL, cond);
+        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL, cond);
       } else {
-        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL, "unknown");
+        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL, "unknown");
       }
 
       this._conn._doDisconnect(cond);
 
-      return _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL;
+      return _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL;
     } // check to make sure we don't overwrite these if _connect_cb is
     // called multiple times in the case of missing stream:features
 
@@ -52375,7 +52388,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
 
   _hitError(reqStatus) {
     this.errors++;
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].warn("request errored, status: " + reqStatus + ", number of errors: " + this.errors);
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].warn("request errored, status: " + reqStatus + ", number of errors: " + this.errors);
 
     if (this.errors > 4) {
       this._conn._onDisconnectTimeout();
@@ -52389,7 +52402,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
 
 
   _no_auth_received(callback) {
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].warn("Server did not yet offer a supported authentication " + "mechanism. Sending a blank poll request.");
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].warn("Server did not yet offer a supported authentication " + "mechanism. Sending a blank poll request.");
 
     if (callback) {
       callback = callback.bind(this._conn);
@@ -52399,7 +52412,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
 
     const body = this._buildBody();
 
-    this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Request(body.tree(), this._onRequestStateChange.bind(this, callback), body.tree().getAttribute("rid")));
+    this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Request(body.tree(), this._onRequestStateChange.bind(this, callback), body.tree().getAttribute("rid")));
 
     this._throttledRequestHandler();
   }
@@ -52439,7 +52452,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
     const data = this._conn._data; // if no requests are in progress, poll
 
     if (this._conn.authenticated && this._requests.length === 0 && data.length === 0 && !this._conn.disconnecting) {
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("no requests during idle cycle, sending blank request");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("no requests during idle cycle, sending blank request");
       data.push(null);
     }
 
@@ -52457,7 +52470,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
               "to": this._conn.domain,
               "xml:lang": "en",
               "xmpp:restart": "true",
-              "xmlns:xmpp": _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].NS.BOSH
+              "xmlns:xmpp": _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].NS.BOSH
             });
           } else {
             body.cnode(data[i]).up();
@@ -52468,7 +52481,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
       delete this._conn._data;
       this._conn._data = [];
 
-      this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Request(body.tree(), this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)), body.tree().getAttribute("rid")));
+      this._requests.push(new _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Request(body.tree(), this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)), body.tree().getAttribute("rid")));
 
       this._throttledRequestHandler();
     }
@@ -52477,13 +52490,13 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
       const time_elapsed = this._requests[0].age();
 
       if (this._requests[0].dead !== null) {
-        if (this._requests[0].timeDead() > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].SECONDARY_TIMEOUT * this.wait)) {
+        if (this._requests[0].timeDead() > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].SECONDARY_TIMEOUT * this.wait)) {
           this._throttledRequestHandler();
         }
       }
 
-      if (time_elapsed > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].TIMEOUT * this.wait)) {
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].warn("Request " + this._requests[0].id + " timed out, over " + Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].TIMEOUT * this.wait) + " seconds since last activity");
+      if (time_elapsed > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].TIMEOUT * this.wait)) {
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].warn("Request " + this._requests[0].id + " timed out, over " + Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].TIMEOUT * this.wait) + " seconds since last activity");
 
         this._throttledRequestHandler();
       }
@@ -52509,7 +52522,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
       } catch (e) {
         // ignore errors from undefined status attribute. Works
         // around a browser bug
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("Caught an error while retrieving a request's status, " + "reqStatus: " + reqStatus);
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("Caught an error while retrieving a request's status, " + "reqStatus: " + reqStatus);
       }
     }
 
@@ -52534,7 +52547,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
 
 
   _onRequestStateChange(func, req) {
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("request id " + req.id + "." + req.sends + " state changed to " + req.xhr.readyState);
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("request id " + req.id + "." + req.sends + " state changed to " + req.xhr.readyState);
 
     if (req.abort) {
       req.abort = false;
@@ -52565,7 +52578,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
       // remove from internal queue
       this._removeRequest(req);
 
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("request id " + req.id + " should now be removed");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("request id " + req.id + " should now be removed");
     }
 
     if (reqStatus === 200) {
@@ -52576,37 +52589,37 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
       // restart the other - both will be in the first spot, as the
       // completed request has been removed from the queue already
 
-      if (reqIs1 || reqIs0 && this._requests.length > 0 && this._requests[0].age() > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].SECONDARY_TIMEOUT * this.wait)) {
+      if (reqIs1 || reqIs0 && this._requests.length > 0 && this._requests[0].age() > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].SECONDARY_TIMEOUT * this.wait)) {
         this._restartRequest(0);
       }
 
       this._conn.nextValidRid(Number(req.rid) + 1);
 
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("request id " + req.id + "." + req.sends + " got 200");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("request id " + req.id + "." + req.sends + " got 200");
       func(req); // call handler
 
       this.errors = 0;
     } else if (reqStatus === 0 || reqStatus >= 400 && reqStatus < 600 || reqStatus >= 12000) {
       // request failed
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("request id " + req.id + "." + req.sends + " error " + reqStatus + " happened");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("request id " + req.id + "." + req.sends + " error " + reqStatus + " happened");
 
       this._hitError(reqStatus);
 
       this._callProtocolErrorHandlers(req);
 
       if (reqStatus >= 400 && reqStatus < 500) {
-        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.DISCONNECTING, null);
+        this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.DISCONNECTING, null);
 
         this._conn._doDisconnect();
       }
     } else {
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("request id " + req.id + "." + req.sends + " error " + reqStatus + " happened");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("request id " + req.id + "." + req.sends + " error " + reqStatus + " happened");
     }
 
     if (!valid_request && !too_many_retries) {
       this._throttledRequestHandler();
     } else if (too_many_retries && !this._conn.connected) {
-      this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL, "giving-up");
+      this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL, "giving-up");
     }
   }
   /** PrivateFunction: _processRequest
@@ -52633,13 +52646,13 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
     }
 
     const time_elapsed = req.age();
-    const primary_timeout = !isNaN(time_elapsed) && time_elapsed > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].TIMEOUT * this.wait);
-    const secondary_timeout = req.dead !== null && req.timeDead() > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].SECONDARY_TIMEOUT * this.wait);
+    const primary_timeout = !isNaN(time_elapsed) && time_elapsed > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].TIMEOUT * this.wait);
+    const secondary_timeout = req.dead !== null && req.timeDead() > Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].SECONDARY_TIMEOUT * this.wait);
     const server_error = req.xhr.readyState === 4 && (reqStatus < 1 || reqStatus >= 500);
 
     if (primary_timeout || secondary_timeout || server_error) {
       if (secondary_timeout) {
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("Request ".concat(this._requests[i].id, " timed out (secondary), restarting"));
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("Request ".concat(this._requests[i].id, " timed out (secondary), restarting"));
       }
 
       req.abort = true;
@@ -52647,12 +52660,12 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
 
       req.xhr.onreadystatechange = function () {};
 
-      this._requests[i] = new _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Request(req.xmlData, req.origFunc, req.rid, req.sends);
+      this._requests[i] = new _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Request(req.xmlData, req.origFunc, req.rid, req.sends);
       req = this._requests[i];
     }
 
     if (req.xhr.readyState === 0) {
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("request id " + req.id + "." + req.sends + " posting");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("request id " + req.id + "." + req.sends + " posting");
 
       try {
         const content_type = this._conn.options.contentType || "text/xml; charset=utf-8";
@@ -52667,10 +52680,10 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
           req.xhr.withCredentials = true;
         }
       } catch (e2) {
-        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("XHR open failed: " + e2.toString());
+        _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("XHR open failed: " + e2.toString());
 
         if (!this._conn.connected) {
-          this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL, "bad-service");
+          this._conn._changeConnectStatus(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL, "bad-service");
         }
 
         this._conn.disconnect();
@@ -52701,7 +52714,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
       if (req.sends > 1) {
         // Using a cube of the retry number creates a nicely
         // expanding retry window
-        const backoff = Math.min(Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].TIMEOUT * this.wait), Math.pow(req.sends, 3)) * 1000;
+        const backoff = Math.min(Math.floor(_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].TIMEOUT * this.wait), Math.pow(req.sends, 3)) * 1000;
         setTimeout(function () {
           // XXX: setTimeout should be called only with function expressions (23974bc1)
           sendFunc();
@@ -52712,7 +52725,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
 
       req.sends++;
 
-      if (this._conn.xmlOutput !== _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Connection.prototype.xmlOutput) {
+      if (this._conn.xmlOutput !== _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Connection.prototype.xmlOutput) {
         if (req.xmlData.nodeName === this.strip && req.xmlData.childNodes.length) {
           this._conn.xmlOutput(req.xmlData.childNodes[0]);
         } else {
@@ -52720,11 +52733,11 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
         }
       }
 
-      if (this._conn.rawOutput !== _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Connection.prototype.rawOutput) {
+      if (this._conn.rawOutput !== _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Connection.prototype.rawOutput) {
         this._conn.rawOutput(req.data);
       }
     } else {
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("_processRequest: " + (i === 0 ? "first" : "second") + " request has readyState of " + req.xhr.readyState);
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("_processRequest: " + (i === 0 ? "first" : "second") + " request has readyState of " + req.xhr.readyState);
     }
   }
   /** PrivateFunction: _removeRequest
@@ -52736,7 +52749,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
 
 
   _removeRequest(req) {
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("removing request");
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("removing request");
 
     for (let i = this._requests.length - 1; i >= 0; i--) {
       if (req === this._requests[i]) {
@@ -52801,7 +52814,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
 
 
   _sendTerminate(pres) {
-    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("_sendTerminate was called");
+    _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("_sendTerminate was called");
 
     const body = this._buildBody().attrs({
       type: "terminate"
@@ -52811,7 +52824,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
       body.cnode(pres.tree());
     }
 
-    const req = new _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Request(body.tree(), this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)), body.tree().getAttribute("rid"));
+    const req = new _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Request(body.tree(), this._onRequestStateChange.bind(this, this._conn._dataRecv.bind(this._conn)), body.tree().getAttribute("rid"));
 
     this._requests.push(req);
 
@@ -52853,9 +52866,9 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
 
   _throttledRequestHandler() {
     if (!this._requests) {
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("_throttledRequestHandler called with " + "undefined requests");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("_throttledRequestHandler called with " + "undefined requests");
     } else {
-      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("_throttledRequestHandler called with " + this._requests.length + " requests");
+      _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("_throttledRequestHandler called with " + this._requests.length + " requests");
     }
 
     if (!this._requests || this._requests.length === 0) {
@@ -52884,7 +52897,7 @@ _core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh = class Bosh {
  *  <Strophe.Connection.xmlInput> and <Strophe.Connection.xmlOutput>.
  */
 
-_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Bosh.prototype.strip = null;
+_core__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Bosh.prototype.strip = null;
 
 /***/ }),
 /* 499 */
@@ -52913,16 +52926,16 @@ module.exports = function () {
 
 
 const lmap = {};
-lmap['debug'] = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].LogLevel.DEBUG;
-lmap['info'] = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].LogLevel.INFO;
-lmap['warn'] = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].LogLevel.WARN;
-lmap['error'] = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].LogLevel.ERROR;
-lmap['fatal'] = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].LogLevel.FATAL;
+lmap['debug'] = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].LogLevel.DEBUG;
+lmap['info'] = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].LogLevel.INFO;
+lmap['warn'] = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].LogLevel.WARN;
+lmap['error'] = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].LogLevel.ERROR;
+lmap['fatal'] = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].LogLevel.FATAL;
 /** Class: Strophe.WorkerWebsocket
  *  _Private_ helper class that handles a websocket connection inside a shared worker.
  */
 
-_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].WorkerWebsocket = class WorkerWebsocket extends _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Websocket {
+_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].WorkerWebsocket = class WorkerWebsocket extends _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Websocket {
   /** PrivateConstructor: Strophe.WorkerWebsocket
    *  Create and initialize a Strophe.WorkerWebsocket object.
    *
@@ -52941,7 +52954,7 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].WorkerWebsocket = class
       var _console;
 
       (_console = console) === null || _console === void 0 ? void 0 : _console.error(e);
-      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].log(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].LogLevel.ERROR, "Shared Worker Error: ".concat(e));
+      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].log(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].LogLevel.ERROR, "Shared Worker Error: ".concat(e));
     };
   }
 
@@ -52973,31 +52986,31 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].WorkerWebsocket = class
   }
 
   _attachCallback(status, jid) {
-    if (status === _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.ATTACHED) {
+    if (status === _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.ATTACHED) {
       this._conn.jid = jid;
       this._conn.authenticated = true;
       this._conn.connected = true;
       this._conn.restored = true;
 
-      this._conn._changeConnectStatus(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.ATTACHED);
-    } else if (status === _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.ATTACHFAIL) {
+      this._conn._changeConnectStatus(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.ATTACHED);
+    } else if (status === _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.ATTACHFAIL) {
       this._conn.authenticated = false;
       this._conn.connected = false;
       this._conn.restored = false;
 
-      this._conn._changeConnectStatus(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.ATTACHFAIL);
+      this._conn._changeConnectStatus(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.ATTACHFAIL);
     }
   }
 
   _disconnect(readyState, pres) {
     pres && this._conn.send(pres);
     const close = Object(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* $build */ "a"])("close", {
-      "xmlns": _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].NS.FRAMING
+      "xmlns": _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].NS.FRAMING
     });
 
     this._conn.xmlOutput(close.tree());
 
-    const closeString = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].serialize(close);
+    const closeString = _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].serialize(close);
 
     this._conn.rawOutput(closeString);
 
@@ -53008,7 +53021,7 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].WorkerWebsocket = class
 
   _onClose(e) {
     if (this._conn.connected && !this._conn.disconnecting) {
-      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("Websocket closed unexpectedly");
+      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("Websocket closed unexpectedly");
 
       this._conn._doDisconnect();
     } else if (e && e.code === 1006 && !this._conn.connected) {
@@ -53016,13 +53029,13 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].WorkerWebsocket = class
       // call onerror when the initial connection fails) we need to
       // dispatch a CONNFAIL status update to be consistent with the
       // behavior on other browsers.
-      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].error("Websocket closed unexcectedly");
+      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].error("Websocket closed unexcectedly");
 
-      this._conn._changeConnectStatus(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].Status.CONNFAIL, "The WebSocket connection could not be established or was disconnected.");
+      this._conn._changeConnectStatus(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].Status.CONNFAIL, "The WebSocket connection could not be established or was disconnected.");
 
       this._conn._doDisconnect();
     } else {
-      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].debug("Websocket closed");
+      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].debug("Websocket closed");
     }
   }
 
@@ -53058,14 +53071,14 @@ _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].WorkerWebsocket = class
       try {
         this[method_name].apply(this, ev.data.slice(1));
       } catch (e) {
-        _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].log(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].LogLevel.ERROR, e);
+        _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].log(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].LogLevel.ERROR, e);
       }
     } else if (method_name === 'log') {
       const level = data[1];
       const msg = data[2];
-      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].log(lmap[level], msg);
+      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].log(lmap[level], msg);
     } else {
-      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].log(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "c"].LogLevel.ERROR, "Found unhandled service worker message: ".concat(data));
+      _core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].log(_core_js__WEBPACK_IMPORTED_MODULE_1__[/* Strophe */ "d"].LogLevel.ERROR, "Found unhandled service worker message: ".concat(data));
     }
   }
 
@@ -55087,7 +55100,7 @@ function baseUnary(func) {
 
 /* harmony default export */ var _baseUnary = (baseUnary);
 // EXTERNAL MODULE: ./node_modules/lodash-es/_nodeUtil.js
-var _nodeUtil = __webpack_require__(13);
+var _nodeUtil = __webpack_require__(14);
 
 // CONCATENATED MODULE: ./node_modules/lodash-es/isTypedArray.js
 
@@ -64891,6 +64904,7 @@ class connection_Connection extends core["e" /* Strophe */].Connection {
       converse_core_api.settings.set("websocket_url", ws_methods.pop());
       converse_core_api.settings.set('bosh_service_url', bosh_methods.pop());
       this.service = converse_core_api.settings.get("websocket_url") || converse_core_api.settings.get('bosh_service_url');
+      this.setProtocol();
     }
   }
   /**
@@ -69551,7 +69565,7 @@ const converse_core_converse = {
    */
   '___': str => str
 };
-converse_core_converse.VERSION_NAME = "v7.0.3";
+converse_core_converse.VERSION_NAME = "v7.0.4";
 Object.assign(converse_core_converse, Events); // Make converse pluggable
 
 pluggable.enable(converse_core_converse, '_converse', 'pluggable');
@@ -70110,7 +70124,6 @@ const converse_core_api = converse_core_converse.api = {
   listen: {
     /**
      * Lets you listen to an event exactly once.
-     *
      * @method _converse.api.listen.once
      * @param {string} name The event's name
      * @param {function} callback The callback method to be called when the event is emitted.
@@ -70121,9 +70134,7 @@ const converse_core_api = converse_core_converse.api = {
 
     /**
      * Lets you subscribe to an event.
-     *
      * Every time the event fires, the callback method specified by `callback` will be called.
-     *
      * @method _converse.api.listen.on
      * @param {string} name The event's name
      * @param {function} callback The callback method to be called when the event is emitted.
@@ -70134,9 +70145,6 @@ const converse_core_api = converse_core_converse.api = {
 
     /**
      * To stop listening to an event, you can use the `not` method.
-     *
-     * Every time the event fires, the callback method specified by `callback` will be called.
-     *
      * @method _converse.api.listen.not
      * @param {string} name The event's name
      * @param {function} callback The callback method that is to no longer be called when the event fires
