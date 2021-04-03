@@ -18,7 +18,7 @@ const plugin = {
     },
 
     initialize () {
-        const { dayjs, html, CustomElement, u } = converse.env;
+        const { dayjs, html, u } = converse.env;
         const { _converse } = this;
         const { __, api } = _converse;
         const download_view = document.createElement("converse-download-view");
@@ -72,7 +72,7 @@ const plugin = {
         }
         Object.assign(_converse.ChatBoxView.prototype, {downloadAttachements});
 
-        class MultimediaDownloadView extends CustomElement {
+        class MultimediaDownloadView extends _converse.CustomElement {
 
             static get properties() {
                 return {
