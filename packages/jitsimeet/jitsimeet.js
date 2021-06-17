@@ -239,7 +239,7 @@
 
                 var firstTime = true;
 
-                jitsiFrame.addEventListener("load", function ()
+                let closeJitsi = function ()
                 {
                     console.debug("doVideo - load", this);
 
@@ -253,8 +253,8 @@
 
                     if (firstTime) firstTime = false;   // ignore when jitsi-meet room url is loaded
 
-                });
-
+                };
+                jitsiFrame.addEventListener("load", closeJitsi);
                 jitsiFrame.setAttribute("src", url);
                 jitsiFrame.setAttribute("id", "jitsimeet");
                 jitsiFrame.setAttribute("allow", "microphone; camera;");
@@ -264,6 +264,15 @@
                 jitsiFrame.setAttribute("scrolling", "no");
                 jitsiFrame.setAttribute("style", "z-index: 2147483647;width:100%;height:100%;");
                 div.appendChild(jitsiFrame);
+                jitsiFrame.contentWindow.addEventListener("message", function (event) {
+                  if (_converse.api.settings.get("jitsimeet_url").indexOf(event.origin) === 0 && typeof event.data === 'string') {
+                    let data = JSON.parse(event.data);
+                    let jitsiEvent = data['jitsimeet_event'];
+                    if ('close' === jitsiEvent) {
+                      closeJitsi();
+                    }
+                  }
+                }, false);
             }
         }
     }
