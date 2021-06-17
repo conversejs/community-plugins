@@ -4,6 +4,9 @@ This repo contains community contributed plugins, not included in the core of Co
 
 To see a demo of all the plugins working, click [here](https://conversejs.github.io/community-plugins/)
 
+## Example - stickers plugin
+<img src=https://github.com/conversejs/community-plugins/raw/master/packages/stickers/stickers.png />
+
 ## Creating a plugin
 
 To create a new plugin, use [generator-converse](https://github.com/conversejs/generator-conversejs),
