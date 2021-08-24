@@ -163,7 +163,7 @@
                         text.references = [];
                         text.addTemplateResult(0, body.length, html`<a 
                             @click=${clickVideo} data-room="${link_room}" data-url="${url}" data-jid="${link_jid}" id="${link_id}"
-                            href="#">${link_label} ${link_room}</a><br/><a target="_blank" rel="noopener"
+                            href="#">${link_label} ${link_room}</a><br/><a target="_blank" rel="noopener noreferrer"
                             href="${url}">${tab_label} ${url}</a>`);
                     }
                 }
@@ -222,9 +222,9 @@
         console.debug("doNewTabVideo", url);
         var newTabVideoLink = document.createElement('a');
         Object.assign(newTabVideoLink, {
-          target: '_blank',
-          rel: 'noopener noreferrer',
-          href: url
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            href: url
         })
         .click()
     }
@@ -246,10 +246,101 @@
         }
         else {
 
-            var div = view.el.querySelector(".box-flyout");
+            const isOverlayedDisplay = _converse.api.settings.get("view_mode") === "overlayed";
+            var div = view.el.querySelector(isOverlayedDisplay ? ".chat-body" : ".box-flyout");
 
             if (div)
             {
+                const dynamicDisplayManager = new function() {
+                  const __isActive = isOverlayedDisplay;
+                  let __resizeCandidates;
+                  let __resizeHandler;
+                  let resizeObserver;
+                  let __startResize;
+                  let __endResize;
+                  this.handle = function(meetIFrame) {
+                    if (__isActive) {
+                      __resizeHandler = function() {
+                        let top = div.offsetTop;
+                        let left = div.offsetLeft;
+                        let width = div.offsetWidth;
+                        let height = div.offsetHeight;
+                        let current = div.offsetParent;
+                        while (current) {
+                          top += current.offsetTop;
+                          left += current.offsetLeft;
+                          current = current.offsetParent;
+                        }
+                        jitsiFrame.style.top = top + "px";
+                        jitsiFrame.style.left = left + "px";
+                        jitsiFrame.style.width = width + "px";
+                        jitsiFrame.style.height = height + "px";
+                      };
+                      if (typeof ResizeObserver === 'function') {
+                        resizeObserver = new ResizeObserver(entries => {
+                          if (entries.length > 0) {
+                            __resizeHandler();
+                          }
+                        });
+                      }
+                      let __resizedElement;
+                      __startResize = function(currentView) {
+                        if (!__resizedElement) {
+                          if (resizeObserver) {
+                            __resizedElement = currentView.el.querySelector('.chat-body') || currentView.el;
+                            resizeObserver.observe(__resizedElement);
+                          } else {
+                            __resizedElement = currentView.el.querySelector('.box-flyout');
+                            __resizedElement.addEventListener('mousemove', __resizeHandler);
+                          }
+                        }
+                      };
+                      __endResize = function() {
+                        if (__resizedElement) {
+                          if (resizeObserver) {
+                            resizeObserver.unobserve(__resizedElement);
+                          } else {
+                            __resizedElement.removeEventListener('mousemove', __resizeHandler);
+                          }
+                          __resizedElement = undefined;
+                        }
+                      };
+                      _converse.api.listen.on('startDiagonalResize', __startResize);
+                      _converse.api.listen.on('startHorizontalResize', __startResize);
+                      _converse.api.listen.on('startVerticalResize', __startResize);
+                      document.addEventListener('mouseup', __endResize);
+                      window.addEventListener('resize', __resizeHandler);
+                      meetIFrame.style.position = "absolute";
+                      document.body.appendChild(meetIFrame);
+                      __resizeHandler();
+                      __resizeCandidates = ['controlBoxOpened', 'controlBoxClosed', 'chatBoxBlurred',
+                        'chatBoxFocused', 'chatBoxMinimized', 'chatBoxMaximized'];
+                      _converse.api.listen.on('chatBoxClosed', closeJitsi);
+                      __resizeCandidates.forEach(c => _converse.api.listen.on(c, __resizeHandler));
+                    }
+                    return __isActive;
+                  };
+                  this.triggerChange = function() {
+                    if (__isActive) {
+                      __resizeHandler();
+                    }
+                  };
+                  this.close = function() {
+                    if (__isActive) {
+                      _converse.api.listen.not('startDiagonalResize', __startResize);
+                      _converse.api.listen.not('startHorizontalResize', __startResize);
+                      _converse.api.listen.not('startVerticalResize', __startResize);
+                      document.removeEventListener('mouseup', __endResize);
+                      window.removeEventListener('resize', __resizeHandler);
+                      _converse.api.listen.not('chatBoxClosed', closeJitsi);
+                      __resizeCandidates.forEach(c => _converse.api.listen.not(c, __resizeHandler));
+                      if (resizeObserver) {
+                        resizeObserver.disconnect();
+                      }
+                    }
+                  };
+                };
+
                 const divChildElements = [].slice.call(div.children, 0).map(function(bloc) {
                   const data = {
                     el : bloc,
@@ -262,22 +353,28 @@
 
                 var firstTime = true;
 
-                let closeJitsi = function ()
+                let closeJitsi = function(currentView) {
+                  dynamicDisplayManager.triggerChange();
+                  if (currentView && currentView !== view) {
+                    return;
+                  }
+                  dynamicDisplayManager.close();
+                  jitsiFrame.remove();
+                  divChildElements.forEach(function(bloc) {
+                    bloc.el.style.display = bloc.previousDisplay;
+                  });
+                }
+
+                let jitsiIframeCloseHandler = function ()
                 {
-                    console.debug("doVideo - load", this);
-
-                    if (!firstTime) // meeting closed and root url is loaded
-                    {
-                        jitsiFrame.remove();
-                        divChildElements.forEach(function(bloc) {
-                          bloc.el.style.display = bloc.previousDisplay;
-                        })
-                    }
-
-                    if (firstTime) firstTime = false;   // ignore when jitsi-meet room url is loaded
-
+                  console.debug("doVideo - load", this);
+                  if (!firstTime) // meeting closed and root url is loaded
+                  {
+                    closeJitsi();
+                  }
+                  if (firstTime) firstTime = false;   // ignore when jitsi-meet room url is loaded
                 };
-                jitsiFrame.addEventListener("load", closeJitsi);
+                jitsiFrame.addEventListener("load", jitsiIframeCloseHandler);
                 jitsiFrame.setAttribute("src", url);
                 jitsiFrame.setAttribute("id", "jitsimeet");
                 jitsiFrame.setAttribute("allow", "microphone; camera;");
@@ -285,8 +382,10 @@
                 jitsiFrame.setAttribute("seamless", "seamless");
                 jitsiFrame.setAttribute("allowfullscreen", "true");
                 jitsiFrame.setAttribute("scrolling", "no");
-                jitsiFrame.setAttribute("style", "z-index: 2147483647;width:100%;height:100%;");
-                div.appendChild(jitsiFrame);
+                jitsiFrame.setAttribute("style", "z-index:2147483647;width:100%;height:100%;");
+                if (!dynamicDisplayManager.handle(jitsiFrame)) {
+                  div.appendChild(jitsiFrame);
+                }
                 jitsiFrame.contentWindow.addEventListener("message", function (event) {
                   if (_converse.api.settings.get("jitsimeet_url").indexOf(event.origin) === 0 && typeof event.data === 'string') {
                     let data = JSON.parse(event.data);
