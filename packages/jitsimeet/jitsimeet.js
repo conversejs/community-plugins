@@ -5,6 +5,11 @@
         factory(converse);
     }
 }(this, function (converse) {
+    var MEET_START_OPTIONS = {
+      INTO_CHAT_WINDOW : "into_chat_window",
+      INTO_NEW_TAB : "into_new_tab",
+      JUST_CREATE_LINK : "just_create_link"
+    };
     var Strophe, $iq, $msg, $pres, $build, b64_sha1, _ , dayjs, _converse, html, _, __, Model, BootstrapModal, jitsimeet_confirm, jitsimeet_invitation, jitsimeet_tab_invitation;
     var MeetDialog = null, meetDialog = null;
 
@@ -28,6 +33,7 @@
             __ = _converse.__;
 
             _converse.api.settings.update({
+                jitsimeet_start_option: MEET_START_OPTIONS.INTO_CHAT_WINDOW,
                 jitsimeet_modal: false,
                 jitsimeet_url: 'https://meet.jit.si',
             });
@@ -203,7 +209,24 @@
         const message = view.model.messages.create(attrs);
 
         _converse.api.send(view.model.createMessageStanza(message));
-        doLocalVideo(view, room, url, label);
+        var startOption = _converse.api.settings.get("jitsimeet_start_option");
+        if (startOption === MEET_START_OPTIONS.INTO_CHAT_WINDOW) {
+          doLocalVideo(view, room, url, label);
+        } else if (startOption === MEET_START_OPTIONS.INTO_NEW_TAB) {
+          doNewTabVideo(url);
+        }
+    }
+
+    var doNewTabVideo = function doNewTabVideo(url)
+    {
+        console.debug("doNewTabVideo", url);
+        var newTabVideoLink = document.createElement('a');
+        Object.assign(newTabVideoLink, {
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          href: url
+        })
+        .click()
     }
 
     var doLocalVideo = function doLocalVideo(view, room, url, label)
