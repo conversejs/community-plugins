@@ -253,20 +253,18 @@
             {
                 const dynamicDisplayManager = new function() {
                   const __isActive = isOverlayedDisplay;
-                  let __resizeCandidates;
                   let __resizeHandler;
-                  let resizeObserver;
-                  let __startResize;
-                  let __endResize;
+                  let __resizeWatchImpl;
                   this.handle = function(meetIFrame) {
                     if (__isActive) {
+                      const __anchor = document.querySelector('.converse-chatboxes');
                       __resizeHandler = function() {
                         let top = div.offsetTop;
                         let left = div.offsetLeft;
                         let width = div.offsetWidth;
                         let height = div.offsetHeight;
                         let current = div.offsetParent;
-                        while (current) {
+                        while (current && current !== __anchor) {
                           top += current.offsetTop;
                           left += current.offsetLeft;
                           current = current.offsetParent;
@@ -277,46 +275,63 @@
                         jitsiFrame.style.height = height + "px";
                       };
                       if (typeof ResizeObserver === 'function') {
-                        resizeObserver = new ResizeObserver(entries => {
-                          if (entries.length > 0) {
-                            __resizeHandler();
-                          }
-                        });
+                        __resizeWatchImpl = new function() {
+                          const resizeObserver = new ResizeObserver(entries => {
+                            if (entries.length > 0) {
+                              __resizeHandler();
+                            }
+                          });
+                          this.start = function() {
+                            resizeObserver.observe(div);
+                            resizeObserver.observe(__anchor);
+                          };
+                          this.close = function() {
+                            resizeObserver.disconnect();
+                          };
+                        };
+                      } else {
+                        __resizeWatchImpl = new function() {
+                          const __resizeWatchEvents = ['controlBoxOpened', 'controlBoxClosed', 'chatBoxBlurred',
+                            'chatBoxFocused', 'chatBoxMinimized', 'chatBoxMaximized'];
+                          let __resizedElement;
+                          const __startResize = function(currentView) {
+                            if (!__resizedElement) {
+                              __resizedElement = currentView.el.querySelector('.box-flyout');
+                              __resizedElement.addEventListener('mousemove', __resizeHandler);
+                            }
+                          };
+                          const __endResize = function() {
+                            if (__resizedElement) {
+                              __resizedElement.removeEventListener('mousemove', __resizeHandler);
+                              __resizedElement = undefined;
+                            }
+                          };
+                          const __deferredResize = function() {
+                            setTimeout(__resizeHandler, 0);
+                          };
+                          this.start = function() {
+                            _converse.api.listen.on('startDiagonalResize', __startResize);
+                            _converse.api.listen.on('startHorizontalResize', __startResize);
+                            _converse.api.listen.on('startVerticalResize', __startResize);
+                            document.addEventListener('mouseup', __endResize);
+                            window.addEventListener('resize', __resizeHandler);
+                            __resizeWatchEvents.forEach(c => _converse.api.listen.on(c, __deferredResize));
+                          };
+                          this.close = function() {
+                            _converse.api.listen.not('startDiagonalResize', __startResize);
+                            _converse.api.listen.not('startHorizontalResize', __startResize);
+                            _converse.api.listen.not('startVerticalResize', __startResize);
+                            document.removeEventListener('mouseup', __endResize);
+                            window.removeEventListener('resize', __resizeHandler);
+                            __resizeWatchEvents.forEach(c => _converse.api.listen.not(c, __deferredResize));
+                          };
+                        };
                       }
-                      let __resizedElement;
-                      __startResize = function(currentView) {
-                        if (!__resizedElement) {
-                          if (resizeObserver) {
-                            __resizedElement = currentView.el.querySelector('.chat-body') || currentView.el;
-                            resizeObserver.observe(__resizedElement);
-                          } else {
-                            __resizedElement = currentView.el.querySelector('.box-flyout');
-                            __resizedElement.addEventListener('mousemove', __resizeHandler);
-                          }
-                        }
-                      };
-                      __endResize = function() {
-                        if (__resizedElement) {
-                          if (resizeObserver) {
-                            resizeObserver.unobserve(__resizedElement);
-                          } else {
-                            __resizedElement.removeEventListener('mousemove', __resizeHandler);
-                          }
-                          __resizedElement = undefined;
-                        }
-                      };
-                      _converse.api.listen.on('startDiagonalResize', __startResize);
-                      _converse.api.listen.on('startHorizontalResize', __startResize);
-                      _converse.api.listen.on('startVerticalResize', __startResize);
-                      document.addEventListener('mouseup', __endResize);
-                      window.addEventListener('resize', __resizeHandler);
                       meetIFrame.style.position = "absolute";
-                      document.body.appendChild(meetIFrame);
-                      __resizeHandler();
-                      __resizeCandidates = ['controlBoxOpened', 'controlBoxClosed', 'chatBoxBlurred',
-                        'chatBoxFocused', 'chatBoxMinimized', 'chatBoxMaximized'];
+                      __anchor.appendChild(meetIFrame);
+                      __resizeWatchImpl.start();
                       _converse.api.listen.on('chatBoxClosed', closeJitsi);
-                      __resizeCandidates.forEach(c => _converse.api.listen.on(c, __resizeHandler));
+                      this.triggerChange();
                     }
                     return __isActive;
                   };
@@ -327,16 +342,8 @@
                   };
                   this.close = function() {
                     if (__isActive) {
-                      _converse.api.listen.not('startDiagonalResize', __startResize);
-                      _converse.api.listen.not('startHorizontalResize', __startResize);
-                      _converse.api.listen.not('startVerticalResize', __startResize);
-                      document.removeEventListener('mouseup', __endResize);
-                      window.removeEventListener('resize', __resizeHandler);
+                      __resizeWatchImpl.close();
                       _converse.api.listen.not('chatBoxClosed', closeJitsi);
-                      __resizeCandidates.forEach(c => _converse.api.listen.not(c, __resizeHandler));
-                      if (resizeObserver) {
-                        resizeObserver.disconnect();
-                      }
                     }
                   };
                 };
