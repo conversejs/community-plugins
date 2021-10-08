@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/conversejs/community-plugins#readme",
   "dependencies": {
-    "npm": "^7.21.1"
+    "npm": "^8.0.0"
   },
   "devDependencies": {
     "http-server": "^0.12.3"
