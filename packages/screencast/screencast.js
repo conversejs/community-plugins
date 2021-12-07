@@ -39,7 +39,8 @@
         ev.stopPropagation();
         ev.preventDefault();
 
-        const view = this.chatview;
+		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
+		const view = _converse.chatboxviews.get(toolbar_el.model.get('jid'));
 
         if (videoRecorder == null)  // toggle - start otherwise stop
         {

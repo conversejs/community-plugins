@@ -23,6 +23,7 @@
             $iq = converse.env.$iq;
 
             MUCDirectoryDialog = BootstrapModal.extend({
+                id: "plugin-muc-directory-modal",				
                 initialize() {
                     BootstrapModal.prototype.initialize.apply(this, arguments);
                     this.model.on('change', this.render, this);
@@ -44,6 +45,7 @@
 
                   this.el.addEventListener('shown.bs.modal', function()
                   {
+					 nextItem = 0;
                      that.doDirectory();
 
                   }, false);
@@ -125,21 +127,18 @@
 
             Promise.all([_converse.api.waitUntil('controlBoxInitialized'), _converse.api.waitUntil('VCardsInitialized'), _converse.api.waitUntil('rosterContactsFetched'), _converse.api.waitUntil('chatBoxesFetched'), _converse.api.waitUntil('roomsPanelRendered'), _converse.api.waitUntil('bookmarksInitialized')]).then(() =>
             {
-                const section = document.body.querySelector('.d-flex.controlbox-padded');
+                const section = document.body.querySelector('.controlbox-heading--groupchats');	
 
                 if (section)
                 {
                     const mucButton = newElement('a', null, '<a class="controlbox-heading__btn fa fa-list-alt align-self-center" title="Find Group Chat"></a>');
-                    section.appendChild(mucButton);
+                    section.parentNode.appendChild(mucButton);
 
                     mucButton.addEventListener('click', function(evt)
                     {
                         evt.stopPropagation();
 
-                        if (!mucDirectoryDialog)
-                        {
-                            mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new Model({}) });
-                        }
+                        mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new Model({}) });
                         mucDirectoryDialog.show();
 
                     }, false);
@@ -148,7 +147,7 @@
                 }
             });
 
-            console.log("muc directory plugin is ready");
+            console.debug("muc directory plugin is ready");
         },
 
         'overrides': {
@@ -162,11 +161,7 @@
 
                     if (command === "dir")
                     {
-                        if (!mucDirectoryDialog)
-                        {
-                            mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new Model({}) });
-                        }
-
+                        mucDirectoryDialog = new MUCDirectoryDialog({ 'model': new Model({}) });
                         mucDirectoryDialog.show();
                         return true;
                     }
@@ -197,34 +192,34 @@
 
     async function getComponents(domain)
     {
-        //console.debug("getComponents", domain);
+        console.debug("getComponents", domain);
         const stanza = await _converse.api.disco.items(domain);
-        //console.debug("getComponents", stanza);
+        console.debug("getComponents", stanza);
         stanza.querySelectorAll('item').forEach(getComponent);
     }
 
     async function getComponent(component)
     {
-        //console.debug("getComponent", component);
+        console.debug("getComponent", component);
         const jid = component.getAttribute("jid");
         const name = component.getAttribute("name");
         let isMuc = false;
 
-        //console.debug("getComponent", jid, name);
+        console.debug("getComponent", jid, name);
         const stanza = await _converse.api.disco.info(jid);
-        //console.debug("getComponent", stanza);
+        console.debug("getComponent", stanza);
 
         stanza.querySelectorAll('feature').forEach(function(feature)
         {
             const type = feature.getAttribute("var");
-            //console.debug("getComponent", type);
+            console.debug("getComponent", type);
             if (type == "http://jabber.org/protocol/muc") isMuc = true;
         });
 
         if (isMuc)
         {
             const stanza2 = await _converse.api.disco.items(jid);
-            //console.debug("getComponent muc rooms", stanza2);
+            console.debug("getComponent muc rooms", stanza2);
             stanza2.querySelectorAll('item').forEach(getRoom);
         }
     }
@@ -232,7 +227,7 @@
     function getRoom(item)
     {
         const room = item.getAttribute("jid");
-        //console.debug("getRoom", room);
+        console.debug("getRoom", room);
         mucJids[room] = {jid: room};
     }
 
@@ -264,8 +259,14 @@
                         {
                             mucJids[room].avatar = 'data:' + type + ';base64,' + binval;
                             createPanel(mucJids[room], ele);
-                        }
-                    }
+                        } else {
+							mucJids[room].avatar = createAvatar(mucJids[room].label);
+							createPanel(mucJids[room], ele);							
+						}
+                    } else {
+						mucJids[room].avatar = createAvatar(mucJids[room].label);
+						createPanel(mucJids[room], ele);						
+					}
                 },
 
                 function (err)

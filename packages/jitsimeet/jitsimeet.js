@@ -1,3 +1,5 @@
+var _inverse;
+
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         define(["converse"], factory);
@@ -13,6 +15,7 @@
 
         initialize: function () {
             _converse = this._converse;
+			_inverse = _converse;
 
             Strophe = converse.env.Strophe;
             $iq = converse.env.$iq;
@@ -36,12 +39,14 @@
             jitsimeet_invitation = __('Please join meeting in room at');
             jitsimeet_tab_invitation = __('Or open in new tab at');
 
-            _converse.on('message', function (data)
+            _converse.api.listen.on('messageNotification', function (data)
             {
+				console.debug("messageNotification", data);	
+					
                 var chatbox = data.chatbox;
                 var bodyElement = data.stanza.querySelector('body');
 
-                if (bodyElement && _converse.shouldNotifyOfMessage(data.stanza))
+                if (bodyElement)
                 {
                     var body = bodyElement.innerHTML;
                     var url = _converse.api.settings.get("jitsimeet_url");
@@ -52,7 +57,7 @@
                         var room = body.substring(pos + url.length + 1);
                         var label = pos > 0 ? body.substring(0, pos) : jitsimeet_invitation;
                         var from = chatbox.getDisplayName().trim();
-                        var avatar = _converse.notification_icon;
+                        var avatar = _converse.api.settings.get("notification_icon");
 
                         if (data.chatbox.vcard.attributes.image) avatar = data.chatbox.vcard.attributes.image;
 
@@ -123,11 +128,12 @@
             _converse.api.listen.on('getToolbarButtons', function(toolbar_el, buttons)
             {
                 console.debug("getToolbarButtons", toolbar_el.model.get("jid"));
+				
                 let color = "fill:var(--chat-toolbar-btn-color);";
                 if (toolbar_el.model.get("type") == "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
 
                 buttons.push(html`
-                    <button class="plugin-jitsimeet" title="${__('Jitsi Meet')}" @click=${performVideo} .chatview=${this.chatview}/>
+                    <button class="plugin-jitsimeet" title="${__('Jitsi Meet')}" @click=${performVideo}/>
                         <svg style="width:18px; height:18px; ${color}" viewBox="0 0 32 32"><path d="M22.688 14l5.313-5.313v14.625l-5.313-5.313v4.688c0 .75-.625 1.313-1.375 1.313h-16C4.563 24 4 23.437 4 22.687V9.312c0-.75.563-1.313 1.313-1.313h16c.75 0 1.375.563 1.375 1.313V14z"></path></svg>
                     </button>
                 `);
@@ -135,12 +141,13 @@
                 return buttons;
             });
 
-            _converse.api.listen.on('afterMessageBodyTransformed', function(model, text)
+            _converse.api.listen.on('afterMessageBodyTransformed', function(text)
             {
-                const body = model.get("body");
+				let body = "";
+                for (let i=0; i<text.length; i++) body = body + text[i];
 
-                if (body)
-                {
+                if (body != "")
+                {					
                     const pos = body.indexOf("https://");
 
                     if (pos > -1 && body.indexOf(_converse.api.settings.get("jitsimeet_url")) > -1)
@@ -148,7 +155,6 @@
                         console.debug("afterMessageBodyTransformed", body, text);
 
                         const url = body.substring(pos);
-                        const link_jid = Strophe.getBareJidFromJid(model.get("contact_jid") || model.get("jid") || model.get("from"));
                         const link_room = url.substring(url.lastIndexOf("/") + 1);
                         const link_label = jitsimeet_invitation;
                         const tab_label = jitsimeet_tab_invitation;
@@ -156,11 +162,12 @@
 
                         text.references = [];
                         text.addTemplateResult(0, body.length, html`<a 
-                            @click=${clickVideo} data-room="${link_room}" data-url="${url}" data-jid="${link_jid}" id="${link_id}"
+                            @click=${clickVideo} data-room="${link_room}" data-url="${url}" id="${link_id}"
                             href="#">${link_label} ${link_room}</a><br/><a target="_blank" rel="noopener"
                             href="${url}">${tab_label} ${url}</a>`);
                     }
                 }
+				
             });
 
             console.debug("jitsimeet plugin is ready");
@@ -171,24 +178,31 @@
     {
         ev.stopPropagation();
         ev.preventDefault();
+		
+		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
+		const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));
 
         if (confirm(jitsimeet_confirm))
         {
-            doVideo(this.chatview);
+            doVideo(chatview);
         }
     }
 
     function clickVideo(ev)
-    {
+    {		
         ev.stopPropagation();
         ev.preventDefault();
+		
+		const content_el = converse.env.utils.ancestor(ev.target, 'converse-chat-content');	
+        const jid = content_el.getAttribute("jid");		
+        console.debug("clickVideo", jid);	
+		
+		const chatview = _converse.chatboxviews.get(jid);
 
         var url = ev.target.getAttribute("data-url");
         var room = ev.target.getAttribute("data-room");
-        var jid = ev.target.getAttribute("data-jid");
-        var view = _converse.chatboxviews.get(jid);
 
-        if (view) doLocalVideo(view, room, url, jitsimeet_invitation);
+        if (chatview) doLocalVideo(chatview, room, url, jitsimeet_invitation);
     }
 
     var doVideo = function doVideo(view)
@@ -196,14 +210,12 @@
         const room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase().replace(/[\\]/g, '') + "-" + Math.random().toString(36).substr(2,9);
         const url = _converse.api.settings.get("jitsimeet_url") + '/' + room;
 
-        console.debug("doVideo", room, url, view);
-
-        const label = jitsimeet_invitation;
-        const attrs = view.model.getOutgoingMessageAttributes(url);
-        const message = view.model.messages.create(attrs);
-
-        _converse.api.send(view.model.createMessageStanza(message));
-        doLocalVideo(view, room, url, label);
+		let type = 'chat';
+		if (view.model.get("type") == "chatroom") type = 'groupchat';			
+		_converse.api.send($msg({ to: view.model.get('jid'), from: _converse.connection.jid, type}).c('body').t(url).tree());		
+		
+        console.debug("doVideo", room, url, view);		
+        doLocalVideo(view, room, url, jitsimeet_invitation);
     }
 
     var doLocalVideo = function doLocalVideo(view, room, url, label)
@@ -214,7 +226,7 @@
 
         if (modal)
         {
-            if (!meetDialog) meetDialog = new MeetDialog({'model': new converse.env.Model({})});
+            meetDialog = new MeetDialog({'model': new converse.env.Model({})});
             meetDialog.model.set("view", view);
             meetDialog.model.set("url", url);
             meetDialog.model.set("label", label);
@@ -223,7 +235,7 @@
         }
         else {
 
-            var div = view.el.querySelector(".box-flyout");
+            var div = view.querySelector(".box-flyout");
 
             if (div)
             {

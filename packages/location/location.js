@@ -31,6 +31,7 @@
             location_label = __('Publish My Geo Location');
 
             GeoLocationDialog = BootstrapModal.extend({
+                id: "plugin-location-modal",					
                 initialize() {
                     BootstrapModal.prototype.initialize.apply(this, arguments);
                     this.model.on('change', this.render, this);
@@ -81,7 +82,7 @@
                 if (toolbar_el.model.get("type") == "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
 
                 buttons.push(html`
-                    <button class="plugin-location" title="${location_label}" @click=${performLocation} .chatview=${this.chatview}/>
+                    <button class="plugin-location" title="${location_label}" @click=${performLocation}/>
                         <svg style="width:18px; height:18px; ${color}" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g><path d="M 15.272,31.458c 0.168,0.186, 0.33,0.306, 0.486,0.39c 0.002,0.002, 0.006,0.002, 0.008,0.004 c 0.108,0.056, 0.214,0.098, 0.314,0.098c 0.1,0, 0.206-0.042, 0.314-0.098c 0.002-0.002, 0.006-0.002, 0.008-0.004 c 0.156-0.084, 0.318-0.204, 0.486-0.39c0,0, 9.296-10.11, 10.23-18.87c 0.056-0.452, 0.094-0.91, 0.094-1.376C 27.212,5.020, 22.192,0, 16,0 S 4.788,5.020, 4.788,11.212c0,0.474, 0.038,0.936, 0.096,1.394C 5.842,21.362, 15.272,31.458, 15.272,31.458z M 16,4 c 3.976,0, 7.212,3.236, 7.212,7.212c0,3.976-3.236,7.212-7.212,7.212S 8.788,15.188, 8.788,11.212C 8.788,7.236, 12.024,4, 16,4z"></path></g></svg>
                     </button>
                 `);
@@ -89,9 +90,10 @@
                 return buttons;
             });
 
-            _converse.api.listen.on('afterMessageBodyTransformed', function(model, text)
+            _converse.api.listen.on('afterMessageBodyTransformed', function(text)
             {
-                const url = model.get("body");
+				let url = "";
+                for (let i=0; i<text.length; i++) url = url + text[i];
 
                 if (url && url.indexOf("location/leaflet/index.html?accuracy=") > -1)
                 {
@@ -108,14 +110,15 @@
     {
         ev.stopPropagation();
         ev.preventDefault();
-
-        const view = this.chatview;
+		
+		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
+		const view = _converse.chatboxviews.get(toolbar_el.model.get('jid'));		
 
         getMyGeoLoc(function(url, position)
         {
             if (url)
             {
-                if (!geoLocationDialog) geoLocationDialog = new GeoLocationDialog({'model': new Model({view: view}) });
+                geoLocationDialog = new GeoLocationDialog({'model': new Model({view: view}) });
                 geoLocationDialog.model.set("position", position);
                 geoLocationDialog.model.set("url", url);
                 geoLocationDialog.show(ev);
@@ -136,13 +139,10 @@
         }, function(error){
             console.error("User location error", error);
         });
-
-
-        const attrs = view.model.getOutgoingMessageAttributes(url);
-        const message = view.model.messages.create(attrs);
-        message.set('oob_url', url);
-
-        _converse.api.send(view.model.createMessageStanza(message));
+		
+		let type = 'chat';
+		if (view.model.get("type") == "chatroom") type = 'groupchat';			  
+		_converse.api.send($msg({ to: view.model.get('jid'), from: _converse.connection.jid, type}).c('body').t(url).up().c('x', {'xmlns': 'jabber:x:oob'}).c('url').t(url).root());				
     }
 
     function getMyGeoLoc(callback)

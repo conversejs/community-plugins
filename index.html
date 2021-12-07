@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Converse</title>
     <link rel="shortcut icon" type="image/ico" href="favicon.ico"/>
-    <link type="text/css" rel="stylesheet" media="screen" href="./dist/converse.min.css" />
+    <link type="text/css" rel="stylesheet" media="screen" href="./dist/converse.css" />
     <script src="https://conversejs.org/3rdparty/libsignal-protocol.min.js"></script>
-    <script src="./dist/converse.min.js"></script>
+    <script src="./dist/converse.js"></script>
 
     <script src="packages/download-dialog/dist/download-dialog.js"></script>
     <script src="packages/toolbar-utilities/toolbar-utilities.js"></script>
@@ -34,9 +34,6 @@
     <script src="packages/diagrams/mermaid.min.js"></script>
     <script src="packages/diagrams/diagrams.js"></script>
     <script src="packages/diagrams/abcjs.js"></script>
-
-    <script src="packages/offline-reply/webpush-browserify-bundle.js"></script>
-    <script src="packages/offline-reply/offline-reply.js"></script>
 
     <script src="packages/http-auth/http-auth.js"></script>
 
@@ -91,7 +88,7 @@
         bosh_service_url: 'https://conversejs.org/http-bind/',
         view_mode: 'fullscreen',
         loglevel: 'debug',
-        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "jitsimeet", "location", "offline-reply", "http-auth"]
+        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "jitsimeet", "location", "http-auth"]
     };
 
     converse.initialize( config )

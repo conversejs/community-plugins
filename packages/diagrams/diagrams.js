@@ -14,9 +14,11 @@
             _converse = this._converse;
             html = converse.env.html;
 
-            _converse.api.listen.on('afterMessageBodyTransformed', function(model, text)
+            _converse.api.listen.on('afterMessageBodyTransformed', function(text)
             {
-               renderDiagram(model.get("body"), text, model.get("msgid"));
+				let body = "";
+                for (let i=0; i<text.length; i++) body = body + text[i];				
+				renderDiagram(body, text);
             });
 
             mermaid.initialize({});
@@ -25,11 +27,12 @@
         }
     });
 
-    function renderDiagram(body, text, msgId)
+    function renderDiagram(body, text)
     {
-        //console.debug("doDiagram", body, text, msgId);
+		const msgId = Math.random().toString(36).substr(2,9);
+        console.debug("doDiagram", body, text, msgId);
 
-        if (!body) return;
+        if (body.length == 0) return;
 
         if (body.startsWith("graph TD") ||
             body.startsWith("graph TB") ||
@@ -47,7 +50,12 @@
 
             setTimeout(function()
             {
-                window.mermaid.init(document.querySelector("#mermaid-" + msgId));
+				const ele = document.querySelector("#mermaid-" + msgId);
+				
+				if (ele) {
+					ele.innerHTML = body;
+					window.mermaid.init(ele);
+				}
             }, 500);
         }
         else

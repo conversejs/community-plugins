@@ -20,19 +20,19 @@
                 console.debug("getToolbarButtons", toolbar_el.model.get("jid"));
 
                 buttons.push(html`
-                    <button class="toolbar-utilities-scroll" title="${__('Scroll to the bottom')}" @click=${scrollToBottom} .chatview=${this.chatview}/>
+                    <button class="toolbar-utilities-scroll" title="${__('Scroll to the bottom')}" @click=${scrollToBottom}/>
                         <converse-icon class="fa fa-angle-double-down" size="1em"></converse-icon>
                     </button>
                 `);
 
                 buttons.push(html`
-                    <button class="toolbar-utilities-thrash" title="${__('Trash chat history')}" @click=${trashHistory} .chatview=${this.chatview}/>
+                    <button class="toolbar-utilities-thrash" title="${__('Trash chat history')}" @click=${trashHistory}/>
                         <converse-icon class="far fa-trash-alt" size="1em"></converse-icon>
                     </button>
                 `);
 
                 buttons.push(html`
-                    <button class="toolbar-utilities-refresh" title="${__('Refresh chat history')}" @click=${refreshHistory} .chatview=${this.chatview}/>
+                    <button class="toolbar-utilities-refresh" title="${__('Refresh chat history')}" @click=${refreshHistory}/>
                         <converse-icon class="fa fa-sync" size="1em"></converse-icon>
                     </button>
                 `);
@@ -43,49 +43,59 @@
         }
     });
 
+		
+	function openChatbox(view)
+	{
+		let jid = view.model.get("jid");
+		let type = view.model.get("type");
+
+		console.debug("openChatbox", jid, type);
+
+		if (jid)
+		{
+			if (type == "chatbox") _converse.api.chats.open(jid, {'bring_to_foreground': true}, true);
+			else
+			if (type == "chatroom") _converse.api.rooms.open(jid, {'bring_to_foreground': true}, true);
+		}
+	}
+		
     function refreshHistory(ev)
     {
-        const openChatbox = function(view)
-        {
-            let jid = view.model.get("jid");
-            let type = view.model.get("type");
-
-            console.debug("openChatbox", jid, type);
-
-            if (jid)
-            {
-                if (type == "chatbox") _converse.api.chats.open(jid, {'bring_to_foreground': true}, true);
-                else
-                if (type == "chatroom") _converse.api.rooms.open(jid, {'bring_to_foreground': true}, true);
-            }
-        }
-
         ev.stopPropagation();
         ev.preventDefault();
+		
+		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
+		const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));		
+		console.debug("refreshHistory", chatview);
 
-        const view = this.chatview;
-
-        if (view)
-        {
-            view.close();
-            setTimeout(function() { openChatbox(view) });
-        }
+		chatview.close();
+		setTimeout(function() { openChatbox(chatview) });
     }
 
-    function trashHistory(ev)
+    async function trashHistory(ev)
     {
         ev.stopPropagation();
         ev.preventDefault();
 
-        this.chatview.clearMessages();
+		const result = confirm(__('Are you sure you want to clear the messages from this conversation?'));
+
+		if (result === true) {		
+			const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
+			await toolbar_el.model.messages.clearStore(); 
+			toolbar_el.model.messages.fetched.resolve();		
+		}
     }
 
     function scrollToBottom(ev)
     {
         ev.stopPropagation();
         ev.preventDefault();
+		
+		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');
+		const chatview = _converse.chatboxviews.get(toolbar_el.model.get('jid'));		
+		console.debug("scrollToBottom", chatview);
 
-        this.chatview.viewUnreadMessages();
+        chatview.scrollDown();
     }
 
 }));
