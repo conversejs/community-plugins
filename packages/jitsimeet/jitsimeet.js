@@ -213,6 +213,7 @@ var _inverse;
 	
     var doVideo = function doVideo(view)
     {
+		const label = jitsimeet_invitation;
         const room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase().replace(/[\\]/g, '') + "-" + Math.random().toString(36).substr(2,9);
         const url = _converse.api.settings.get("jitsimeet_url") + '/' + room;
 
@@ -259,7 +260,7 @@ var _inverse;
         }
         else {
             const isOverlayedDisplay = _converse.api.settings.get("view_mode") === "overlayed";
-            var div = view.el.querySelector(isOverlayedDisplay ? ".chat-body" : ".box-flyout");
+            var div = view.querySelector(isOverlayedDisplay ? ".chat-body" : ".box-flyout");
 
             if (div)
             {
