@@ -36,6 +36,7 @@
     <script src="packages/diagrams/abcjs.js"></script>
 
     <script src="packages/http-auth/http-auth.js"></script>
+    <script src="packages/actions/actions.js"></script>	
 
 </head>
 <body class="reset">
@@ -88,7 +89,7 @@
         bosh_service_url: 'https://conversejs.org/http-bind/',
         view_mode: 'fullscreen',
         loglevel: 'debug',
-        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "jitsimeet", "location", "http-auth"]
+        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "jitsimeet", "location", "http-auth", "actions"]
     };
 
     converse.initialize( config )
