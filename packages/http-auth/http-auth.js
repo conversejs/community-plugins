@@ -38,6 +38,7 @@ const plugin = {
         html = converse.env.html;
         Model = converse.env.Model;
         const httpAuthDialog = BootstrapModal.extend({
+            id: "plugin-http-auth",
             events: {
                 'click .btn-acceptAuth': 'acceptAuth',
                 'click .btn-refuseAuth': 'refuseAuth',
@@ -119,6 +120,7 @@ const plugin = {
                         httpAuthMessage = converse.env.$msg({
                             from: _converse.jid,
                             to: stanza.getAttribute('from'),
+                            type: "normal",
                         });
                         const thread = stanza.getElementsByTagName('thread')[0].textContent;
                         httpAuthMessage.c('thread').t(thread).up();
@@ -130,7 +132,7 @@ const plugin = {
                             id: stanza.getAttribute('id'),
                             type: 'error',
                         });
-                        httpAuthData.response = httpAuthMessage;
+                        httpAuthData['response'] = httpAuthMessage;
                     }
 
                     const confirmDialog = new httpAuthDialog({ 'model': new Model({ view: _converse.rosterview, data: httpAuthData }) });
