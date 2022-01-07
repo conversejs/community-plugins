@@ -33,7 +33,7 @@
 			
 			_converse.api.listen.on('getMessageActionButtons', (el, buttons) => {
 				
-				if (_converse.api.settings.get("actions_reply") == true) {
+				if (_converse.api.settings.get("actions_reply") === true) {
 					buttons.push({'i18n_text': __('Reply'),   'handler': ev => handleReplyAction(el.model), 'button_class': 'chat-msg__action-reply', 'icon_class': 'fas fa-arrow-left',  'name': 'action-reply'});	
 				}
 
@@ -71,8 +71,8 @@
 		let selectedText = window.getSelection().toString();
 		const prefix = model.get('nick') || model.get('nickname');
 		
-		if (!selectedText || selectedText == '') selectedText = model.get('message');
-		replyChat(prefix + ' : ' + selectedText);
+		if (!selectedText || selectedText === '') selectedText = model.get('message');
+		replyChat(model, prefix + ' : ' + selectedText);
 	}
 
 	function handleReactionAction(model, emoji) {
@@ -80,26 +80,16 @@
 		const msgId = model.get('msgid');
 		const type = model.get("type");	
 		
-		let target = model.get('from_muc');
-		
-		if (type == "chat")  {
-			target = model.get('jid');
-
-			if (model.get('sender') == 'them') {
-				target = model.get('from');
-			}		
-		}
+		let target = getTargetJidFromMessageModel(model);
 		
 		let message = window.getSelection().toString();	
 		
-		if (!message || message == '') {
-			message = model.get('message');	
-			const pos = message.indexOf('\n');
-			if (pos > -1) message = message.substring(0, pos);
+		if (!message || message === '') {
+			message = model.get('message').replace(/\n/g, "\n>").replace(/^[>]/,"");
 		}
 		
 		if (msgId) {
-			if (type == "chat") {
+			if (type === "chat") {
 				model.save('reaction_id', msgId);
 				model.save('reaction_emoji', emoji);
 			}
@@ -110,15 +100,15 @@
 		}
 	}		
 
-	function replyChat(text) {
-		const box = getSelectedChatBox();
+	function replyChat(model, text) {
 
-		console.debug("replyChat", text, box);
+		console.debug("replyChat", model, text);
 
+		const box = getChatBoxFromMessageModel(model);
 		if (box)
 		{
 			const textArea = box.querySelector('.chat-textarea');
-			if (textArea) textArea.value = ">" + text + "\n";
+			if (textArea) textArea.value = ">" + text.replace(/\n/g, "\n>") + "\n";
 		}
 	}
 	
@@ -128,20 +118,23 @@
 		);
 	}
 
-	function getSelectedChatBox() {
-		const models = _converse.chatboxes.models;
-		let view = null;
-
-		console.debug("getSelectedChatBox", models);
-
-		for (let i in models)
-		{
-			if ((models[i].get('type') === "chatroom" || models[i].get('type') === "chatbox") && !models[i].get('hidden'))
-			{
-				view = _converse.chatboxviews.views[models[i].id];
-				break;
-			}
+	function getTargetJidFromMessageModel(model) {
+		const type = model.get("type");	
+		let target = model.get('from_muc');
+		if (type === "chat")  {
+			target = model.get('jid');
+			if (model.get('sender') === 'them') {
+				target = model.get('from');
+			}		
 		}
+		return target;
+    }
+
+	function getChatBoxFromMessageModel(model) {
+		const view = _converse.chatboxviews.get(getTargetJidFromMessageModel(model));
+
+		console.debug("getChatBoxFromMessageModel", view);
+
 		return view;
 	}	
 
