@@ -69,10 +69,10 @@
 		console.debug('handleReplyAction', model)
 		
 		let selectedText = window.getSelection().toString();
-		const prefix = model.get('nick') || model.get('nickname');
+		const nick = model.get('nick') || model.get('nickname');
 		
 		if (!selectedText || selectedText === '') selectedText = model.get('message');
-		replyChat(model, prefix + ' : ' + selectedText);
+		replyChat(model, nick, selectedText);
 	}
 
 	function handleReactionAction(model, emoji) {
@@ -85,7 +85,7 @@
 		let message = window.getSelection().toString();	
 		
 		if (!message || message === '') {
-			message = model.get('message').replace(/\n/g, "\n>").replace(/^[>]/,"");
+			message = model.get('message');
 		}
 		
 		if (msgId) {
@@ -95,20 +95,20 @@
 			}
 			const nick = model.get('nickname') || model.get('nick') || Strophe.getNodeFromJid(model.get('from'));
 			const originId = uuidv4();
-			const body = ">" + nick + " : " + message + '\n' + emoji;
+			const body = normalizeTextMention(nick, message) + emoji;
 			_converse.api.send($msg({to: target, from: _converse.connection.jid, type}).c('body').t(body).up().c("reactions", {'xmlns': 'urn:xmpp:reactions:0', 'id': msgId}).c('reaction').t(emoji).up().up().c('origin-id', {'xmlns': 'urn:xmpp:sid:0', 'id': originId}));				
 		}
 	}		
 
-	function replyChat(model, text) {
+	function replyChat(model, nick, text) {
 
-		console.debug("replyChat", model, text);
+		console.debug("replyChat", model, nick, text);
 
 		const box = getChatBoxFromMessageModel(model);
 		if (box)
 		{
 			const textArea = box.querySelector('.chat-textarea');
-			if (textArea) textArea.value = ">" + text.replace(/\n/g, "\n>") + "\n";
+			if (textArea) textArea.value = normalizeTextMention(nick, text);
 		}
 	}
 	
@@ -116,6 +116,10 @@
 		return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
 			(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
 		);
+	}
+
+	function normalizeTextMention(nick, message) {
+		return ">" + nick + ' : ' + message.replace(/^[>]/,"\n>").replace(/\n/g, "\n>") + "\n";
 	}
 
 	function getTargetJidFromMessageModel(model) {
