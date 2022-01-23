@@ -37,6 +37,12 @@
 
     <script src="packages/http-auth/http-auth.js"></script>
     <script src="packages/actions/actions.js"></script>	
+	
+    <link type="text/css" rel="stylesheet" media="screen" href="packages/voicechat/voicechat.css" />	
+    <script src="packages/voicechat/hark.js"></script>
+    <script src="packages/voicechat/jquery-3.5.1.min.js"></script>	
+    <script src="packages/voicechat/lib-jitsi-meet.min.js"></script>
+    <script src="packages/voicechat/voicechat.js"></script>			
 
 </head>
 <body class="reset">
@@ -89,7 +95,7 @@
         bosh_service_url: 'https://conversejs.org/http-bind/',
         view_mode: 'fullscreen',
         loglevel: 'debug',
-        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "jitsimeet", "location", "http-auth", "actions"]
+        whitelisted_plugins: ["download-dialog", "stickers", "toolbar-utilities", "search", "directory", "muc-directory", "diagrams", "vmsg", "screencast", "jitsimeet", "location", "http-auth", "actions", "voicechat"]
     };
 
     converse.initialize( config )
