@@ -18,10 +18,12 @@
 			_converse.api.settings.update({
 				voicechat: {
 					hosts: {
-						domain: 'meet.jit.si',
-						muc: 'conference.meet.jit.si'
+						domain: 'pade.chat',
+						muc: 'conference.pade.chat',
+						focus: 'focus.pade.chat',						
 					},					
-					serviceUrl: 'wss://meet.jit.si/xmpp-websocket',
+					bosh: 'https://pade.chat:5443/http-bind/',
+					websocket: 'wss://pade.chat:5443/ws/', 
 					prefix: 'voicechat-',					
 					transcribe: true,
 					transcribeLanguage: 'en-GB'

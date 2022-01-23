@@ -3,7 +3,9 @@
 <img src="https://github.com/conversejs/community-plugins/blob/master/packages/voicechat/voicechat.png?raw=true" />
 
 ## Overview
-This plugin uses a Jitsi-Meet service to deliver a voice chat user experience.
+This plugin uses a Jitsi-Meet service (pade.chat) to deliver a voice chat user experience. 
+It is for remote teams who will use it everyday to just talk to each other all day long without the need to show their faces or any other video. With the absence of video, it ensures high quality audio for the conversation at most times, even with more than 10 participants.
+It also has an optional voice to text transcription feature (using web speech) that auto-types into your Converse chat or groupchat.
 
 ## Install
 see https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin
