@@ -23,7 +23,7 @@
 					},					
 					serviceUrl: 'https://beta.meet.jit.si/http-bind',
 					prefix: 'VC',					
-					transcribe: true,
+					transcribe: false,
 					transcribeLanguage: 'en-GB'
 				}
 			});
