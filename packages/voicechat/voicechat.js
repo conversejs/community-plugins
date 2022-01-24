@@ -18,10 +18,10 @@
 			_converse.api.settings.update({
 				voicechat: {
 					hosts: {
-						domain: 'meet.jit.si',
-						muc: 'conference.meet.jit.si'
+						domain: 'beta.meet.jit.si',
+						muc: 'conference.beta.meet.jit.si'
 					},					
-					serviceUrl: 'wss://meet.jit.si/xmpp-websocket',
+					serviceUrl: 'https://beta.meet.jit.si/http-bind',
 					prefix: 'VC',					
 					transcribe: true,
 					transcribeLanguage: 'en-GB'
