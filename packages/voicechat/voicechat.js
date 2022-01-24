@@ -18,13 +18,11 @@
 			_converse.api.settings.update({
 				voicechat: {
 					hosts: {
-						domain: 'pade.chat',
-						muc: 'conference.pade.chat',
-						focus: 'focus.pade.chat',						
+						domain: 'meet.jit.si',
+						muc: 'conference.meet.jit.si'
 					},					
-					bosh: 'https://pade.chat:5443/http-bind/',
-					websocket: 'wss://pade.chat:5443/ws/', 
-					prefix: 'voicechat-',					
+					serviceUrl: 'wss://meet.jit.si/xmpp-websocket',
+					prefix: 'VC',					
 					transcribe: true,
 					transcribeLanguage: 'en-GB'
 				}
@@ -81,6 +79,18 @@
 			console.log("voicechat plugin is ready");
 		} // 
 	});
+
+	function cyrb53(str, seed = 0) {
+		let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+		for (let i = 0, ch; i < str.length; i++) {
+			ch = str.charCodeAt(i);
+			h1 = Math.imul(h1 ^ ch, 2654435761);
+			h2 = Math.imul(h2 ^ ch, 1597334677);
+		}
+		h1 = Math.imul(h1 ^ (h1>>>16), 2246822507) ^ Math.imul(h2 ^ (h2>>>13), 3266489909);
+		h2 = Math.imul(h2 ^ (h2>>>16), 2246822507) ^ Math.imul(h1 ^ (h1>>>13), 3266489909);
+		return 4294967296 * (2097151 & h2) + (h1>>>0);
+	}
 	
 	function performAudio(ev) {
         ev.stopPropagation();
@@ -90,10 +100,8 @@
 		model = toolbar_el.model;
 		const type = (model.get('type') == 'chatroom') ? 'groupchat' : 'chat';				
 		const target = model.get('jid');				
-		
-		const myself = converse.env.Strophe.getNodeFromJid(_converse.connection.jid);
-		const yourself = converse.env.Strophe.getNodeFromJid(target);								
-		room = _converse.api.settings.get('voicechat').prefix + ((model.get('type') == 'chatroom') ? yourself : (myself < target ? myself + yourself : yourself + myself));
+										
+		room = _converse.api.settings.get('voicechat').prefix + cyrb53((model.get('type') == 'chatroom') ? target : (_converse.connection.jid < target ? _converse.connection.jid + target : target + _converse.connection.jid));
 		button = toolbar_el.querySelector('.plugin-voicechat');
 
 		console.debug("voicechat is clicked", model, room, button);
