@@ -92,9 +92,10 @@
 		const toolbar_el = converse.env.utils.ancestor(ev.target, 'converse-chat-toolbar');	
 		model = toolbar_el.model;
 		const type = (model.get('type') == 'chatroom') ? 'groupchat' : 'chat';				
-		const target = model.get('jid');				
+		const target = model.get('jid');
+		const myself = Strophe.getBareJidffromJid(_converse.connection.jid);
 										
-		room = _converse.api.settings.get('voicechat').prefix.toLocaleLowerCase() + cyrb53((model.get('type') == 'chatroom') ? target : (_converse.connection.jid < target ? _converse.connection.jid + target : target + _converse.connection.jid));
+		room = _converse.api.settings.get('voicechat').prefix.toLocaleLowerCase() + cyrb53((model.get('type') == 'chatroom') ? target : (myself < target ? myself + target : target + myself));
 		button = toolbar_el.querySelector('.plugin-voicechat');
 
 		console.debug("voicechat is clicked", model, room, button);
