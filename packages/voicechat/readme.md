@@ -1,4 +1,4 @@
-# Jitsi Meet plugin for converse.js
+# Voice Chat plugin for converse.js
 
 <img src="https://github.com/conversejs/community-plugins/blob/master/packages/voicechat/voicechat.png?raw=true" />
 
@@ -23,14 +23,18 @@ converse.initialize({
 		},					
 		serviceUrl: 'wss://beta.meet.jit.si/xmpp-websocket',
 		prefix: 'voicechat-',					
-		transcribe: true,
-		transcribeLanguage: 'en-GB'
+		transcribe: false,
+		transcribeLanguage: 'en-GB'.
+		start:  __('Start Voice Chat'),
+		stop: __('Stop Voice Chat'),
+		started: __('has started speaking'),
+		stopped: __('has stopped speaking')	
 	}
     ....
 });
 ```
 
-Default setting will use the public meet.ji.si service.
+Default setting will use the public beta.meet.ji.si service and disable voice to text transcription.
 
 ## How to use
 Click on the speaker icon on the conversation toolbar to start/stop a voice chat
