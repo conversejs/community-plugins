@@ -93,7 +93,7 @@
 		model = toolbar_el.model;
 		const type = (model.get('type') == 'chatroom') ? 'groupchat' : 'chat';				
 		const target = model.get('jid');
-		const myself = Strophe.getBareJidffromJid(_converse.connection.jid);
+		const myself = Strophe.getBareJidFromJid(_converse.connection.jid);
 										
 		room = _converse.api.settings.get('voicechat').prefix.toLocaleLowerCase() + cyrb53((model.get('type') == 'chatroom') ? target : (myself < target ? myself + target : target + myself));
 		button = toolbar_el.querySelector('.plugin-voicechat');
