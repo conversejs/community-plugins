@@ -1,4 +1,5 @@
-# Toolbar utilities plugin for converse.js
+# Adaptive Cards plugin for converse.js
+https://adaptivecards.io
 
 <img src="https://github.com/conversejs/community-plugins/blob/master/packages/adaptive-cards/adaptive-cards.png" />
 
