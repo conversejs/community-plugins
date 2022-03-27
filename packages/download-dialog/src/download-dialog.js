@@ -10,18 +10,82 @@ const URL_REGEX = new RegExp('^https?:\\/\\/'+ // protocol
 
 const TIMESTAMP_FORMAT = 'YYYYMMDD_HHmm';
 
+let dayjs, download_view, URI, __;
+
+function getURI (url) {
+    try {
+        return url instanceof URI ? url : new URI(url);
+    } catch (error) {
+        return null;
+    }
+}
+
+function checkFileTypes (types, url) {
+    const uri = getURI(url);
+    const filename = uri.filename().toLowerCase();
+    return !!types.filter(ext => filename.endsWith(ext)).length;
+}
+
+export function isImageURL (url) {
+    return checkFileTypes(['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.svg'], url);
+}
+
+export function isAudioURL (url) {
+    return checkFileTypes(['.ogg', '.mp3', '.m4a'], url);
+}
+
+export function isVideoURL (url) {
+    return checkFileTypes(['.mp4', '.webm'], url);
+}
+
+function downloadAttachements (view) {
+    const downloadables = [];
+    view.model.messages.forEach(message => {
+        const m = message?.get('message')?.match(URL_REGEX);
+        const url = m?.[0];
+        if (url) {
+            const timestamp = dayjs(message.get('time')).format(TIMESTAMP_FORMAT);
+            downloadables.push({
+                author: message.get('from'),
+                link: url,
+                time: dayjs(message.get('time')).subtract((new Date()).getTimezoneOffset(), "m"),
+                timestamp: timestamp,
+                filename: timestamp + '_' + m[1],
+                type: m[2],
+                checked: true
+            });
+        }
+    });
+
+    if (downloadables.length > 0) {
+        const chat_name = view.model.attributes.name ?? view.model.attributes.user_id;
+        download_view.zipfileName = "conversejs_" + dayjs(Date.now()).format(TIMESTAMP_FORMAT) + '_' + chat_name;
+        download_view.downloadables = downloadables;
+        download_view.inProgress = false;
+        download_view.hidden = false;
+    } else {
+        alert(__("There are no files to download."));
+    }
+}
+
 const plugin = {
     toggle_download_dialog (ev) {
+        function getChatViewFromElement($el) {
+            return $el.closest('converse-chat.chatbox') || $el.closest('converse-muc.chatbox');
+        }
         ev.preventDefault();
         ev.stopPropagation();
-        this.chatview.downloadAttachements();
+        downloadAttachements(getChatViewFromElement(ev.currentTarget));
     },
 
     initialize () {
-        const { dayjs, html, u } = converse.env;
+        const { html } = converse.env;
         const { _converse } = this;
-        const { __, api } = _converse;
-        const download_view = document.createElement("converse-download-view");
+        const { api } = _converse;
+        download_view = document.createElement("converse-download-view");
+        dayjs = converse.env.dayjs;
+        URI = converse.env.URI;
+        __ = _converse.__,
 
         api.listen.on('getToolbarButtons', (context, buttons) => {
             const i18n_start_download_dialog = __('Start Download-Dialog');
@@ -40,37 +104,6 @@ const plugin = {
         api.listen.on('initialized', () =>
             document.body.querySelector('#conversejs').insertAdjacentElement('beforeend', download_view)
         );
-
-        function downloadAttachements () {
-            const downloadables = [];
-            this.model.messages.forEach(message => {
-                const m = message?.get('message')?.match(URL_REGEX);
-                const url = m?.[0];
-                if (url && u.isImageDomainAllowed(url)) {
-                    const timestamp = dayjs(message.get('time')).format(TIMESTAMP_FORMAT);
-                    downloadables.push({
-                        author: message.get('from'),
-                        link: url,
-                        time: dayjs(message.get('time')).subtract((new Date()).getTimezoneOffset(), "m"),
-                        timestamp: timestamp,
-                        filename: timestamp + '_' + m[1],
-                        type: m[2],
-                        checked: true
-                    });
-                }
-            });
-
-            if (downloadables.length > 0) {
-                const chat_name = this.model.attributes.name ?? this.model.attributes.user_id;
-                download_view.zipfileName = "conversejs_" + dayjs(Date.now()).format(TIMESTAMP_FORMAT) + '_' + chat_name;
-                download_view.downloadables = downloadables;
-                download_view.inProgress = false;
-                download_view.hidden = false;
-            } else {
-                alert(__("There are no files to download."));
-            }
-        }
-        Object.assign(_converse.ChatBoxView.prototype, {downloadAttachements});
 
         class MultimediaDownloadView extends _converse.CustomElement {
 
@@ -194,11 +227,11 @@ const plugin = {
             }
 
             static render_file (o) {
-                if (u.isImageURL(o.link)) {
+                if (isImageURL(o.link)) {
                     return MultimediaDownloadView.render_image(o);
-                } else if (u.isAudioURL(o.link)) {
+                } else if (isAudioURL(o.link)) {
                     return MultimediaDownloadView.render_audio(o);
-                } else if (u.isVideoURL(o.link)) {
+                } else if (isVideoURL(o.link)) {
                     return MultimediaDownloadView.render_video(o);
                 } else {
                     return MultimediaDownloadView.render_other(o);
