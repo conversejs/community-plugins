@@ -10,33 +10,7 @@ const URL_REGEX = new RegExp('^https?:\\/\\/'+ // protocol
 
 const TIMESTAMP_FORMAT = 'YYYYMMDD_HHmm';
 
-let dayjs, download_view, URI, __;
-
-function getURI (url) {
-    try {
-        return url instanceof URI ? url : new URI(url);
-    } catch (error) {
-        return null;
-    }
-}
-
-function checkFileTypes (types, url) {
-    const uri = getURI(url);
-    const filename = uri.filename().toLowerCase();
-    return !!types.filter(ext => filename.endsWith(ext)).length;
-}
-
-export function isImageURL (url) {
-    return checkFileTypes(['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.svg'], url);
-}
-
-export function isAudioURL (url) {
-    return checkFileTypes(['.ogg', '.mp3', '.m4a'], url);
-}
-
-export function isVideoURL (url) {
-    return checkFileTypes(['.mp4', '.webm'], url);
-}
+let dayjs, download_view, __, u;
 
 function downloadAttachements (view) {
     const downloadables = [];
@@ -84,7 +58,7 @@ const plugin = {
         const { api } = _converse;
         download_view = document.createElement("converse-download-view");
         dayjs = converse.env.dayjs;
-        URI = converse.env.URI;
+        u = converse.env.u;
         __ = _converse.__,
 
         api.listen.on('getToolbarButtons', (context, buttons) => {
@@ -227,11 +201,11 @@ const plugin = {
             }
 
             static render_file (o) {
-                if (isImageURL(o.link)) {
+                if (u.isImageURL(o.link) && u.shouldRenderMediaFromURL(o.link, 'image')) {
                     return MultimediaDownloadView.render_image(o);
-                } else if (isAudioURL(o.link)) {
+                } else if (u.isAudioURL(o.link) && u.shouldRenderMediaFromURL(o.link, 'audio')) {
                     return MultimediaDownloadView.render_audio(o);
-                } else if (isVideoURL(o.link)) {
+                } else if (u.isVideoURL(o.link) && u.shouldRenderMediaFromURL(o.link, 'video')) {
                     return MultimediaDownloadView.render_video(o);
                 } else {
                     return MultimediaDownloadView.render_other(o);
