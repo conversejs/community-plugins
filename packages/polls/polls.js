@@ -148,7 +148,7 @@
                   <path d="M18 8.016V6H6v2.016h12zm-3.984 6V12H6v2.016h8.016zM6 9v2.016h12V9H6zm14.016-6.984c1.078 0 1.969.891 1.969 1.969v12c0 1.078-.891 2.016-1.969 2.016H6l-3.984 3.984v-18c0-1.078.891-1.969 1.969-1.969h16.031z"></path>
                </svg>
             </div>
-            <span class="empty-pane-message">There are no polls in the meeting yet. Start a poll here!</span>
+            <span class="empty-pane-message">There are no polls in the group-chat yet. Start a poll here!</span>
          </div>
       </div>
       <div class="poll-footer poll-create-footer"><button id="create-poll" title="Create a poll" class="poll-button poll-button-primary"><span>Create a poll</span></button></div>
