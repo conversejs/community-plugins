@@ -1,9 +1,9 @@
 # Toolbar utilities plugin for converse.js
 
-<img src="https://github.com/conversejs/community-plugins/blob/master/packages/info/polls.png" />
+<img src="https://github.com/conversejs/community-plugins/blob/master/packages/polls/polls.png" />
 
 ## Overview
-This plugin adds a sidebar for groupchat.
+This plugin adds a polls sidebar for groupchat (Work-in-progress).
 
 ## Install
 See https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin
