@@ -5,7 +5,7 @@
         factory(converse);
     }
 }(this, function (converse) {
-    let Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,dayjs, Model, BootstrapModal, __,  _converse;		
+    let Strophe, $iq, $msg, $pres, $build, b64_sha1, _ ,dayjs, Model, BootstrapModal, __,  _converse, polls_area;		
 
     converse.plugins.add("polls", {
         'dependencies': [],
@@ -85,7 +85,7 @@
 	
     function togglePollsBar(view, id, jid) {
         const chatroom_body = view.querySelector('.chatroom-body');
-        let polls_area = view.querySelector('.occupants-pade-polls');
+        polls_area = view.querySelector('.occupants-pade-polls');
 
 		console.debug("togglePollsBar", view, jid, id);
 		
@@ -112,6 +112,7 @@
 			{
 				evt.stopPropagation();
 				console.log("togglePollsBar - create poll", evt.target);
+				polls_area.innerHTML = getCreatePoll(id, jid);	
 
 			}, false);	
 
@@ -134,26 +135,71 @@
     }
 	
     function createPolls(jid, id)   {
-        console.debug("createPolls", jid, id);
+        console.debug("createPolls", jid, id);	
     }	
 	
-	function getEmptyPolls() {
+	function getEmptyPolls(jid, id) {
 		return `
-<div aria-labelledby="polls-tab" id="polls-panel" role="tabpanel" >
-   <div class="polls-pane-content">
-      <div class="poll-container">
-         <div class="pane-content">
-            <div class="jitsi-icon jitsi-icon-default empty-pane-icon">
-               <svg height="22" width="22" viewBox="0 0 24 24">
-                  <path d="M18 8.016V6H6v2.016h12zm-3.984 6V12H6v2.016h8.016zM6 9v2.016h12V9H6zm14.016-6.984c1.078 0 1.969.891 1.969 1.969v12c0 1.078-.891 2.016-1.969 2.016H6l-3.984 3.984v-18c0-1.078.891-1.969 1.969-1.969h16.031z"></path>
-               </svg>
-            </div>
-            <span class="empty-pane-message">There are no polls in the group-chat yet. Start a poll here!</span>
-         </div>
-      </div>
-      <div class="poll-footer poll-create-footer"><button id="create-poll" title="Create a poll" class="poll-button poll-button-primary"><span>Create a poll</span></button></div>
-   </div>
-</div>
+		<div aria-labelledby="polls-tab" id="polls-panel" role="tabpanel" >
+		   <div class="polls-pane-content">
+			  <div class="poll-container">
+				 <div class="pane-content">
+					<div class="jitsi-icon jitsi-icon-default empty-pane-icon">
+					   <svg height="22" width="22" viewBox="0 0 24 24">
+						  <path d="M18 8.016V6H6v2.016h12zm-3.984 6V12H6v2.016h8.016zM6 9v2.016h12V9H6zm14.016-6.984c1.078 0 1.969.891 1.969 1.969v12c0 1.078-.891 2.016-1.969 2.016H6l-3.984 3.984v-18c0-1.078.891-1.969 1.969-1.969h16.031z"></path>
+					   </svg>
+					</div>
+					<span class="empty-pane-message">There are no polls in the group-chat yet. Start a poll here!</span>
+				 </div>
+			  </div>
+			  <div class="poll-footer poll-create-footer"><button id="create-poll" title="Create a poll" class="poll-button poll-button-primary"><span>Create a poll</span></button></div>
+		   </div>
+		</div>
+`		
+	}
+	
+	function getCreatePoll() {
+		return `
+		<div aria-labelledby="polls-tab" id="polls-panel1" role="tabpanel">
+		   <form class="polls-pane-content">
+			  <div class="poll-create-container poll-container">
+				 <div class="poll-create-header">Create a poll</div>
+				 <div class="poll-question-field"><span class="poll-create-label">Poll Question</span><textarea class="expandable-input" maxlength="1000" placeholder="Ask a question" required="" row="1"></textarea></div>
+				 <ol class="poll-answer-field-list">
+					<li class="poll-answer-field">
+					   <span class="poll-create-label">Poll option 1</span>
+					   <div class="poll-create-option-row">
+						  <textarea class="expandable-input" maxlength="1000" placeholder="Option 1" required="" row="1"></textarea>
+						  <button class="poll-drag-handle" tabindex="-1" type="button">
+							 <div class="jitsi-icon jitsi-icon-default ">
+								<svg height="22" width="22" viewBox="0 0 24 24">
+								   <path d="M3 6h18v2.016H3V6zm0 6.984v-1.969h18v1.969H3zM3 18v-2.016h18V18H3z"></path>
+								</svg>
+							 </div>
+						  </button>
+					   </div>
+					</li>
+					<li class="poll-answer-field">
+					   <span class="poll-create-label">Poll option 2</span>
+					   <div class="poll-create-option-row">
+						  <textarea class="expandable-input" maxlength="1000" placeholder="Option 2" required="" row="1"></textarea>
+						  <button class="poll-drag-handle" tabindex="-1" type="button">
+							 <div class="jitsi-icon jitsi-icon-default ">
+								<svg height="22" width="22" viewBox="0 0 24 24">
+								   <path d="M3 6h18v2.016H3V6zm0 6.984v-1.969h18v1.969H3zM3 18v-2.016h18V18H3z"></path>
+								</svg>
+							 </div>
+						  </button>
+					   </div>
+					</li>
+				 </ol>
+				 <div class="poll-add-button"><button aria-label="Add option" class="poll-button poll-button-secondary" type="button"><span>Add option</span></button></div>
+			  </div>
+			  <div class="poll-footer poll-create-footer">
+				<button aria-label="Cancel" class="poll-button poll-button-secondary poll-button-short" type="button"><span>Cancel</span></button>
+				<button aria-label="Send" class="poll-button poll-button-primary poll-button-short" disabled="" type="submit"><span>Send</span></button></div>
+		   </form>
+		</div>		
 `		
 	}
 	
