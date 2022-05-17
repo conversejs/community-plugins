@@ -30,6 +30,7 @@
             _converse.api.settings.update({
                 galene_head_display_toggle: false,
                 galene_signature: 'GALENE',
+				galene_host: 'pade.chat'
             });
 
             galene_confirm  = __('Galene Meeting?');
@@ -350,7 +351,7 @@
                 };
                 galeneFrame.__jid = jid;
                 galeneFrame.addEventListener("load", galeneIframeCloseHandler);
-                galeneFrame.setAttribute("src", "./packages/galene/index.html?username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=&group=" + room);
+                galeneFrame.setAttribute("src", "./packages/galene/index.html?username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=&group=" + room + "&host=" + _converse.api.settings.get("galene_host"));
                 galeneFrame.setAttribute("class", "galene");
                 galeneFrame.setAttribute("allow", "microphone; camera;");
                 galeneFrame.setAttribute("frameborder", "0");

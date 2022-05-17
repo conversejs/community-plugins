@@ -257,14 +257,14 @@ ServerConnection.prototype.send = function(m) {
  * @returns {Promise<ServerConnection>}
  * @function
  */
-ServerConnection.prototype.connect = async function(connection) {
+ServerConnection.prototype.connect = async function(connection, host) {
     let sc = this;
     if(sc.socket) {
         sc.socket.close(1000, 'Reconnecting');
         sc.socket = null;
     }
 
-    sc.socket = new GaleneSocket(connection);
+    sc.socket = new GaleneSocket(connection, host);
 
     return await new Promise((resolve, reject) => {
         this.socket.onerror = function(e) {
@@ -298,8 +298,8 @@ ServerConnection.prototype.connect = async function(connection) {
                 sc.onjoined.call(sc, 'leave', sc.group, [], {}, {}, '');
             sc.group = null;
             sc.username = null;
-            //if(sc.onclose)
-            //   sc.onclose.call(sc, e.code, e.reason);
+            if(sc.onclose)
+                sc.onclose.call(sc, e.code, e.reason);
             reject(new Error('websocket close ' + e.code + ' ' + e.reason));
         };
         this.socket.onmessage = function(e) {

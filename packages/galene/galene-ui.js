@@ -3935,8 +3935,8 @@ window.onload = async function() {
     serverConnection.onchat = addToChatbox;
     serverConnection.onusermessage = gotUserMessage;
 
-	const username = urlParam("username");
-    const jid = username + "@localhost";
+	const host = urlParam("host");
+	const username = urlParam("username");	
     const password = "Welcome123";
 	
 	group = "public/" + urlParam("group");	
@@ -3945,10 +3945,10 @@ window.onload = async function() {
     setMediaChoices(false).then(e => reflectSettings());	
 
     const connection = window.top?.connection;
-	console.debug("onload", connection);	
+	console.debug("onload", connection, host, username);	
 	
 	if (connection) {
-		await serverConnection.connect(connection);
+		await serverConnection.connect(connection, host);
 		setViewportHeight();			
 	}
 }
