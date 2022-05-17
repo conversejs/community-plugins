@@ -89,7 +89,7 @@
                 let color = "fill:var(--chat-toolbar-btn-color);";
                 if (toolbar_el.model.get("type") === "chatroom") color = "fill:var(--muc-toolbar-btn-color);";
 				
-				const features = await _converse.api.disco.getFeatures(_converse.connection.domain);
+				const features = await _converse.api.disco.getFeatures(_converse.api.settings.get("galene_host"));
 				
 				features.each(feature => {
 					const fieldname = feature.get('var');
