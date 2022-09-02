@@ -196,7 +196,7 @@
                 const label = message.getAttribute("from");
                 const position = {coords: {accuracy: accuracy, latitude: lat, longitude: lon}};
                 const pos = location.href.lastIndexOf('/') + 1;
-                const url = location.href.substring(0, pos) + "packages/location/leaflet/index.html?accuracy=" + position.coords.accuracy + "&lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&label=" + label;
+                const url = _converse.api.settings.get("assets_path") + "../packages/location/leaflet/index.html?accuracy=" + position.coords.accuracy + "&lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&label=" + label;
 
                 var prompt = new Notification(label,
                 {
