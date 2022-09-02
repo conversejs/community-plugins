@@ -1,6 +1,6 @@
 # Converse.js Community Plugins
 
-This repo contains community contributed plugins, not included in the core of Converse.js. 
+This repo contains community contributed plugins, not included in the core of Converse.js.
 
 To see a demo of all the plugins working, click [here](https://conversejs.github.io/community-plugins/)
 
