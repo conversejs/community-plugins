@@ -26,15 +26,15 @@
             BootstrapModal = converse.env.BootstrapModal;
             _ = converse.env._;
             __ = _converse.__;
-
+			
             _converse.api.settings.update({
                 galene_head_display_toggle: false,
-                galene_signature: 'GALENE',
+                galene_url: location.protocol + "//" + location.host + "/galene",
 				galene_host: location.hostname
             });
 
-            galene_confirm  = __('Galene Meeting?');
-            galene_invitation = __('Please join meeting in room at');
+            galene_confirm  = __('Galene Conference/Webinar?');
+            galene_invitation = __('Please join conference with');
             galene_tab_invitation = __('Or open in new tab at');
 
             _converse.api.listen.on('messageNotification', function (data)
@@ -52,8 +52,9 @@
 
                     if (pos > -1)
                     {
-                        var room = body.substring(pos + url.length + 1);
-                        var label = pos > 0 ? body.substring(0, pos) : galene_invitation;
+                        var group = urlParam ("group", body);
+                        var host = urlParam ("host", body);						
+                        var label = galene_invitation;
                         var from = chatbox.getDisplayName().trim();
                         var avatar = _converse.api.settings.get("notification_icon");
 
@@ -61,7 +62,7 @@
 
                         var prompt = new Notification(from,
                         {
-                            'body': label + " " + room,
+                            'body': label + " " + group,
                             'lang': _converse.locale,
                             'icon': avatar,
                             'requireInteraction': true
@@ -76,7 +77,7 @@
 
                             if (view)
                             {
-                                doLocalVideo(view, room, label);
+                                doLocalVideo(view, group, label, host);
                             }
                         }
                     }
@@ -113,28 +114,40 @@
 						console.debug("SFU found");		
 						galene_ready = true;							
 					}
-				});					
+				});	
+
+				if (!galene_ready) {
+					const button = document.querySelector(".plugin-galene");
+					if (button) button.style.display = 'none';
+				}				
             });			
 
             _converse.api.listen.on('afterMessageBodyTransformed', function(text)
-            {
-                if (text.indexOf(_converse.api.settings.get("galene_signature")) > -1)
-                {
-                    console.debug("afterMessageBodyTransformed", text);
-
+            {					
+                if (text.indexOf("/galene/") > -1) {
                     const url = text.substring(0);
-                    const link_room = url.substring(url.lastIndexOf("/") + 1);
-                    const link_label = galene_invitation;
-                    const tab_label = galene_tab_invitation;
+					const group = urlParam ("group", url);
+                    const host = urlParam ("host", url);						
+					
+					if (group && host) {
+						const link_label = galene_invitation;
+						const tab_label = galene_tab_invitation;
 
-                    text.references = [];
-                    text.addTemplateResult(0, text.length, html`<a @click=${clickVideo} data-room="${link_room}" data-url="${url}" href="#">${link_label} ${link_room}</a>`);
-                }
+						text.references = [];
+						text.addTemplateResult(0, text.length, html`<a @click=${clickVideo} data-host="${host}" data-group="${group}" data-url="${url}" href="${url}">${link_label} ${group}</a>`);
+					}
+                }			
             });
 
             console.debug("galene plugin is ready");
         }
     });
+	
+	function urlParam (name, url) {
+		const results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(url);
+		if (!results) { return undefined; }
+		return unescape(results[1] || undefined);
+	}	
 
     function __confirm(msg, callback) {
       if (confirm(galene_confirm)) {
@@ -166,213 +179,218 @@
         ev.stopPropagation();
         ev.preventDefault();
 
-        var url = ev.target.getAttribute("data-url");
-        var room = ev.target.getAttribute("data-room");
+        const group = ev.target.getAttribute("data-group");
+        const host = ev.target.getAttribute("data-host");
 
         if (ev.currentTarget) {
-          const chatView = getChatViewFromElement(ev.currentTarget);
-          doLocalVideo(chatView, room, url, galene_invitation);
+			const chatView = getChatViewFromElement(ev.currentTarget);
+		  
+			if (chatView) {			  
+				doLocalVideo(chatView, group, galene_invitation, host);
+			}
         }
     }
 
     var doVideo = function doVideo(view)
     {
-        const room = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase().replace(/[\\]/g, '') + "-" + Math.random().toString(36).substr(2,9);
-        const url = _converse.api.settings.get("galene_signature") + '/' + room;
+		const host = _converse.api.settings.get("galene_host");		
+        const group = Strophe.getNodeFromJid(view.model.attributes.jid).toLowerCase().replace(/[\\]/g, '') + "-" + Math.random().toString(36).substr(2,9);
+        const url = _converse.api.settings.get("galene_url") + '/?group=' + group + "&host=" + host;
 
-        console.debug("doVideo", room, url, view);
+        console.debug("doVideo", group, url, view);
 
         view.model.sendMessage({'body': url});	
-        doLocalVideo(view, room, galene_invitation);
-
+        doLocalVideo(view, group, galene_invitation, host);
     }
 
-    var doLocalVideo = function doLocalVideo(view, room, label)
+    var doLocalVideo = function doLocalVideo(view, group, label, host)
     {
         const chatModel = view.model;
-        console.debug("doLocalVideo", view, room, label);
+        console.debug("doLocalVideo", view, group, label, host);
+		
+		if (!host) host = _converse.api.settings.get("galene_host");
 
 		const isOverlayedDisplay = _converse.api.settings.get("view_mode") === "overlayed";
 		const headDisplayToggle = isOverlayedDisplay || _converse.api.settings.get("galene_head_display_toggle") === true;
 		const div = view.querySelector(headDisplayToggle ? ".chat-body" : ".box-flyout");
 
 		if (div) {
-				div.innerHTML = '';
-                const jid = view.getAttribute("jid");
-                if(Array.from(document.querySelectorAll("iframe.galene")).filter(f => f.__jid === jid).length > 0) {
-                  __displayError(__('A meet is already running into room'));
-                  return;
-                }
-                const toggleHandler = function() {
-                  galeneFrame.toggleHideShow();
-                };
-                const dynamicDisplayManager = new function() {
-                  let __resizeHandler;
-                  let __resizeWatchImpl;
-                  this.start = function() {
-                    const $chatBox = document.querySelector('.converse-chatboxes');
-                    const $anchor = document.querySelector('#conversejs.conversejs');
-                    __resizeHandler = function() {
-                      const currentView = _converse.chatboxviews.get(jid)
-                      if (currentView && headDisplayToggle) {
-                        const $head = currentView.querySelector(".chat-head");
-                        $head.removeEventListener('dblclick', toggleHandler);
-                        $head.addEventListener('dblclick', toggleHandler);
-                      }
-                      const currentDiv = currentView && currentView.querySelector(headDisplayToggle ? ".chat-body" : ".box-flyout");
-                      let top = currentDiv ? currentDiv.offsetTop : 0;
-                      let left = currentDiv ? currentDiv.offsetLeft : 0;
-                      let width = currentDiv ? currentDiv.offsetWidth : 0;
-                      let height = currentDiv ? currentDiv.offsetHeight : 0;
-                      let current = currentDiv && currentDiv.offsetParent;
-                      while (current && current !== $anchor) {
-                        top += current.offsetTop;
-                        left += current.offsetLeft;
-                        current = current.offsetParent;
-                      }
-                      galeneFrame.style.top = top + "px";
-                      galeneFrame.style.left = left + "px";
-                      galeneFrame.style.width = width + "px";
-                      galeneFrame.style.height = height + "px";
-                    };
-                    __resizeWatchImpl = new function() {
-                      let __resizeObserver;
-                      if (isOverlayedDisplay && typeof ResizeObserver === 'function') {
-                        __resizeObserver = new ResizeObserver(function(entries) {
-                          if (entries.length > 0) {
-                            __resizeHandler();
-                          }
-                        });
-                      }
-                      const __resizeWatchEvents = ['controlBoxOpened', 'controlBoxClosed', 'chatBoxBlurred',
-                        'chatBoxFocused', 'chatBoxMinimized', 'chatBoxMaximized',
-                        'chatBoxViewInitialized', 'chatRoomViewInitialized'];
-                      const __startResize = function() {
-                        galeneFrame.style.pointerEvents = 'none';
-                        document.addEventListener('mousemove', __deferredResize);
-                      };
-                      const __endResize = function() {
-                        galeneFrame.style.pointerEvents = '';
-                        document.removeEventListener('mousemove', __deferredResize);
-                      };
-                      let timeoutId;
-                      const __deferredResize = function() {
-                        clearTimeout(timeoutId);
-                        timeoutId = setTimeout(__resizeHandler, 0);
-                      };
-                      this.start = function() {
-                        _converse.api.listen.on('startDiagonalResize', __startResize);
-                        _converse.api.listen.on('startHorizontalResize', __startResize);
-                        _converse.api.listen.on('startVerticalResize', __startResize);
-                        document.addEventListener('mouseup', __endResize);
-                        window.addEventListener('resize', __resizeHandler);
-                        __resizeWatchEvents.forEach(c => _converse.api.listen.on(c, __deferredResize));
-                        if (__resizeObserver) {
-                          __resizeObserver.observe(div);
-                          __resizeObserver.observe($anchor);
-                          __resizeObserver.observe($chatBox);
-                        }
-                      };
-                      this.close = function() {
-                        _converse.api.listen.not('startDiagonalResize', __startResize);
-                        _converse.api.listen.not('startHorizontalResize', __startResize);
-                        _converse.api.listen.not('startVerticalResize', __startResize);
-                        document.removeEventListener('mouseup', __endResize);
-                        window.removeEventListener('resize', __resizeHandler);
-                        __resizeWatchEvents.forEach(c => _converse.api.listen.not(c, __deferredResize));
-                        if (__resizeObserver) {
-                          __resizeObserver.disconnect();
-                        }
-                      };
-                    };
-                    galeneFrame.style.position = "absolute";
-                    $anchor.appendChild(galeneFrame);
-                    __resizeWatchImpl.start();
-                    _converse.api.listen.on('chatBoxClosed', closeGalene);
-                    this.triggerChange();
-                  };
-                  this.triggerChange = function() {
-                    __resizeHandler();
-                  };
-                  this.close = function() {
-                    __resizeWatchImpl.close();
-                    _converse.api.listen.not('chatBoxClosed', closeGalene);
-                  };
-                };
-                let galeneFrame = document.createElement('iframe');
-                let firstTime = true;
-
-				let openChatbox = function (view)
-				{
-					let jid = view.model.get("jid");
-					let type = view.model.get("type");
-
-					console.debug("openChatbox", jid, type);
-
-					if (jid)
-					{
-						if (type == "chatbox") _converse.api.chats.open(jid, {'bring_to_foreground': true}, true);
-						else
-						if (type == "chatroom") _converse.api.rooms.open(jid, {'bring_to_foreground': true}, true);
+			div.innerHTML = '';
+			const jid = view.getAttribute("jid");
+			if(Array.from(document.querySelectorAll("iframe.galene")).filter(f => f.__jid === jid).length > 0) {
+			  __displayError(__('A webinar is already running in group'));
+			  return;
+			}
+			const toggleHandler = function() {
+			  galeneFrame.toggleHideShow();
+			};
+			const dynamicDisplayManager = new function() {
+			  let __resizeHandler;
+			  let __resizeWatchImpl;
+			  this.start = function() {
+				const $chatBox = document.querySelector('.converse-chatboxes');
+				const $anchor = document.querySelector('#conversejs.conversejs');
+				__resizeHandler = function() {
+				  const currentView = _converse.chatboxviews.get(jid)
+				  if (currentView && headDisplayToggle) {
+					const $head = currentView.querySelector(".chat-head");
+					$head.removeEventListener('dblclick', toggleHandler);
+					$head.addEventListener('dblclick', toggleHandler);
+				  }
+				  const currentDiv = currentView && currentView.querySelector(headDisplayToggle ? ".chat-body" : ".box-flyout");
+				  let top = currentDiv ? currentDiv.offsetTop : 0;
+				  let left = currentDiv ? currentDiv.offsetLeft : 0;
+				  let width = currentDiv ? currentDiv.offsetWidth : 0;
+				  let height = currentDiv ? currentDiv.offsetHeight : 0;
+				  let current = currentDiv && currentDiv.offsetParent;
+				  while (current && current !== $anchor) {
+					top += current.offsetTop;
+					left += current.offsetLeft;
+					current = current.offsetParent;
+				  }
+				  galeneFrame.style.top = top + "px";
+				  galeneFrame.style.left = left + "px";
+				  galeneFrame.style.width = width + "px";
+				  galeneFrame.style.height = height + "px";
+				};
+				__resizeWatchImpl = new function() {
+				  let __resizeObserver;
+				  if (isOverlayedDisplay && typeof ResizeObserver === 'function') {
+					__resizeObserver = new ResizeObserver(function(entries) {
+					  if (entries.length > 0) {
+						__resizeHandler();
+					  }
+					});
+				  }
+				  const __resizeWatchEvents = ['controlBoxOpened', 'controlBoxClosed', 'chatBoxBlurred',
+					'chatBoxFocused', 'chatBoxMinimized', 'chatBoxMaximized',
+					'chatBoxViewInitialized', 'chatRoomViewInitialized'];
+				  const __startResize = function() {
+					galeneFrame.style.pointerEvents = 'none';
+					document.addEventListener('mousemove', __deferredResize);
+				  };
+				  const __endResize = function() {
+					galeneFrame.style.pointerEvents = '';
+					document.removeEventListener('mousemove', __deferredResize);
+				  };
+				  let timeoutId;
+				  const __deferredResize = function() {
+					clearTimeout(timeoutId);
+					timeoutId = setTimeout(__resizeHandler, 0);
+				  };
+				  this.start = function() {
+					_converse.api.listen.on('startDiagonalResize', __startResize);
+					_converse.api.listen.on('startHorizontalResize', __startResize);
+					_converse.api.listen.on('startVerticalResize', __startResize);
+					document.addEventListener('mouseup', __endResize);
+					window.addEventListener('resize', __resizeHandler);
+					__resizeWatchEvents.forEach(c => _converse.api.listen.on(c, __deferredResize));
+					if (__resizeObserver) {
+					  __resizeObserver.observe(div);
+					  __resizeObserver.observe($anchor);
+					  __resizeObserver.observe($chatBox);
 					}
-				}	
-				
-                let closeGalene = function(currentModel) {
-                  console.debug("doLocalVideo - closeGalene", this);
-				  
-                  dynamicDisplayManager.triggerChange();
-                  if (currentModel && currentModel.cid !== chatModel.cid) {
-                    return;
-                  }
-                  dynamicDisplayManager.close();
-                  galeneFrame.remove();
-				  view.close();
-				  setTimeout(function() { openChatbox(view) });				  
-                }
-				
-                let galeneIframeCloseHandler = function ()
-                {
-                  console.debug("doLocalVideo - galeneIframeCloseHandler");
-                  if (!firstTime) // meeting closed and root url is loaded
-                  {
-                    closeGalene();
-                  }
-                  if (firstTime) firstTime = false;   // ignore when galene-meet room url is loaded
-                };
-                galeneFrame.toggleHideShow = function() {
-                  if (galeneFrame.style.display === 'none') {
-                    galeneFrame.show();
-                  } else {
-                    galeneFrame.hide();
-                  }
-                };
-                galeneFrame.show = function() {
-                  galeneFrame.style.display = '';
-                };
-                galeneFrame.hide = function() {
-                  galeneFrame.style.display = 'none';
-                };
-                galeneFrame.__jid = jid;
-                galeneFrame.addEventListener("load", galeneIframeCloseHandler);
-                galeneFrame.setAttribute("src", "./packages/galene/index.html?username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=&group=" + room + "&host=" + _converse.api.settings.get("galene_host"));
-                galeneFrame.setAttribute("class", "galene");
-                galeneFrame.setAttribute("allow", "microphone; camera;");
-                galeneFrame.setAttribute("frameborder", "0");
-                galeneFrame.setAttribute("seamless", "seamless");
-                galeneFrame.setAttribute("allowfullscreen", "true");
-                galeneFrame.setAttribute("scrolling", "no");
-                galeneFrame.setAttribute("style", "z-index:1049;width:100%;height:100%;");
-                dynamicDisplayManager.start();
-				
-                galeneFrame.contentWindow.addEventListener("message", function (event) {
-                  if (typeof event.data === 'string') {
-                    let data = JSON.parse(event.data);
-                    let galeneEvent = data['galene_event'];
-                    if ('close' === galeneEvent) {
-                      closeGalene();
-                    }
-                  }
-                }, false);
+				  };
+				  this.close = function() {
+					_converse.api.listen.not('startDiagonalResize', __startResize);
+					_converse.api.listen.not('startHorizontalResize', __startResize);
+					_converse.api.listen.not('startVerticalResize', __startResize);
+					document.removeEventListener('mouseup', __endResize);
+					window.removeEventListener('resize', __resizeHandler);
+					__resizeWatchEvents.forEach(c => _converse.api.listen.not(c, __deferredResize));
+					if (__resizeObserver) {
+					  __resizeObserver.disconnect();
+					}
+				  };
+				};
+				galeneFrame.style.position = "absolute";
+				$anchor.appendChild(galeneFrame);
+				__resizeWatchImpl.start();
+				_converse.api.listen.on('chatBoxClosed', closeGalene);
+				this.triggerChange();
+			  };
+			  this.triggerChange = function() {
+				__resizeHandler();
+			  };
+			  this.close = function() {
+				__resizeWatchImpl.close();
+				_converse.api.listen.not('chatBoxClosed', closeGalene);
+			  };
+			};
+			let galeneFrame = document.createElement('iframe');
+			let firstTime = true;
+
+			let openChatbox = function (view)
+			{
+				let jid = view.model.get("jid");
+				let type = view.model.get("type");
+
+				console.debug("openChatbox", jid, type);
+
+				if (jid)
+				{
+					if (type == "chatbox") _converse.api.chats.open(jid, {'bring_to_foreground': true}, true);
+					else
+					if (type == "chatroom") _converse.api.rooms.open(jid, {'bring_to_foreground': true}, true);
+				}
+			}	
+			
+			let closeGalene = function(currentModel) {
+			  console.debug("doLocalVideo - closeGalene", this);
+			  
+			  dynamicDisplayManager.triggerChange();
+			  if (currentModel && currentModel.cid !== chatModel.cid) {
+				return;
+			  }
+			  dynamicDisplayManager.close();
+			  galeneFrame.remove();
+			  view.close();
+			  setTimeout(function() { openChatbox(view) });				  
+			}
+			
+			let galeneIframeCloseHandler = function ()
+			{
+			  console.debug("doLocalVideo - galeneIframeCloseHandler");
+			  if (!firstTime) // meeting closed and root url is loaded
+			  {
+				closeGalene();
+			  }
+			  if (firstTime) firstTime = false;   // ignore when galene-meet room url is loaded
+			};
+			galeneFrame.toggleHideShow = function() {
+			  if (galeneFrame.style.display === 'none') {
+				galeneFrame.show();
+			  } else {
+				galeneFrame.hide();
+			  }
+			};
+			galeneFrame.show = function() {
+			  galeneFrame.style.display = '';
+			};
+			galeneFrame.hide = function() {
+			  galeneFrame.style.display = 'none';
+			};
+			galeneFrame.__jid = jid;
+			galeneFrame.addEventListener("load", galeneIframeCloseHandler);
+			galeneFrame.setAttribute("src", "/packages/galene/index.html?username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=&host=" + host + "&group=" + group);
+			galeneFrame.setAttribute("class", "galene");
+			galeneFrame.setAttribute("allow", "microphone; camera;");
+			galeneFrame.setAttribute("frameborder", "0");
+			galeneFrame.setAttribute("seamless", "seamless");
+			galeneFrame.setAttribute("allowfullscreen", "true");
+			galeneFrame.setAttribute("scrolling", "no");
+			galeneFrame.setAttribute("style", "z-index:1049;width:100%;height:100%;");
+			dynamicDisplayManager.start();
+			
+			galeneFrame.contentWindow.addEventListener("message", function (event) {
+			  if (typeof event.data === 'string') {
+				let data = JSON.parse(event.data);
+				let galeneEvent = data['galene_event'];
+				if ('close' === galeneEvent) {
+				  closeGalene();
+				}
+			  }
+			}, false);
 		}
     }		
 }));
