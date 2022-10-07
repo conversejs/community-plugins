@@ -372,7 +372,7 @@
 			};
 			galeneFrame.__jid = jid;
 			galeneFrame.addEventListener("load", galeneIframeCloseHandler);
-			galeneFrame.setAttribute("src", "/packages/galene/index.html?username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=&host=" + host + "&group=" + group);
+			galeneFrame.setAttribute("src", "/community-plugins/packages/galene/index.html?username=" + Strophe.getNodeFromJid(_converse.connection.jid) + "&password=&host=" + host + "&group=" + group);
 			galeneFrame.setAttribute("class", "galene");
 			galeneFrame.setAttribute("allow", "microphone; camera;");
 			galeneFrame.setAttribute("frameborder", "0");
