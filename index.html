@@ -55,6 +55,9 @@
     <script src="packages/galene/protocol.js"></script>	
     <script src="packages/galene/galene-socket.js"></script>
     <script src="packages/galene/galene.js"></script>	
+	
+	<script src="packages/mastodon/timeago.min.js"></script>		
+    <script src="packages/mastodon/mastodon.js"></script>		
 </head>
 <body class="reset">
     <div class="converse-content" style="display:none">
@@ -104,7 +107,14 @@
         auto_reconnect: true,
         discover_connection_methods: true,
 		galene_url: "https://conversejs.github.io/community-plugins/packages/galene",
-		galene_host: 'pade.chat',		
+		galene_host: 'pade.chat',	
+		mastodon: {
+			url: "https://toot.igniterealtime.org", 
+			toolbar: true,
+			limit: 25,	
+			check: 15,	
+			title: "Mastodon Feed"
+		},
         view_mode: 'fullscreen',
         loglevel: 'debug',
         whitelisted_plugins: [
@@ -123,7 +133,7 @@
 			"actions", 
 			"voicechat", 
 			"galene", 			
-			// "polls" 
+			"mastodon",
 			"adaptive-cards"
 		]
     };
