@@ -1,9 +1,9 @@
-# Location plugin for converse.js
+# Mastodon plugin for converse.js
 
 <img src="https://github.com/conversejs/community-plugins/blob/master/packages/mastodon/mastodon.png?raw=true" />
 
 ## Overview
-This plugin implements [XEP-XXXX](https://igniterealtime.github.io/openfire-pade-plugin/xep/mastodon-api-over-xmpp.html) - This specification defines a protocol extension for communicating in-band with a Mastodon API server over XMPP.
+This plugin directly accesses the Mastodon REST API to provide a public and local server timeline feed. A token is required for the local server timeline.
 
 ## Install
 see https://m.conversejs.org/docs/html/plugin_development.html on how to install this plugin
