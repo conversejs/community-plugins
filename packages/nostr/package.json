@@ -1,0 +1,30 @@
+{
+  "name": "@converse-plugins/nostr",
+  "version": "0.0.1",
+  "description": "A Converse.js plugin that adds support for Nostr-over-XMPP",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "http-server -c-1",
+    "watch": "webpack --watch --config webpack/webpack.build.js --mode=development",
+    "build": "webpack --config webpack/webpack.build.js"
+  },
+  "keywords": [
+    "nostr",
+    "xmpp",
+    "converse.js"
+  ],
+  "author": "JC Brand",
+  "license": "MPL-2.0",
+  "devDependencies": {
+    "css-loader": "^6.7.3",
+    "mini-css-extract-plugin": "^2.7.2",
+    "po-loader": "^0.7.0",
+    "postcss-loader": "^7.0.2",
+    "sass-loader": "^13.2.0",
+    "terser-webpack-plugin": "^5.3.6",
+    "webpack": "^5.75.0"
+  },
+  "dependencies": {
+    "lit": "^2.6.1"
+  }
+}

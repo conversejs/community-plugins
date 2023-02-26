@@ -11,7 +11,7 @@
     "access": "public"
   },
   "scripts": {
-    "start": "./node_modules/.bin/http-server -c-1"
+    "start": "http-server -c-1"
   },
   "devDependencies": {
     "http-server": "latest"
