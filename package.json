@@ -3,6 +3,28 @@
   "version": "0.0.1",
   "description": "Community plugins for Converse.js",
   "main": "index.js",
+  "workspaces": [
+    "packages/actions",
+    "packages/adaptive-cards",
+    "packages/diagrams",
+    "packages/directory",
+    "packages/download-dialog",
+    "packages/galene",
+    "packages/http-auth",
+    "packages/jitsimeet",
+    "packages/location",
+    "packages/mastodon",
+    "packages/muc-directory",
+    "packages/muc-presence-probe",
+    "packages/oauth",
+    "packages/polls",
+    "packages/screencast",
+    "packages/search",
+    "packages/stickers",
+    "packages/toolbar-utilities",
+    "packages/vmsg",
+    "packages/voicechat"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/conversejs/community-plugins.git"
