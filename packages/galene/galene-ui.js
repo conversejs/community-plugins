@@ -3983,7 +3983,7 @@ window.onload = async function() {
     if(serverConnection && serverConnection.socket)
         serverConnection.close();
     serverConnection = new ServerConnection();
-    serverConnection.onconnected = amConnected;
+    serverConnection.onhandshake = amConnected;
     serverConnection.onpeerconnection = onPeerConnection;
     serverConnection.onclose = gotClose;
     serverConnection.ondownstream = gotDownStream;
@@ -4042,7 +4042,7 @@ function urlParam (name) {
 	return unescape(results[1] || undefined);
 }
 
-function amConnected() {
+async function amConnected() {
 	console.debug("amConnected");	
     setConnected(true);	
 	connectingAgain = false;
@@ -4050,15 +4050,13 @@ function amConnected() {
 	const username = urlParam("username") || localStorage.getItem("galene_username") || prompt("Enter username");
 	const pw = "";
 	
-	setTimeout( async() => {
-		try {
-			await serverConnection.join(group, username, pw);
-			localStorage.setItem("galene_username", username);
-		} catch(e) {
-			console.error(e);
-			serverConnection.close();
-		}
-	}, 2000);
+	try {
+		await serverConnection.join(group, username, pw);
+		localStorage.setItem("galene_username", username);
+	} catch(e) {
+		console.error(e);
+		serverConnection.close();
+	}
 }
 
 function closeConnection() {

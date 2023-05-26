@@ -261,7 +261,7 @@
 	function connectMedia(callId, headers) {
 		if (!serverConnection) {
 			serverConnection = new ServerConnection();
-			serverConnection.onconnected = gotConnected;
+			serverConnection.onhandshake = gotHandshake;
 			serverConnection.onpeerconnection = onPeerConnection;
 			serverConnection.onclose = gotClose;
 			serverConnection.ondownstream = gotDownStream;
@@ -539,8 +539,8 @@
 		}		
 	}
 
-	async function gotConnected() {
-		console.debug("gotConnected");	
+	async function gotHandshake() {
+		console.debug("gotHandshake");	
 		
 		const username = Strophe.getNodeFromJid(_converse.connection.jid);
 		const pw = "";

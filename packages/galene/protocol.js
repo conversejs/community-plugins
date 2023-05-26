@@ -146,6 +146,12 @@ function ServerConnection() {
 
     /* Callbacks */
 
+    /** BAO
+     * onhandshake is called when the connection handshake has been recieved
+     *
+     * @type{(this: ServerConnection) => void}
+     */
+    this.onhandshake = null;
     /**
      * onconnected is called when the connection has been established
      *
@@ -350,6 +356,8 @@ ServerConnection.prototype.connect = async function(connection, host) {
                     console.warn(`Unknown protocol version ${v || m.version}`);
                     sc.version = "1"
                 }
+				if(sc.onhandshake) // BAO
+					sc.onhandshake.call(sc);				
                 break;
             }
             case 'offer':
