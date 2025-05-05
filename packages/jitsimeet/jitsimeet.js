@@ -353,7 +353,7 @@ function doLocalVideo(_converse, view, room, url, label) {
             jitsiFrame.addEventListener("load", jitsiIframeCloseHandler);
             jitsiFrame.setAttribute("src", url);
             jitsiFrame.setAttribute("class", "jitsimeet");
-            jitsiFrame.setAttribute("allow", "microphone; camera;");
+            jitsiFrame.setAttribute("allow", "microphone; camera; display-capture;");
             jitsiFrame.setAttribute("frameborder", "0");
             jitsiFrame.setAttribute("seamless", "seamless");
             jitsiFrame.setAttribute("allowfullscreen", "true");
@@ -418,7 +418,7 @@ function initialize() {
                 <iframe
                     src="${this.model.get("url")}"
                     id="jitsimeet"
-                    allow="microphone; camera;"
+                    allow="microphone; camera; display-capture;"
                     frameborder="0"
                     seamless="seamless"
                     allowfullscreen="true"
