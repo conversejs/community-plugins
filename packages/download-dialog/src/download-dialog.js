@@ -32,7 +32,7 @@ function downloadAttachements (view) {
     });
 
     if (downloadables.length > 0) {
-        const chat_name = view.model.attributes.name ?? view.model.attributes.user_id;
+        const chat_name = view.model.attributes.name ?? view.model.id;
         download_view.zipfileName = "conversejs_" + dayjs(Date.now()).format(TIMESTAMP_FORMAT) + '_' + chat_name;
         download_view.downloadables = downloadables;
         download_view.inProgress = false;
@@ -66,7 +66,7 @@ const plugin = {
             const icon_path = "M464,128H272L208,64H48A48,48,0,0,0,0,112V400a48,48,0,0,0,48,48H464a48,48,0,0,0,48-48V176A48,48,0,0,0,464,128ZM364.44,283.36,268,379.06a17.05,17.05,0,0,1-24,0l-96.42-95.7A16,16,0,0,1,158.81,256H224V208a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16v48h65.18A16,16,0,0,1,364.44,283.36Z";
             const icon_viewbox = "0 0 512 512";
             buttons.push(html`
-                <button title="${i18n_start_download_dialog}" @click=${this.toggle_download_dialog} .chatview=${this.chatview}">
+                <button type="button" class="btn" title="${i18n_start_download_dialog}" @click=${this.toggle_download_dialog} .chatview=${this.chatview}">
                     <converse-plugin-icon class="fa" size="1em">
                         <svg style="width: 1em; height: 1em;"><svg viewBox="${icon_viewbox}"><path d="${icon_path}"></path></svg></svg>
                     </converse-plugin-icon>
@@ -79,7 +79,7 @@ const plugin = {
             document.body.querySelector('#conversejs').insertAdjacentElement('beforeend', download_view)
         );
 
-        class MultimediaDownloadView extends _converse.CustomElement {
+        class MultimediaDownloadView extends _converse.exports.CustomElement {
 
             static get properties() {
                 return {
@@ -118,7 +118,7 @@ const plugin = {
                 const downloadButtonCaption = "Download attachements";
                 return html`
                     <div class="download-table">
-                            <a class="close-popup fa fa-times" @click="${() => {this.hidden = true;}}" style="float:right; font-size: 20px;"></a>
+                            <a class="close-thik" @click="${() => {this.hidden = true;}}" style="float:right; font-size: 20px;"></a>
                             <div class="attachement-header">
                                 </br>
                                 <span class="download-attachements-header">${__(chatCaption)}</span>
